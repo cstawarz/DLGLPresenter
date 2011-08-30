@@ -1,0 +1,282 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA702140D31AC0054C95A /* Cocoa.framework */; };
+		E1EEA70D140D31AC0054C95A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1EEA70B140D31AC0054C95A /* InfoPlist.strings */; };
+		E1EEA711140D31AC0054C95A /* DLGLPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA710140D31AC0054C95A /* DLGLPresenter.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLGLPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1EEA702140D31AC0054C95A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		E1EEA705140D31AC0054C95A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E1EEA706140D31AC0054C95A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		E1EEA707140D31AC0054C95A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */ = {isa = PBXFileReference; path = "DLGLPresenter-Info.plist"; sourceTree = "<group>"; };
+		E1EEA70C140D31AC0054C95A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E1EEA70E140D31AC0054C95A /* DLGLPresenter-Prefix.pch */ = {isa = PBXFileReference; path = "DLGLPresenter-Prefix.pch"; sourceTree = "<group>"; };
+		E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */ = {isa = PBXFileReference; path = DLGLPresenter.h; sourceTree = "<group>"; };
+		E1EEA710140D31AC0054C95A /* DLGLPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DLGLPresenter.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E1EEA6FB140D31AC0054C95A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E1EEA6F3140D31AC0054C95A = {
+			isa = PBXGroup;
+			children = (
+				E1EEA708140D31AC0054C95A /* DLGLPresenter */,
+				E1EEA701140D31AC0054C95A /* Frameworks */,
+				E1EEA700140D31AC0054C95A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E1EEA700140D31AC0054C95A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1EEA701140D31AC0054C95A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1EEA702140D31AC0054C95A /* Cocoa.framework */,
+				E1EEA704140D31AC0054C95A /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E1EEA704140D31AC0054C95A /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1EEA705140D31AC0054C95A /* AppKit.framework */,
+				E1EEA706140D31AC0054C95A /* CoreData.framework */,
+				E1EEA707140D31AC0054C95A /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		E1EEA708140D31AC0054C95A /* DLGLPresenter */ = {
+			isa = PBXGroup;
+			children = (
+				E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */,
+				E1EEA710140D31AC0054C95A /* DLGLPresenter.m */,
+				E1EEA709140D31AC0054C95A /* Supporting Files */,
+			);
+			path = DLGLPresenter;
+			sourceTree = "<group>";
+		};
+		E1EEA709140D31AC0054C95A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */,
+				E1EEA70B140D31AC0054C95A /* InfoPlist.strings */,
+				E1EEA70E140D31AC0054C95A /* DLGLPresenter-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E1EEA6FC140D31AC0054C95A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E1EEA6FE140D31AC0054C95A /* DLGLPresenter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1EEA714140D31AC0054C95A /* Build configuration list for PBXNativeTarget "DLGLPresenter" */;
+			buildPhases = (
+				E1EEA6FA140D31AC0054C95A /* Sources */,
+				E1EEA6FB140D31AC0054C95A /* Frameworks */,
+				E1EEA6FC140D31AC0054C95A /* Headers */,
+				E1EEA6FD140D31AC0054C95A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DLGLPresenter;
+			productName = DLGLPresenter;
+			productReference = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E1EEA6F5140D31AC0054C95A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = MIT;
+			};
+			buildConfigurationList = E1EEA6F8140D31AC0054C95A /* Build configuration list for PBXProject "DLGLPresenter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E1EEA6F3140D31AC0054C95A;
+			productRefGroup = E1EEA700140D31AC0054C95A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E1EEA6FE140D31AC0054C95A /* DLGLPresenter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E1EEA6FD140D31AC0054C95A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1EEA70D140D31AC0054C95A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E1EEA6FA140D31AC0054C95A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1EEA711140D31AC0054C95A /* DLGLPresenter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E1EEA70B140D31AC0054C95A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E1EEA70C140D31AC0054C95A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E1EEA712140D31AC0054C95A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E1EEA713140D31AC0054C95A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E1EEA715140D31AC0054C95A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DLGLPresenter/DLGLPresenter-Prefix.pch";
+				INFOPLIST_FILE = "DLGLPresenter/DLGLPresenter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		E1EEA716140D31AC0054C95A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DLGLPresenter/DLGLPresenter-Prefix.pch";
+				INFOPLIST_FILE = "DLGLPresenter/DLGLPresenter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E1EEA6F8140D31AC0054C95A /* Build configuration list for PBXProject "DLGLPresenter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1EEA712140D31AC0054C95A /* Debug */,
+				E1EEA713140D31AC0054C95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E1EEA714140D31AC0054C95A /* Build configuration list for PBXNativeTarget "DLGLPresenter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1EEA715140D31AC0054C95A /* Debug */,
+				E1EEA716140D31AC0054C95A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E1EEA6F5140D31AC0054C95A /* Project object */;
+}
