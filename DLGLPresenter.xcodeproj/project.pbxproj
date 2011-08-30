@@ -18,10 +18,10 @@
 		E1EEA705140D31AC0054C95A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E1EEA706140D31AC0054C95A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		E1EEA707140D31AC0054C95A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */ = {isa = PBXFileReference; path = "DLGLPresenter-Info.plist"; sourceTree = "<group>"; };
+		E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenter-Info.plist"; sourceTree = "<group>"; };
 		E1EEA70C140D31AC0054C95A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E1EEA70E140D31AC0054C95A /* DLGLPresenter-Prefix.pch */ = {isa = PBXFileReference; path = "DLGLPresenter-Prefix.pch"; sourceTree = "<group>"; };
-		E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */ = {isa = PBXFileReference; path = DLGLPresenter.h; sourceTree = "<group>"; };
+		E1EEA70E140D31AC0054C95A /* DLGLPresenter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DLGLPresenter-Prefix.pch"; sourceTree = "<group>"; };
+		E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLGLPresenter.h; sourceTree = "<group>"; };
 		E1EEA710140D31AC0054C95A /* DLGLPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DLGLPresenter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
