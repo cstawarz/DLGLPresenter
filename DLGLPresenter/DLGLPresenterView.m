@@ -9,7 +9,6 @@
 #import "DLGLPresenterView.h"
 
 #import <OpenGL/gl3.h>
-#import <CoreAudio/HostTime.h>
 
 
 @interface DLGLPresenterView ()
@@ -140,8 +139,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     [[self openGLContext] makeCurrentContext];
     
-    uint64_t outputHostTimeNS = AudioConvertHostTimeToNanos(outputTime->hostTime);
-    [presentable drawForTime:outputHostTimeNS];
+    [presentable drawForTime:outputTime];
     
     [self unlockContext];
 }

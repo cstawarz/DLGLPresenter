@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreVideo/CVBase.h>
 
 
 @protocol DLGLPresentable <NSObject>
 
-- (void)drawForTime:(uint64_t)outputTime;
+- (void)drawForTime:(const CVTimeStamp *)outputTime;
 
 @end
