@@ -9,15 +9,15 @@
 #import <AppKit/AppKit.h>
 #import <CoreVideo/CVDisplayLink.h>
 
-#import <DLGLPresenter/DLGLPresentable.h>
+#import <DLGLPresenter/DLGLPresenterDelegate.h>
 
 
 @interface DLGLPresenterView : NSOpenGLView {
     CVDisplayLinkRef displayLink;
-    id <DLGLPresentable> presentable;
+    id <DLGLPresenterDelegate> presentable;
 }
 
-- (void)startPresentation:(id <DLGLPresentable>)newPresentable;
+- (void)startPresentation:(id <DLGLPresenterDelegate>)newPresentable;
 - (void)stopPresentation;
 
 @end

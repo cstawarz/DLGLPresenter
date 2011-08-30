@@ -145,7 +145,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (void)startPresentation:(id <DLGLPresentable>)newPresentable
+- (void)startPresentation:(id <DLGLPresenterDelegate>)newPresentable
 {
     NSParameterAssert(newPresentable);
     NSAssert((presentable == nil), @"Presentation is already started");

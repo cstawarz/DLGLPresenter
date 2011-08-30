@@ -1,5 +1,5 @@
 //
-//  DLGLPresentable.h
+//  DLGLPresenterDelegate.h
 //  DLGLPresenter
 //
 //  Created by Christopher Stawarz on 8/30/11.
@@ -10,7 +10,7 @@
 #import <CoreVideo/CVBase.h>
 
 
-@protocol DLGLPresentable <NSObject>
+@protocol DLGLPresenterDelegate <NSObject>
 
 - (void)drawForTime:(const CVTimeStamp *)outputTime;
 
