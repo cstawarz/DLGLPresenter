@@ -9,6 +9,7 @@
 #import "DLGLPresenterView.h"
 
 #import <OpenGL/gl3.h>
+#import <CoreAudio/HostTime.h>
 
 
 @interface DLGLPresenterView ()
@@ -104,14 +105,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
     NSAssert1((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
-
-    error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                              self.CGLContextObj,
-                                                              [[self pixelFormat] CGLPixelFormatObj]);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
-    
-    error = CVDisplayLinkStart(displayLink);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
 }
 
 
@@ -147,13 +140,46 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     [[self openGLContext] makeCurrentContext];
     
+    uint64_t outputHostTimeNS = AudioConvertHostTimeToNanos(outputTime->hostTime);
+    [presentable drawForTime:outputHostTimeNS];
+    
     [self unlockContext];
+}
+
+
+- (void)startPresentation:(id <DLGLPresentable>)newPresentable
+{
+    NSParameterAssert(newPresentable);
+    NSAssert((presentable == nil), @"Presentation is already started");
+    
+    presentable = [newPresentable retain];
+    
+    CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
+                                                                       self.CGLContextObj,
+                                                                       [[self pixelFormat] CGLPixelFormatObj]);
+    NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+    
+    error = CVDisplayLinkStart(displayLink);
+    NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
+}
+
+
+- (void)stopPresentation
+{
+    NSAssert((presentable != nil), @"Presentation is not started");
+    
+    CVReturn error = CVDisplayLinkStop(displayLink);
+    NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+    
+    [presentable release];
+    presentable = nil;
 }
 
 
 - (void)dealloc
 {
     CVDisplayLinkRelease(displayLink);
+    [presentable release];
     [super dealloc];
 }
 

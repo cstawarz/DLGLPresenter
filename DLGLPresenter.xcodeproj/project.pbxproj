@@ -14,6 +14,8 @@
 		E1EEA71E140D3B150054C95A /* DLGLPresenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */; };
 		E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA727140D3F240054C95A /* OpenGL.framework */; };
 		E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA72D140D50860054C95A /* CoreVideo.framework */; };
+		E1EEA735140D67680054C95A /* DLGLPresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA734140D67680054C95A /* DLGLPresentable.h */; };
+		E1EEA737140D6B020054C95A /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA736140D6B020054C95A /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLPresenterView.m; sourceTree = "<group>"; };
 		E1EEA727140D3F240054C95A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E1EEA72D140D50860054C95A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		E1EEA734140D67680054C95A /* DLGLPresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLPresentable.h; sourceTree = "<group>"; };
+		E1EEA736140D6B020054C95A /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +45,7 @@
 				E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */,
 				E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */,
 				E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */,
+				E1EEA737140D6B020054C95A /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +75,7 @@
 				E1EEA702140D31AC0054C95A /* Cocoa.framework */,
 				E1EEA727140D3F240054C95A /* OpenGL.framework */,
 				E1EEA72D140D50860054C95A /* CoreVideo.framework */,
+				E1EEA736140D6B020054C95A /* CoreAudio.framework */,
 				E1EEA704140D31AC0054C95A /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -90,6 +96,7 @@
 			children = (
 				E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */,
 				E1EEA710140D31AC0054C95A /* DLGLPresenter.m */,
+				E1EEA734140D67680054C95A /* DLGLPresentable.h */,
 				E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */,
 				E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */,
 				E1EEA709140D31AC0054C95A /* Supporting Files */,
@@ -115,6 +122,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */,
+				E1EEA735140D67680054C95A /* DLGLPresentable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
