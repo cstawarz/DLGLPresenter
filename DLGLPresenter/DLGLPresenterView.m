@@ -11,6 +11,17 @@
 #import <OpenGL/gl3.h>
 
 
+#define TRACE_METHOD_CALLS
+
+#ifdef TRACE_METHOD_CALLS
+#  define BEGIN_METHOD  NSLog(@"Entered %s", __PRETTY_FUNCTION__);
+#  define END_METHOD    NSLog(@"Exiting %s", __PRETTY_FUNCTION__);
+#else
+#  define BEGIN_METHOD
+#  define END_METHOD
+#endif
+
+
 @interface DLGLPresenterView ()
 
 - (void)lockContext;
@@ -92,13 +103,25 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)prepareOpenGL
 {
+    BEGIN_METHOD
+    
+    [self lockContext];
+    
+    NSAssert(([NSOpenGLContext currentContext] == [self openGLContext]), @"GL context is not current");
+    
     GLint swapInterval = 1;
     [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+    
+    [self unlockContext];
+    
+    END_METHOD
 }
 
 
 - (void)reshape
 {
+    BEGIN_METHOD
+    
     [self lockContext];
     
     [[self openGLContext] makeCurrentContext];
@@ -107,14 +130,20 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
     
     [self unlockContext];
+    
+    END_METHOD
 }
 
 
 - (void)update
 {
+    BEGIN_METHOD
+    
     [self lockContext];
     [super update];
     [self unlockContext];
+    
+    END_METHOD
 }
 
 
@@ -134,6 +163,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)startPresentation
 {
+    BEGIN_METHOD
+    
     if (CVDisplayLinkIsRunning(displayLink)) {
         return;
     }
@@ -145,17 +176,23 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     error = CVDisplayLinkStart(displayLink);
     NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
+    
+    END_METHOD
 }
 
 
 - (void)stopPresentation
 {
+    BEGIN_METHOD
+    
     if (!CVDisplayLinkIsRunning(displayLink)) {
         return;
     }
     
     CVReturn error = CVDisplayLinkStop(displayLink);
     NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+    
+    END_METHOD
 }
 
 
