@@ -15,6 +15,4 @@
     BOOL highFrame;
 }
 
-- (void)presenterView:(DLGLPresenterView *)presenterView willPresentFrameForTime:(const CVTimeStamp *)outputTime;
-
 @end

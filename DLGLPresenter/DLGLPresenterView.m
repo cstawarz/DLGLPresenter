@@ -105,14 +105,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 {
     BEGIN_METHOD
     
-    [self lockContext];
-    
-    NSAssert(([NSOpenGLContext currentContext] == [self openGLContext]), @"GL context is not current");
-    
     GLint swapInterval = 1;
     [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-    
-    [self unlockContext];
     
     END_METHOD
 }
@@ -165,17 +159,22 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 {
     BEGIN_METHOD
     
-    if (CVDisplayLinkIsRunning(displayLink)) {
-        return;
+    if (!CVDisplayLinkIsRunning(displayLink)) {
+        if ([delegate respondsToSelector:@selector(presenterViewWillStartPresentation:)]) {
+            [self lockContext];
+            [[self openGLContext] makeCurrentContext];
+            [delegate presenterViewWillStartPresentation:self];
+            [self unlockContext];
+        }
+        
+        CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
+                                                                           [[self openGLContext] CGLContextObj],
+                                                                           [[self pixelFormat] CGLPixelFormatObj]);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+        
+        error = CVDisplayLinkStart(displayLink);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
     }
-    
-    CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                                       [[self openGLContext] CGLContextObj],
-                                                                       [[self pixelFormat] CGLPixelFormatObj]);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
-    
-    error = CVDisplayLinkStart(displayLink);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
     
     END_METHOD
 }
@@ -185,12 +184,17 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 {
     BEGIN_METHOD
     
-    if (!CVDisplayLinkIsRunning(displayLink)) {
-        return;
+    if (CVDisplayLinkIsRunning(displayLink)) {
+        CVReturn error = CVDisplayLinkStop(displayLink);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+        
+        if ([delegate respondsToSelector:@selector(presenterViewDidStopPresentation:)]) {
+            [self lockContext];
+            [[self openGLContext] makeCurrentContext];
+            [delegate presenterViewDidStopPresentation:self];
+            [self unlockContext];
+        }
     }
-    
-    CVReturn error = CVDisplayLinkStop(displayLink);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
     
     END_METHOD
 }
