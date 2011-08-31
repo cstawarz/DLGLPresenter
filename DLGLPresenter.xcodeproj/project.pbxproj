@@ -17,7 +17,7 @@
 		E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA702140D31AC0054C95A /* Cocoa.framework */; };
 		E1EEA70D140D31AC0054C95A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1EEA70B140D31AC0054C95A /* InfoPlist.strings */; };
 		E1EEA711140D31AC0054C95A /* DLGLPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA710140D31AC0054C95A /* DLGLPresenter.m */; };
-		E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */; };
+		E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1EEA71E140D3B150054C95A /* DLGLPresenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */; };
 		E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA727140D3F240054C95A /* OpenGL.framework */; };
 		E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA72D140D50860054C95A /* CoreVideo.framework */; };

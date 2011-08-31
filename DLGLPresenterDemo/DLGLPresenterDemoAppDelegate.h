@@ -8,8 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import <DLGLPresenter/DLGLPresenterView.h>
+
+
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+    DLGLPresenterView *presenterView;
 }
 
 @property (assign) IBOutlet NSWindow *window;

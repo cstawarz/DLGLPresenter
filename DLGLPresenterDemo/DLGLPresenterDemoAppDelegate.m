@@ -8,13 +8,25 @@
 
 #import "DLGLPresenterDemoAppDelegate.h"
 
+
 @implementation DLGLPresenterDemoAppDelegate
+
 
 @synthesize window;
 
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    presenterView = [[DLGLPresenterView alloc] initWithFrame:[window frame]];
+    [window setContentView:presenterView];
 }
+
+
+- (void)dealloc
+{
+    [presenterView release];
+    [super dealloc];
+}
+
 
 @end
