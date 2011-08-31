@@ -14,6 +14,8 @@
 		E1E7AE24140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE23140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m */; };
 		E1E7AE27140E730800B50A9F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE25140E730800B50A9F /* MainMenu.xib */; };
 		E1E7AE34140E739E00B50A9F /* DLGLPresenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */; };
+		E1E7AE67140E7A7600B50A9F /* ScreenFlicker.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */; };
+		E1E7AE6C140E7D4800B50A9F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1E7AE6B140E7D4800B50A9F /* OpenGL.framework */; };
 		E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA702140D31AC0054C95A /* Cocoa.framework */; };
 		E1EEA70D140D31AC0054C95A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1EEA70B140D31AC0054C95A /* InfoPlist.strings */; };
 		E1EEA711140D31AC0054C95A /* DLGLPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA710140D31AC0054C95A /* DLGLPresenter.m */; };
@@ -33,6 +35,9 @@
 		E1E7AE22140E730800B50A9F /* DLGLPresenterDemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLGLPresenterDemoAppDelegate.h; sourceTree = "<group>"; };
 		E1E7AE23140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DLGLPresenterDemoAppDelegate.m; sourceTree = "<group>"; };
 		E1E7AE26140E730800B50A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E1E7AE65140E7A7600B50A9F /* ScreenFlicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenFlicker.h; path = DLGLPresenterDelegates/ScreenFlicker.h; sourceTree = "<group>"; };
+		E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenFlicker.m; path = DLGLPresenterDelegates/ScreenFlicker.m; sourceTree = "<group>"; };
+		E1E7AE6B140E7D4800B50A9F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLGLPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1EEA702140D31AC0054C95A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E1EEA705140D31AC0054C95A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -55,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1E7AE15140E730800B50A9F /* Cocoa.framework in Frameworks */,
+				E1E7AE6C140E7D4800B50A9F /* OpenGL.framework in Frameworks */,
 				E1E7AE34140E739E00B50A9F /* DLGLPresenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,8 +83,10 @@
 			children = (
 				E1E7AE22140E730800B50A9F /* DLGLPresenterDemoAppDelegate.h */,
 				E1E7AE23140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m */,
+				E1E7AE63140E7A5B00B50A9F /* DLGLPresenterDelegates */,
 				E1E7AE25140E730800B50A9F /* MainMenu.xib */,
 				E1E7AE17140E730800B50A9F /* Supporting Files */,
+				E1E7AE6A140E7D2D00B50A9F /* Frameworks */,
 			);
 			path = DLGLPresenterDemo;
 			sourceTree = "<group>";
@@ -95,12 +103,28 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E1E7AE63140E7A5B00B50A9F /* DLGLPresenterDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				E1E7AE65140E7A7600B50A9F /* ScreenFlicker.h */,
+				E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */,
+			);
+			name = DLGLPresenterDelegates;
+			sourceTree = "<group>";
+		};
+		E1E7AE6A140E7D2D00B50A9F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1E7AE6B140E7D4800B50A9F /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E1EEA6F3140D31AC0054C95A = {
 			isa = PBXGroup;
 			children = (
 				E1EEA708140D31AC0054C95A /* DLGLPresenter */,
 				E1E7AE16140E730800B50A9F /* DLGLPresenterDemo */,
-				E1EEA701140D31AC0054C95A /* Frameworks */,
 				E1EEA700140D31AC0054C95A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -123,6 +147,7 @@
 				E1EEA704140D31AC0054C95A /* Other Frameworks */,
 			);
 			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		E1EEA704140D31AC0054C95A /* Other Frameworks */ = {
@@ -143,6 +168,7 @@
 				E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */,
 				E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */,
 				E1EEA709140D31AC0054C95A /* Supporting Files */,
+				E1EEA701140D31AC0054C95A /* Frameworks */,
 			);
 			path = DLGLPresenter;
 			sourceTree = "<group>";
@@ -260,6 +286,7 @@
 			files = (
 				E1E7AE1D140E730800B50A9F /* main.m in Sources */,
 				E1E7AE24140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m in Sources */,
+				E1E7AE67140E7A7600B50A9F /* ScreenFlicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +442,7 @@
 				E1E7AE29140E730800B50A9F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E1EEA6F8140D31AC0054C95A /* Build configuration list for PBXProject "DLGLPresenter" */ = {
 			isa = XCConfigurationList;

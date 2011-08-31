@@ -13,12 +13,8 @@
 
 @interface DLGLPresenterView ()
 
-@property(nonatomic, readonly) void *CGLContextObj;
-
 - (void)lockContext;
 - (void)unlockContext;
-- (void)initGL;
-- (void)initDisplayLink;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 
 @end
@@ -65,6 +61,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
     
     if ((self = [super initWithFrame:frameRect pixelFormat:pixelFormat])) {
+        CVReturn error;
+        
+        error = CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to create display link (error = %d)", error);
+        
+        error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
     }
     
     [pixelFormat release];
@@ -73,49 +76,24 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (void *)CGLContextObj
-{
-    return [[self openGLContext] CGLContextObj];
-}
-
-
 - (void)lockContext
 {
-    CGLError error = CGLLockContext(self.CGLContextObj);
+    CGLError error = CGLLockContext([[self openGLContext] CGLContextObj]);
     NSAssert1((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
 }
 
 
 - (void)unlockContext
 {
-    CGLError error = CGLUnlockContext(self.CGLContextObj);
+    CGLError error = CGLUnlockContext([[self openGLContext] CGLContextObj]);
     NSAssert1((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
 }
 
 
 - (void)prepareOpenGL
 {
-    [self initGL];
-    [self initDisplayLink];
-}
-
-
-- (void)initGL
-{
     GLint swapInterval = 1;
     [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-}
-
-
-- (void)initDisplayLink
-{
-    CVReturn error;
-    
-    error = CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to create display link (error = %d)", error);
-    
-    error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
-    NSAssert1((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
 }
 
 
@@ -161,7 +139,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     }
     
     CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                                       self.CGLContextObj,
+                                                                       [[self openGLContext] CGLContextObj],
                                                                        [[self pixelFormat] CGLPixelFormatObj]);
     NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
     

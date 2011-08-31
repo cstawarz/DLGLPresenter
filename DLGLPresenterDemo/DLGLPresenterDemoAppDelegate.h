@@ -14,6 +14,7 @@
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
     DLGLPresenterView *presenterView;
+    id <DLGLPresenterDelegate> presenterDelegate;
 }
 
 @property (assign) IBOutlet NSWindow *window;
