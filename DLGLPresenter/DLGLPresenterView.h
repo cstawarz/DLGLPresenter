@@ -9,15 +9,28 @@
 #import <AppKit/AppKit.h>
 #import <CoreVideo/CVDisplayLink.h>
 
-#import <DLGLPresenter/DLGLPresenterDelegate.h>
+
+@protocol DLGLPresenterDelegate;  // Forward declaration
 
 
 @interface DLGLPresenterView : NSOpenGLView {
     CVDisplayLinkRef displayLink;
-    id <DLGLPresenterDelegate> presentable;
 }
 
-- (void)startPresentation:(id <DLGLPresenterDelegate>)newPresentable;
+@property(nonatomic, assign) id <DLGLPresenterDelegate> delegate;
+
+- (void)startPresentation;
 - (void)stopPresentation;
+
+@end
+
+
+@protocol DLGLPresenterDelegate <NSObject>
+
+- (void)presenterView:(DLGLPresenterView *)presenterView willPresentFrameForTime:(const CVTimeStamp *)outputTime;
+
+@optional
+- (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldPresentFrameForTime:(const CVTimeStamp *)outputTime;
+- (void)presenterView:(DLGLPresenterView *)presenterView didPresentFrameForTime:(const CVTimeStamp *)outputTime;
 
 @end

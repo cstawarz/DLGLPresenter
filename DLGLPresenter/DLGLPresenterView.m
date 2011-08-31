@@ -27,6 +27,9 @@
 @implementation DLGLPresenterView
 
 
+@synthesize delegate;
+
+
 static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                                     const CVTimeStamp *now,
                                     const CVTimeStamp *outputTime,
@@ -139,18 +142,19 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     [[self openGLContext] makeCurrentContext];
     
-    [presentable drawForTime:outputTime];
+    [delegate presenterView:self willPresentFrameForTime:outputTime];
+    
+    [[self openGLContext] flushBuffer];
     
     [self unlockContext];
 }
 
 
-- (void)startPresentation:(id <DLGLPresenterDelegate>)newPresentable
+- (void)startPresentation
 {
-    NSParameterAssert(newPresentable);
-    NSAssert((presentable == nil), @"Presentation is already started");
-    
-    presentable = [newPresentable retain];
+    if (CVDisplayLinkIsRunning(displayLink)) {
+        return;
+    }
     
     CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
                                                                        self.CGLContextObj,
@@ -164,20 +168,18 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)stopPresentation
 {
-    NSAssert((presentable != nil), @"Presentation is not started");
+    if (!CVDisplayLinkIsRunning(displayLink)) {
+        return;
+    }
     
     CVReturn error = CVDisplayLinkStop(displayLink);
     NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
-    
-    [presentable release];
-    presentable = nil;
 }
 
 
 - (void)dealloc
 {
     CVDisplayLinkRelease(displayLink);
-    [presentable release];
     [super dealloc];
 }
 
