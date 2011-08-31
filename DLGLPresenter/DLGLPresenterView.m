@@ -57,7 +57,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (id)initWithFrame:(NSRect)frameRect
++ (NSOpenGLPixelFormat *)defaultPixelFormat
 {
     NSOpenGLPixelFormatAttribute attributes[] =
     {
@@ -67,8 +67,18 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         0
     };
     
-    NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
-    
+    return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+}
+
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+    return [self initWithFrame:frameRect pixelFormat:[[self class] defaultPixelFormat]];
+}
+
+
+- (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)pixelFormat
+{
     if ((self = [super initWithFrame:frameRect pixelFormat:pixelFormat])) {
         CVReturn error;
         
@@ -78,8 +88,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
         NSAssert1((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
     }
-    
-    [pixelFormat release];
     
     return self;
 }
