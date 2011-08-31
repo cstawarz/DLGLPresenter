@@ -8,8 +8,6 @@
 
 #import "ScreenFlicker.h"
 
-#import <OpenGL/gl3.h>
-
 
 @implementation ScreenFlicker
 

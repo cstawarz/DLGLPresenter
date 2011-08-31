@@ -8,6 +8,7 @@
 
 #import <AppKit/AppKit.h>
 #import <CoreVideo/CVDisplayLink.h>
+#import <OpenGL/gl3.h>
 
 
 @protocol DLGLPresenterDelegate;  // Forward declaration

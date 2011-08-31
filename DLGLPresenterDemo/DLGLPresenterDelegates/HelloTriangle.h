@@ -1,5 +1,5 @@
 //
-//  ScreenFlicker.h
+//  HelloTriangle.h
 //  DLGLPresenter
 //
 //  Created by Christopher Stawarz on 8/31/11.
@@ -9,8 +9,10 @@
 #import <DLGLPresenter/DLGLPresenterView.h>
 
 
-@interface ScreenFlicker : NSObject <DLGLPresenterDelegate> {
-    BOOL highFrame;
+@interface HelloTriangle : NSObject <DLGLPresenterDelegate> {
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint program;
 }
 
 @end
