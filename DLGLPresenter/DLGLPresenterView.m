@@ -19,7 +19,7 @@
 - (void)unlockContext;
 - (void)initGL;
 - (void)initDisplayLink;
-- (void)drawForTime:(const CVTimeStamp *)outputTime;
+- (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 
 @end
 
@@ -37,9 +37,17 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                                     CVOptionFlags *flagsOut,
                                     void *displayLinkContext)
 {
+    NSCAssert1((outputTime->flags & kCVTimeStampVideoTimeValid),
+               @"Video time is invalid (%lld)", outputTime->videoTime);
+    NSCAssert1((outputTime->flags & kCVTimeStampHostTimeValid),
+               @"Host time is invalid (%llu)", outputTime->hostTime);
+    NSCAssert1((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
+              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+    
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [(DLGLPresenterView *)displayLinkContext drawForTime:outputTime];
+    [(DLGLPresenterView *)displayLinkContext presentFrameForTime:outputTime];
     [pool drain];
+    
     return kCVReturnSuccess;
 }
 
@@ -50,6 +58,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
         NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFAAccelerated,
         0
     };
     
@@ -131,13 +140,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (void)drawForTime:(const CVTimeStamp *)outputTime
+- (void)presentFrameForTime:(const CVTimeStamp *)outputTime
 {
-    NSAssert1((outputTime->flags & kCVTimeStampVideoTimeValid), @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSAssert1((outputTime->flags & kCVTimeStampHostTimeValid), @"Host time is invalid (%llu)", outputTime->hostTime);
-    NSAssert1((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
-    
     [self lockContext];
     
     [[self openGLContext] makeCurrentContext];
