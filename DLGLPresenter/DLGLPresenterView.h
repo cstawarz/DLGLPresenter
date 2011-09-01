@@ -24,7 +24,7 @@
 - (void)stopPresentation;
 
 - (GLuint)createShader:(GLenum)shaderType withSource:(NSString *)shaderSource;
-- (GLuint)createProgramFromShaders:(GLuint)shader, ...;
+- (GLuint)createProgramWithShaders:(GLuint)shader, ...;
 
 @end
 

@@ -232,7 +232,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (GLuint)createProgramFromShaders:(GLuint)shader, ...
+- (GLuint)createProgramWithShaders:(GLuint)shader, ...
 {
     GLuint program = glCreateProgram();
     

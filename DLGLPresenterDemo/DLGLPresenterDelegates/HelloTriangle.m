@@ -39,7 +39,7 @@ static const float vertexPositions[] = {
 {
     vertexShader = [presenterView createShader:GL_VERTEX_SHADER withSource:vertexShaderSource];
     fragmentShader = [presenterView createShader:GL_FRAGMENT_SHADER withSource:fragmentShaderSource];
-    program = [presenterView createProgramFromShaders:vertexShader, fragmentShader, 0];
+    program = [presenterView createProgramWithShaders:vertexShader, fragmentShader, 0];
     
     glGenBuffers(1, &positionBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
