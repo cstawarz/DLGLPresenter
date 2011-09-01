@@ -16,6 +16,7 @@
 
 @interface DLGLPresenterView : NSOpenGLView {
     CVDisplayLinkRef displayLink;
+    BOOL shouldDraw;
 }
 
 @property(nonatomic, assign) id <DLGLPresenterDelegate> delegate;

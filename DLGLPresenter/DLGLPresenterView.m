@@ -129,6 +129,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSRect rect = [self bounds];
     glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
     
+    shouldDraw = YES;
+    
     [self unlockContext];
     
     END_METHOD
@@ -153,9 +155,20 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     [[self openGLContext] makeCurrentContext];
     
-    [delegate presenterView:self willDrawForTime:outputTime];
-    
-    [[self openGLContext] flushBuffer];
+    if (shouldDraw ||
+        ![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
+        [delegate presenterView:self shouldDrawForTime:outputTime])
+    {
+        [delegate presenterView:self willDrawForTime:outputTime];
+        
+        [[self openGLContext] flushBuffer];
+        
+        if ([delegate respondsToSelector:@selector(presenterView:didDrawForTime:)]) {
+            [delegate presenterView:self didDrawForTime:outputTime];
+        }
+        
+        shouldDraw = NO;
+    }
     
     [self unlockContext];
 }

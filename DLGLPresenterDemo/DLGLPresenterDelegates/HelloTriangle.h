@@ -16,6 +16,8 @@
     
     GLuint positionBufferObject;
     GLuint vertexArrayObject;
+    
+    BOOL didDraw;
 }
 
 @end

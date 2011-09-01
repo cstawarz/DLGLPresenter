@@ -54,11 +54,21 @@ static const float vertexPositions[] = {
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    didDraw = NO;
+}
+
+
+- (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldDrawForTime:(const CVTimeStamp *)outputTime
+{
+    return !didDraw;
 }
 
 
 - (void)presenterView:(DLGLPresenterView *)presenterView willDrawForTime:(const CVTimeStamp *)outputTime
 {
+    NSLog(@"Drawing in %s", __PRETTY_FUNCTION__);
+    
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
@@ -69,6 +79,12 @@ static const float vertexPositions[] = {
     
     glBindVertexArray(0);
     glUseProgram(0);
+}
+
+
+- (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime
+{
+    didDraw = YES;
 }
 
 
