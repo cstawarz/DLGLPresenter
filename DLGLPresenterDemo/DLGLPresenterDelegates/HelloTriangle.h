@@ -12,7 +12,12 @@
 @interface HelloTriangle : NSObject <DLGLPresenterDelegate> {
     GLuint vertexShader;
     GLuint fragmentShader;
+    
     GLuint program;
+    GLint positionAttribLocation;
+    
+    GLuint positionBufferObject;
+    GLuint vertexArrayObject;
 }
 
 @end

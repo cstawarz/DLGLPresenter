@@ -9,7 +9,7 @@
 #import "DLGLPresenterView.h"
 
 
-#define TRACE_METHOD_CALLS
+//#define TRACE_METHOD_CALLS
 
 #ifdef TRACE_METHOD_CALLS
 #  define BEGIN_METHOD  NSLog(@"Entered %s", __PRETTY_FUNCTION__);
@@ -203,6 +203,47 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     }
     
     END_METHOD
+}
+
+
+- (GLuint)createShader:(GLenum)shaderType withSource:(NSString *)shaderSource
+{
+    GLuint shader = glCreateShader(shaderType);
+    
+    const char *shaderSourceUTF8 = [shaderSource UTF8String];
+    glShaderSource(shader, 1, &shaderSourceUTF8, NULL);
+    
+    glCompileShader(shader);
+    
+    GLint status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    NSAssert((GL_TRUE == status), @"Shader compilation failed");
+    
+    return shader;
+}
+
+
+- (GLuint)createProgramFromShaders:(GLuint)shader, ...
+{
+    GLuint program = glCreateProgram();
+    
+    va_list shaderList;
+    va_start(shaderList, shader);
+    
+    do {
+        glAttachShader(program, shader);
+        shader = va_arg(shaderList, GLuint);
+    } while (shader);
+    
+    va_end(shaderList);
+    
+    glLinkProgram(program);
+    
+    GLint status;
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
+    NSAssert((GL_TRUE == status), @"Program linking failed");
+    
+    return program;
 }
 
 
