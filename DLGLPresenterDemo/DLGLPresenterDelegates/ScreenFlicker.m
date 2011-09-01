@@ -12,7 +12,7 @@
 @implementation ScreenFlicker
 
 
-- (void)presenterView:(DLGLPresenterView *)presenterView willPresentFrameForTime:(const CVTimeStamp *)outputTime
+- (void)presenterView:(DLGLPresenterView *)presenterView willDrawForTime:(const CVTimeStamp *)outputTime
 {
     if (highFrame) {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);

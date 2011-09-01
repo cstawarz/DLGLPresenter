@@ -153,7 +153,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     [[self openGLContext] makeCurrentContext];
     
-    [delegate presenterView:self willPresentFrameForTime:outputTime];
+    [delegate presenterView:self willDrawForTime:outputTime];
     
     [[self openGLContext] flushBuffer];
     

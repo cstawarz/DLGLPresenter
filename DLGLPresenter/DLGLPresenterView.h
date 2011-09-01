@@ -33,13 +33,13 @@
 
 @optional
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView;
-- (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldPresentFrameForTime:(const CVTimeStamp *)outputTime;
+- (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldDrawForTime:(const CVTimeStamp *)outputTime;
 
 @required
-- (void)presenterView:(DLGLPresenterView *)presenterView willPresentFrameForTime:(const CVTimeStamp *)outputTime;
+- (void)presenterView:(DLGLPresenterView *)presenterView willDrawForTime:(const CVTimeStamp *)outputTime;
 
 @optional
-- (void)presenterView:(DLGLPresenterView *)presenterView didPresentFrameForTime:(const CVTimeStamp *)outputTime;
+- (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime;
 - (void)presenterViewDidStopPresentation:(DLGLPresenterView *)presenterView;
 
 @end
