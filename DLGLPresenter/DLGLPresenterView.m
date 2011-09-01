@@ -215,9 +215,18 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     glCompileShader(shader);
     
-    GLint status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    NSAssert((GL_TRUE == status), @"Shader compilation failed");
+    GLint infoLogLength;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
+    
+    if (infoLogLength > 0) {
+        GLchar infoLog[infoLogLength];
+        glGetShaderInfoLog(shader, infoLogLength, NULL, infoLog);
+        NSLog(@"In %s: Shader compilation produced the following information log:\n%s", __PRETTY_FUNCTION__, infoLog);
+    }
+
+    GLint compileStatus;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatus);
+    NSAssert((GL_TRUE == compileStatus), @"Shader compilation failed");
     
     return shader;
 }
@@ -230,18 +239,27 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     va_list shaderList;
     va_start(shaderList, shader);
     
-    do {
+    while (shader) {
         glAttachShader(program, shader);
         shader = va_arg(shaderList, GLuint);
-    } while (shader);
+    }
     
     va_end(shaderList);
     
     glLinkProgram(program);
     
-    GLint status;
-    glGetProgramiv(program, GL_LINK_STATUS, &status);
-    NSAssert((GL_TRUE == status), @"Program linking failed");
+    GLint infoLogLength;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
+    
+    if (infoLogLength > 0) {
+        GLchar infoLog[infoLogLength];
+        glGetProgramInfoLog(program, infoLogLength, NULL, infoLog);
+        NSLog(@"In %s: Program linking produced the following information log:\n%s", __PRETTY_FUNCTION__, infoLog);
+    }
+    
+    GLint linkStatus;
+    glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
+    NSAssert((GL_TRUE == linkStatus), @"Program linking failed");
     
     return program;
 }
