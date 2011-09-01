@@ -41,15 +41,19 @@ static const float vertexPositions[] = {
     fragmentShader = [presenterView createShader:GL_FRAGMENT_SHADER withSource:fragmentShaderSource];
     program = [presenterView createProgramFromShaders:vertexShader, fragmentShader, 0];
     
-    positionAttribLocation = glGetAttribLocation(program, "position");
-    
     glGenBuffers(1, &positionBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject);
+    
+    GLint positionAttribLocation = glGetAttribLocation(program, "position");
+    glEnableVertexAttribArray(positionAttribLocation);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 
@@ -59,15 +63,23 @@ static const float vertexPositions[] = {
     glClear(GL_COLOR_BUFFER_BIT);
     
     glUseProgram(program);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
-    glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindVertexArray(vertexArrayObject);
     
     glDrawArrays(GL_TRIANGLES, 0, 3);
     
-    glDisableVertexAttribArray(positionAttribLocation);
+    glBindVertexArray(0);
     glUseProgram(0);
+}
+
+
+- (void)presenterViewDidStopPresentation:(DLGLPresenterView *)presenterView
+{
+    glDeleteVertexArrays(1, &vertexArrayObject);
+    glDeleteBuffers(1, &positionBufferObject);
+    
+    glDeleteProgram(program);
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
 }
 
 
