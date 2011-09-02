@@ -111,8 +111,14 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 {
     BEGIN_METHOD
     
+    [self lockContext];
+    
+    NSAssert(([NSOpenGLContext currentContext] == [self openGLContext]), @"GL context is not current");
+    
     GLint swapInterval = 1;
     [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+    
+    [self unlockContext];
     
     END_METHOD
 }
