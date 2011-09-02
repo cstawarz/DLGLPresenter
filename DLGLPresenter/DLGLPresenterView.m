@@ -24,6 +24,7 @@
 
 - (void)lockContext;
 - (void)unlockContext;
+- (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 
 @end
@@ -50,7 +51,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
               @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
     
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [(DLGLPresenterView *)displayLinkContext presentFrameForTime:outputTime];
+    DLGLPresenterView *presenterView = (DLGLPresenterView *)displayLinkContext;
+    
+    [presenterView checkForSkippedFrames:outputTime];
+    [presenterView presentFrameForTime:outputTime];
+    
     [pool drain];
     
     return kCVReturnSuccess;
@@ -155,6 +160,25 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
+- (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime
+{
+    if (previousVideoTime) {
+        int64_t delta = (outputTime->videoTime - previousVideoTime) - outputTime->videoRefreshPeriod;
+        if (delta) {
+            double skippedFrameCount = (double)delta / (double)(outputTime->videoRefreshPeriod);
+            if ([delegate respondsToSelector:@selector(presenterView:skippedFrames:)]) {
+                [delegate presenterView:self skippedFrames:skippedFrameCount];
+            } else {
+                NSLog(@"In %s: Display link skipped %g frame%s", __PRETTY_FUNCTION__, skippedFrameCount,
+                      ((skippedFrameCount == 1.0) ? "" : "s"));
+            }
+        }
+    }
+    
+    previousVideoTime = outputTime->videoTime;
+}
+
+
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime
 {
     [self lockContext];
@@ -191,6 +215,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             [delegate presenterViewWillStartPresentation:self];
             [self unlockContext];
         }
+        
+        previousVideoTime = 0;
         
         CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
                                                                            [[self openGLContext] CGLContextObj],

@@ -16,6 +16,7 @@
 
 @interface DLGLPresenterView : NSOpenGLView {
     CVDisplayLinkRef displayLink;
+    int64_t previousVideoTime;
     BOOL shouldDraw;
 }
 
@@ -44,4 +45,32 @@
 - (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime;
 - (void)presenterViewDidStopPresentation:(DLGLPresenterView *)presenterView;
 
+@optional
+- (void)presenterView:(DLGLPresenterView *)presenterView skippedFrames:(double)skippedFrameCount;
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
