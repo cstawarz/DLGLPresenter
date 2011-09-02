@@ -24,6 +24,7 @@
 - (void)startPresentation;
 - (void)stopPresentation;
 
+- (GLuint)loadShader:(GLenum)shaderType fromURL:(NSURL *)url error:(NSError **)error;
 - (GLuint)createShader:(GLenum)shaderType withSource:(NSString *)shaderSource;
 - (GLuint)createProgramWithShaders:(GLuint)shader, ...;
 

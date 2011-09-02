@@ -225,6 +225,21 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
+- (GLuint)loadShader:(GLenum)shaderType fromURL:(NSURL *)url error:(NSError **)error
+{
+    GLuint shader = 0;
+    
+    NSStringEncoding encoding;
+    NSString *shaderSource = [NSString stringWithContentsOfURL:url usedEncoding:&encoding error:error];
+    
+    if (shaderSource) {
+        shader = [self createShader:shaderType withSource:shaderSource];
+    }
+    
+    return shader;
+}
+
+
 - (GLuint)createShader:(GLenum)shaderType withSource:(NSString *)shaderSource
 {
     GLuint shader = glCreateShader(shaderType);
