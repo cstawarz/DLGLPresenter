@@ -6,7 +6,7 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <DLGLPresenter/DLGLPresenterView.h>
+#import <DLGLPresenter/DLGLPresenter.h>
 
 
 @interface ScreenFlicker : NSObject <DLGLPresenterDelegate> {

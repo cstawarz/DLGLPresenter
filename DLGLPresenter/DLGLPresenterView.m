@@ -52,10 +52,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     DLGLPresenterView *presenterView = (DLGLPresenterView *)displayLinkContext;
     
-    [presenterView checkForSkippedFrames:outputTime];
-    [presenterView presentFrameForTime:outputTime];
-    
-    [pool drain];
+    @try {
+        [presenterView checkForSkippedFrames:outputTime];
+        [presenterView presentFrameForTime:outputTime];
+    }
+    @finally {
+        [pool drain];
+    }
     
     return kCVReturnSuccess;
 }

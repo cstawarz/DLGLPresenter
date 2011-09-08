@@ -6,8 +6,4 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@interface DLGLPresenter : NSObject
-
-@end
+#import <DLGLPresenter/DLGLPresenterView.h>

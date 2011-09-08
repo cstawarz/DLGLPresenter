@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <DLGLPresenter/DLGLPresenterView.h>
+#import <DLGLPresenter/DLGLPresenter.h>
 
 
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate> {
