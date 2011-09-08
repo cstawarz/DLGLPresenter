@@ -37,9 +37,9 @@ static const float vertexPositions[] = {
 
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView
 {
-    vertexShader = [presenterView createShader:GL_VERTEX_SHADER withSource:vertexShaderSource];
-    fragmentShader = [presenterView createShader:GL_FRAGMENT_SHADER withSource:fragmentShaderSource];
-    program = [presenterView createProgramWithShaders:vertexShader, fragmentShader, 0];
+    vertexShader = DLGLCreateShader(GL_VERTEX_SHADER, vertexShaderSource);
+    fragmentShader = DLGLCreateShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+    program = DLGLCreateProgramWithShaders(vertexShader, fragmentShader, 0);
     
     glGenBuffers(1, &positionBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);

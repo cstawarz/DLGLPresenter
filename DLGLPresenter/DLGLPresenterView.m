@@ -8,6 +8,8 @@
 
 #import "DLGLPresenterView.h"
 
+#import <OpenGL/gl3.h>
+
 
 //#define TRACE_METHOD_CALLS
 
@@ -221,80 +223,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             }];
         }
     }
-}
-
-
-- (GLuint)loadShader:(GLenum)shaderType fromURL:(NSURL *)url error:(NSError **)error
-{
-    GLuint shader = 0;
-    
-    NSStringEncoding encoding;
-    NSString *shaderSource = [NSString stringWithContentsOfURL:url usedEncoding:&encoding error:error];
-    
-    if (shaderSource) {
-        shader = [self createShader:shaderType withSource:shaderSource];
-    }
-    
-    return shader;
-}
-
-
-- (GLuint)createShader:(GLenum)shaderType withSource:(NSString *)shaderSource
-{
-    GLuint shader = glCreateShader(shaderType);
-    
-    const char *shaderSourceUTF8 = [shaderSource UTF8String];
-    glShaderSource(shader, 1, &shaderSourceUTF8, NULL);
-    
-    glCompileShader(shader);
-    
-    GLint infoLogLength;
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
-    
-    if (infoLogLength > 0) {
-        GLchar infoLog[infoLogLength];
-        glGetShaderInfoLog(shader, infoLogLength, NULL, infoLog);
-        NSLog(@"In %s: Shader compilation produced the following information log:\n%s", __PRETTY_FUNCTION__, infoLog);
-    }
-
-    GLint compileStatus;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatus);
-    NSAssert((GL_TRUE == compileStatus), @"Shader compilation failed");
-    
-    return shader;
-}
-
-
-- (GLuint)createProgramWithShaders:(GLuint)shader, ...
-{
-    GLuint program = glCreateProgram();
-    
-    va_list shaderList;
-    va_start(shaderList, shader);
-    
-    while (shader) {
-        glAttachShader(program, shader);
-        shader = va_arg(shaderList, GLuint);
-    }
-    
-    va_end(shaderList);
-    
-    glLinkProgram(program);
-    
-    GLint infoLogLength;
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
-    
-    if (infoLogLength > 0) {
-        GLchar infoLog[infoLogLength];
-        glGetProgramInfoLog(program, infoLogLength, NULL, infoLog);
-        NSLog(@"In %s: Program linking produced the following information log:\n%s", __PRETTY_FUNCTION__, infoLog);
-    }
-    
-    GLint linkStatus;
-    glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
-    NSAssert((GL_TRUE == linkStatus), @"Program linking failed");
-    
-    return program;
 }
 
 
