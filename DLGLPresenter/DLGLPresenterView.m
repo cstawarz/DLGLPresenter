@@ -22,8 +22,7 @@
 
 @interface DLGLPresenterView ()
 
-- (void)lockContext;
-- (void)unlockContext;
+- (void)performBlockOnGLContext:(dispatch_block_t)block;
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 
@@ -48,7 +47,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSCAssert1((outputTime->flags & kCVTimeStampHostTimeValid),
                @"Host time is invalid (%llu)", outputTime->hostTime);
     NSCAssert1((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+               @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
     
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     DLGLPresenterView *presenterView = (DLGLPresenterView *)displayLinkContext;
@@ -98,65 +97,50 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (void)lockContext
+- (void)performBlockOnGLContext:(dispatch_block_t)block
 {
-    CGLError error = CGLLockContext([[self openGLContext] CGLContextObj]);
+    NSOpenGLContext *context = [self openGLContext];
+    CGLContextObj contextObj = [context CGLContextObj];
+    
+    CGLError error = CGLLockContext(contextObj);
     NSAssert1((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
-}
-
-
-- (void)unlockContext
-{
-    CGLError error = CGLUnlockContext([[self openGLContext] CGLContextObj]);
-    NSAssert1((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
+    
+    @try {
+        [context makeCurrentContext];
+        block();
+    }
+    @finally {
+        error = CGLUnlockContext(contextObj);
+        NSAssert1((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
+    }
 }
 
 
 - (void)prepareOpenGL
 {
-    BEGIN_METHOD
-    
-    [self lockContext];
-    
-    NSAssert(([NSOpenGLContext currentContext] == [self openGLContext]), @"GL context is not current");
-    
-    GLint swapInterval = 1;
-    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-    
-    [self unlockContext];
-    
-    END_METHOD
+    [self performBlockOnGLContext:^{
+        GLint swapInterval = 1;
+        [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+    }];
 }
 
 
 - (void)reshape
 {
-    BEGIN_METHOD
-    
-    [self lockContext];
-    
-    [[self openGLContext] makeCurrentContext];
-    
-    NSRect rect = [self bounds];
-    glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
-    
-    shouldDraw = YES;
-    
-    [self unlockContext];
-    
-    END_METHOD
+    [self performBlockOnGLContext:^{
+        NSRect rect = [self bounds];
+        glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
+        
+        shouldDraw = YES;
+    }];
 }
 
 
 - (void)update
 {
-    BEGIN_METHOD
-    
-    [self lockContext];
-    [super update];
-    [self unlockContext];
-    
-    END_METHOD
+    [self performBlockOnGLContext:^{
+        [super update];
+    }];
 }
 
 
@@ -181,39 +165,32 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime
 {
-    [self lockContext];
-    
-    [[self openGLContext] makeCurrentContext];
-    
-    if (shouldDraw ||
-        ![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
-        [delegate presenterView:self shouldDrawForTime:outputTime])
-    {
-        [delegate presenterView:self willDrawForTime:outputTime];
-        
-        [[self openGLContext] flushBuffer];
-        
-        if ([delegate respondsToSelector:@selector(presenterView:didDrawForTime:)]) {
-            [delegate presenterView:self didDrawForTime:outputTime];
+    [self performBlockOnGLContext:^{
+        if (shouldDraw ||
+            ![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
+            [delegate presenterView:self shouldDrawForTime:outputTime])
+        {
+            [delegate presenterView:self willDrawForTime:outputTime];
+            
+            [[self openGLContext] flushBuffer];
+            
+            if ([delegate respondsToSelector:@selector(presenterView:didDrawForTime:)]) {
+                [delegate presenterView:self didDrawForTime:outputTime];
+            }
+            
+            shouldDraw = NO;
         }
-        
-        shouldDraw = NO;
-    }
-    
-    [self unlockContext];
+    }];
 }
 
 
 - (void)startPresentation
 {
-    BEGIN_METHOD
-    
     if (!CVDisplayLinkIsRunning(displayLink)) {
         if ([delegate respondsToSelector:@selector(presenterViewWillStartPresentation:)]) {
-            [self lockContext];
-            [[self openGLContext] makeCurrentContext];
-            [delegate presenterViewWillStartPresentation:self];
-            [self unlockContext];
+            [self performBlockOnGLContext:^{
+                [delegate presenterViewWillStartPresentation:self];
+            }];
         }
         
         previousVideoTime = 0;
@@ -226,28 +203,21 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkStart(displayLink);
         NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
     }
-    
-    END_METHOD
 }
 
 
 - (void)stopPresentation
 {
-    BEGIN_METHOD
-    
     if (CVDisplayLinkIsRunning(displayLink)) {
         CVReturn error = CVDisplayLinkStop(displayLink);
         NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
         
         if ([delegate respondsToSelector:@selector(presenterViewDidStopPresentation:)]) {
-            [self lockContext];
-            [[self openGLContext] makeCurrentContext];
-            [delegate presenterViewDidStopPresentation:self];
-            [self unlockContext];
+            [self performBlockOnGLContext:^{
+                [delegate presenterViewDidStopPresentation:self];
+            }];
         }
     }
-    
-    END_METHOD
 }
 
 
