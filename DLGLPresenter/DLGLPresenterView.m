@@ -27,8 +27,6 @@
 - (void)performBlockOnGLContext:(dispatch_block_t)block;
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
-- (void)startDisplayLink;
-- (void)stopDisplayLink;
 
 @end
 
@@ -36,7 +34,7 @@
 @implementation DLGLPresenterView
 
 
-@synthesize delegate;
+@synthesize delegate, presenting;
 
 
 static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
@@ -138,7 +136,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSRect rect = [self bounds];
         glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
         
-        if (presenting && ![self inLiveResize]) {
+        if (self.presenting) {
             shouldDraw = YES;
         } else {
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -197,26 +195,34 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (void)startPresentation
+- (void)setPresenting:(BOOL)shouldPresent
 {
-    if (!presenting) {
+    CVReturn error;
+    
+    if (shouldPresent && !presenting) {
+        
         if ([delegate respondsToSelector:@selector(presenterViewWillStartPresentation:)]) {
             [self performBlockOnGLContext:^{
                 [delegate presenterViewWillStartPresentation:self];
             }];
         }
         
+        shouldDraw = YES;
         presenting = YES;
+        previousVideoTime = 0ll;
         
-        [self startDisplayLink];
-    }
-}
-
-
-- (void)stopPresentation
-{
-    if (presenting) {
-        [self stopDisplayLink];
+        error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
+                                                                  [[self openGLContext] CGLContextObj],
+                                                                  [[self pixelFormat] CGLPixelFormatObj]);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+        
+        error = CVDisplayLinkStart(displayLink);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
+        
+    } else if (!shouldPresent && presenting) {
+        
+        error = CVDisplayLinkStop(displayLink);
+        NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
         
         presenting = NO;
         
@@ -225,47 +231,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                 [delegate presenterViewDidStopPresentation:self];
             }];
         }
-    }
-}
-
-
-- (void)startDisplayLink
-{
-    if (!CVDisplayLinkIsRunning(displayLink)) {
-        previousVideoTime = 0ll;
         
-        CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                                           [[self openGLContext] CGLContextObj],
-                                                                           [[self pixelFormat] CGLPixelFormatObj]);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
-        
-        error = CVDisplayLinkStart(displayLink);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
-    }
-}
-
-
-- (void)stopDisplayLink
-{
-    if (CVDisplayLinkIsRunning(displayLink)) {
-        CVReturn error = CVDisplayLinkStop(displayLink);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
-    }
-}
-
-
-- (void)viewWillStartLiveResize
-{
-    if (presenting) {
-        [self stopDisplayLink];
-    }
-}
-
-
-- (void)viewDidEndLiveResize
-{
-    if (presenting) {
-        [self startDisplayLink];
     }
 }
 

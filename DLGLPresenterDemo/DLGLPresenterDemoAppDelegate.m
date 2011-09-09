@@ -28,13 +28,13 @@
     
     [window setContentView:presenterView];
     
-    [presenterView startPresentation];
+    presenterView.presenting = YES;
 }
 
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-    [presenterView stopPresentation];
+    presenterView.presenting = NO;
 }
 
 
