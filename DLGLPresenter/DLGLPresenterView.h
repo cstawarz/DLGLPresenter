@@ -21,6 +21,7 @@
 
 @property(nonatomic, assign) id <DLGLPresenterDelegate> delegate;
 
+- (BOOL)isPresenting;
 - (void)startPresentation;
 - (void)stopPresentation;
 
