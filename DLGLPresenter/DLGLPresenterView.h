@@ -16,12 +16,12 @@
 @interface DLGLPresenterView : NSOpenGLView {
     CVDisplayLinkRef displayLink;
     int64_t previousVideoTime;
+    BOOL presenting;
     BOOL shouldDraw;
 }
 
 @property(nonatomic, assign) id <DLGLPresenterDelegate> delegate;
 
-- (BOOL)isPresenting;
 - (void)startPresentation;
 - (void)stopPresentation;
 
