@@ -8,6 +8,14 @@
 
 #import "DLGLUtilities.h"
 
+#import <CoreAudio/HostTime.h>
+
+
+uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime)
+{
+    return AudioConvertHostTimeToNanos(hostTime);
+}
+
 
 GLuint DLGLLoadShaderFromURL(GLenum shaderType, NSURL *url, NSError **error)
 {
@@ -27,6 +35,7 @@ GLuint DLGLLoadShaderFromURL(GLenum shaderType, NSURL *url, NSError **error)
 GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource)
 {
     GLuint shader = glCreateShader(shaderType);
+    NSCAssert1(shader, @"Shader creation failed (GL error = %d)", glGetError());
     
     const char *shaderSourceUTF8 = [shaderSource UTF8String];
     glShaderSource(shader, 1, &shaderSourceUTF8, NULL);
@@ -53,6 +62,7 @@ GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource)
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...)
 {
     GLuint program = glCreateProgram();
+    NSCAssert(program, @"Program creation failed");
     
     va_list shaderList;
     va_start(shaderList, shader);

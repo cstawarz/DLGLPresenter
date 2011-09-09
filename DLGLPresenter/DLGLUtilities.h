@@ -10,6 +10,8 @@
 #import <OpenGL/gl3.h>
 
 
+uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime);
+
 GLuint DLGLLoadShaderFromURL(GLenum shaderType, NSURL *url, NSError **error);
 GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource);
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...);

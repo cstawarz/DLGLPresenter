@@ -26,6 +26,10 @@
 		E1F6490D1419409B005455C8 /* DLGLPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1F64910141941ED005455C8 /* DLGLUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = E1F6490E141941ED005455C8 /* DLGLUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1F64911141941ED005455C8 /* DLGLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F6490F141941ED005455C8 /* DLGLUtilities.m */; };
+		E1F64919141954B9005455C8 /* MovingTriangle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F64918141954B9005455C8 /* MovingTriangle.m */; };
+		E1F6491B14195A43005455C8 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F6491A14195A42005455C8 /* CoreAudio.framework */; };
+		E1F6491C14195BDD005455C8 /* calcOffset.vert in Resources */ = {isa = PBXBuildFile; fileRef = E1F6491414195441005455C8 /* calcOffset.vert */; };
+		E1F6491D14195BE0005455C8 /* calcColor.frag in Resources */ = {isa = PBXBuildFile; fileRef = E1F6491314195441005455C8 /* calcColor.frag */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +62,11 @@
 		E1EEA72D140D50860054C95A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		E1F6490E141941ED005455C8 /* DLGLUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLUtilities.h; sourceTree = "<group>"; };
 		E1F6490F141941ED005455C8 /* DLGLUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLUtilities.m; sourceTree = "<group>"; };
+		E1F6491314195441005455C8 /* calcColor.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = calcColor.frag; sourceTree = "<group>"; };
+		E1F6491414195441005455C8 /* calcOffset.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = calcOffset.vert; sourceTree = "<group>"; };
+		E1F64917141954B9005455C8 /* MovingTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovingTriangle.h; sourceTree = "<group>"; };
+		E1F64918141954B9005455C8 /* MovingTriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovingTriangle.m; sourceTree = "<group>"; };
+		E1F6491A14195A42005455C8 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +87,7 @@
 				E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */,
 				E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */,
 				E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */,
+				E1F6491B14195A43005455C8 /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +126,7 @@
 				E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */,
 				E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */,
 				E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */,
+				E1F6491214195441005455C8 /* MovingTriangle */,
 			);
 			name = DLGLPresenterDelegates;
 			sourceTree = "<group>";
@@ -152,6 +163,7 @@
 				E1EEA702140D31AC0054C95A /* Cocoa.framework */,
 				E1EEA727140D3F240054C95A /* OpenGL.framework */,
 				E1EEA72D140D50860054C95A /* CoreVideo.framework */,
+				E1F6491A14195A42005455C8 /* CoreAudio.framework */,
 				E1EEA704140D31AC0054C95A /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -190,6 +202,18 @@
 				E1EEA70E140D31AC0054C95A /* DLGLPresenter-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E1F6491214195441005455C8 /* MovingTriangle */ = {
+			isa = PBXGroup;
+			children = (
+				E1F64917141954B9005455C8 /* MovingTriangle.h */,
+				E1F64918141954B9005455C8 /* MovingTriangle.m */,
+				E1F6491414195441005455C8 /* calcOffset.vert */,
+				E1F6491314195441005455C8 /* calcColor.frag */,
+			);
+			name = MovingTriangle;
+			path = DLGLPresenterDelegates/MovingTriangle;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,6 +301,8 @@
 				E1E7AE1B140E730800B50A9F /* InfoPlist.strings in Resources */,
 				E1E7AE21140E730800B50A9F /* Credits.rtf in Resources */,
 				E1E7AE27140E730800B50A9F /* MainMenu.xib in Resources */,
+				E1F6491C14195BDD005455C8 /* calcOffset.vert in Resources */,
+				E1F6491D14195BE0005455C8 /* calcColor.frag in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +325,7 @@
 				E1E7AE24140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m in Sources */,
 				E1E7AE67140E7A7600B50A9F /* ScreenFlicker.m in Sources */,
 				E1E7AE6F140E9E9300B50A9F /* HelloTriangle.m in Sources */,
+				E1F64919141954B9005455C8 /* MovingTriangle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

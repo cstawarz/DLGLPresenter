@@ -10,6 +10,7 @@
 
 #import "ScreenFlicker.h"
 #import "HelloTriangle.h"
+#import "MovingTriangle.h"
 
 
 @implementation DLGLPresenterDemoAppDelegate
@@ -20,7 +21,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    presenterDelegate = [[HelloTriangle alloc] init];
+    presenterDelegate = [[MovingTriangle alloc] init];
     
     presenterView = [[DLGLPresenterView alloc] initWithFrame:[window frame]];
     presenterView.delegate = presenterDelegate;
