@@ -45,8 +45,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSCAssert1((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
                @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
     
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     DLGLPresenterView *presenterView = (DLGLPresenterView *)displayLinkContext;
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
     @try {
         [presenterView checkForSkippedFrames:outputTime];
@@ -136,7 +136,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSRect rect = [self bounds];
         glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
         
-        if (self.presenting) {
+        if (presenting) {
             shouldDraw = YES;
         } else {
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
