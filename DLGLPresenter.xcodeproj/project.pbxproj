@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E1BB86D5141E63D90041B4F4 /* DLGLErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = E1BB86D3141E63D90041B4F4 /* DLGLErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E1BB86D6141E63D90041B4F4 /* DLGLErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = E1BB86D4141E63D90041B4F4 /* DLGLErrors.m */; };
 		E1E7AE15140E730800B50A9F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA702140D31AC0054C95A /* Cocoa.framework */; };
 		E1E7AE1B140E730800B50A9F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE19140E730800B50A9F /* InfoPlist.strings */; };
 		E1E7AE1D140E730800B50A9F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE1C140E730800B50A9F /* main.m */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E1BB86D3141E63D90041B4F4 /* DLGLErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLErrors.h; sourceTree = "<group>"; };
+		E1BB86D4141E63D90041B4F4 /* DLGLErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLErrors.m; sourceTree = "<group>"; };
 		E1E7AE13140E730800B50A9F /* DLGLPresenterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLGLPresenterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1E7AE18140E730800B50A9F /* DLGLPresenterDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenterDemo-Info.plist"; sourceTree = "<group>"; };
 		E1E7AE1A140E730800B50A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -184,6 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */,
+				E1BB86D3141E63D90041B4F4 /* DLGLErrors.h */,
+				E1BB86D4141E63D90041B4F4 /* DLGLErrors.m */,
 				E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */,
 				E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */,
 				E1F6490E141941ED005455C8 /* DLGLUtilities.h */,
@@ -226,6 +232,7 @@
 				E1F6490D1419409B005455C8 /* DLGLPresenter.h in Headers */,
 				E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */,
 				E1F64910141941ED005455C8 /* DLGLUtilities.h in Headers */,
+				E1BB86D5141E63D90041B4F4 /* DLGLErrors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +342,7 @@
 			files = (
 				E1EEA71E140D3B150054C95A /* DLGLPresenterView.m in Sources */,
 				E1F64911141941ED005455C8 /* DLGLUtilities.m in Sources */,
+				E1BB86D6141E63D90041B4F4 /* DLGLErrors.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
