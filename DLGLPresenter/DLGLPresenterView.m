@@ -24,7 +24,6 @@
 
 @interface DLGLPresenterView ()
 
-- (void)performBlockOnGLContext:(dispatch_block_t)block;
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 

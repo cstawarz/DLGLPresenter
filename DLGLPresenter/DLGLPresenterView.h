@@ -22,6 +22,8 @@
 @property(nonatomic, assign) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
 
+- (void)performBlockOnGLContext:(dispatch_block_t)block;
+
 @end
 
 
