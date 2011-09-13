@@ -73,6 +73,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
         NSOpenGLPFADoubleBuffer,
         NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFAAllowOfflineRenderers,
+        NSOpenGLPFAMinimumPolicy,
+        NSOpenGLPFAColorSize, 24,
+        NSOpenGLPFAAlphaSize, 8,
         0
     };
     
