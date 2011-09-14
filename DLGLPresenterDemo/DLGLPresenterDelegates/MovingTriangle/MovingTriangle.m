@@ -48,7 +48,6 @@ static const float vertexPositions[] = {
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
     
     timeUniformLocation = glGetUniformLocation(program, "time");
-    startTime = 0ull;
     
     GLint loopDurationUniformLocation = glGetUniformLocation(program, "loopDuration");
     glUniform1f(loopDurationUniformLocation, 5.0f);
@@ -70,11 +69,7 @@ static const float vertexPositions[] = {
     glUseProgram(program);
     glBindVertexArray(vertexArrayObject);
     
-    if (!startTime) {
-        startTime = DLGLConvertHostTimeToNanos(outputTime->hostTime);
-    }
-    uint64_t elapsedTime = DLGLConvertHostTimeToNanos(outputTime->hostTime) - startTime;
-    glUniform1f(timeUniformLocation, (float)elapsedTime / 1.0e9f);
+    glUniform1f(timeUniformLocation, (float)(presenterView.elapsedTime) / 1.0e9f);
     
     glDrawArrays(GL_TRIANGLES, 0, 3);
     

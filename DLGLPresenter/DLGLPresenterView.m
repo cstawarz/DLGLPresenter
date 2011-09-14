@@ -8,6 +8,7 @@
 
 #import "DLGLPresenterView.h"
 
+#import <CoreAudio/HostTime.h>
 #import <OpenGL/gl3.h>
 
 
@@ -62,7 +63,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 @implementation DLGLPresenterView
 
 
-@synthesize delegate, presenting;
+@synthesize delegate, presenting, elapsedTime;
 
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen
@@ -199,6 +200,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         
         shouldDraw = YES;
         presenting = YES;
+        startHostTime = currentHostTime = 0ull;
         previousVideoTime = 0ll;
         
         error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
@@ -247,6 +249,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime
 {
+    if (!startHostTime) {
+        startHostTime = outputTime->hostTime;
+    }
+    currentHostTime = outputTime->hostTime;
+    
     [self performBlockOnGLContext:^{
         if (shouldDraw ||
             ![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
@@ -263,6 +270,16 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             shouldDraw = NO;
         }
     }];
+}
+
+
+- (uint64_t)elapsedTime
+{
+    if (!presenting) {
+        return 0ull;
+    }
+    
+    return AudioConvertHostTimeToNanos(currentHostTime - startHostTime);
 }
 
 

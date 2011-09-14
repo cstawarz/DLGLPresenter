@@ -18,7 +18,6 @@
     GLuint vertexArrayObject;
     
     GLint timeUniformLocation;
-    uint64_t startTime;
 }
 
 @end
