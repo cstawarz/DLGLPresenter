@@ -13,6 +13,7 @@
 
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+    NSWindow *fullScreenWindow;
     DLGLPresenterView *presenterView;
     id <DLGLPresenterDelegate> presenterDelegate;
 }

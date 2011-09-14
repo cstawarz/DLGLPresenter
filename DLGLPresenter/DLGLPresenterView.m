@@ -65,6 +65,28 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 @synthesize delegate, presenting;
 
 
++ (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen
+{
+    NSRect screenRect = [screen frame];
+    NSRect windowRect = NSMakeRect(0.0, 0.0, screenRect.size.width, screenRect.size.height);
+    
+    NSWindow *fullScreenWindow = [[[NSWindow alloc] initWithContentRect:windowRect
+                                                              styleMask:NSBorderlessWindowMask
+                                                                backing:NSBackingStoreBuffered
+                                                                  defer:YES
+                                                                 screen:screen] autorelease];
+    [fullScreenWindow setLevel:NSMainMenuWindowLevel+1];
+    [fullScreenWindow setOpaque:YES];
+    [fullScreenWindow setHidesOnDeactivate:NO];
+    
+    DLGLPresenterView *presenterView = [[self alloc] initWithFrame:windowRect];
+    [fullScreenWindow setContentView:presenterView];
+    [presenterView release];
+    
+    return fullScreenWindow;
+}
+
+
 + (NSOpenGLPixelFormat *)defaultPixelFormat
 {
     NSOpenGLPixelFormatAttribute attributes[] =
