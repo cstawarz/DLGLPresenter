@@ -99,6 +99,10 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSOpenGLPFAMinimumPolicy,
         NSOpenGLPFAColorSize, 24,
         NSOpenGLPFAAlphaSize, 8,
+        NSOpenGLPFAMultisample,
+        NSOpenGLPFASampleBuffers, 1,
+        NSOpenGLPFASamples, 4,
+        NSOpenGLPFASampleAlpha,
         0
     };
     
