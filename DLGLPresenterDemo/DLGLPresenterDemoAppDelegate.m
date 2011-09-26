@@ -28,6 +28,7 @@
 #ifdef FULLSCREEN
     fullScreenWindow = [[DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]] retain];
     presenterView = [fullScreenWindow contentView];
+    mirrorView = [[DLGLMirrorView alloc] initWithFrame:[window frame]];
 #else
     presenterView = [[DLGLPresenterView alloc] initWithFrame:[window frame]];
 #endif
@@ -35,6 +36,8 @@
     
 #ifdef FULLSCREEN
     [fullScreenWindow makeKeyAndOrderFront:self];
+    [window setContentView:mirrorView];
+    mirrorView.sourceView = presenterView;
 #else
     [window setContentView:presenterView];
 #endif
@@ -56,6 +59,7 @@
 {
 #ifdef FULLSCREEN
     [fullScreenWindow release];
+    [mirrorView release];
 #else
     [presenterView release];
 #endif

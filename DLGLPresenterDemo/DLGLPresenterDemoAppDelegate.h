@@ -15,6 +15,7 @@
     NSWindow *window;
     NSWindow *fullScreenWindow;
     DLGLPresenterView *presenterView;
+    DLGLMirrorView *mirrorView;
     id <DLGLPresenterDelegate> presenterDelegate;
 }
 

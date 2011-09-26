@@ -9,11 +9,13 @@
 #import <AppKit/AppKit.h>
 #import <CoreVideo/CVDisplayLink.h>
 
+#import <DLGLPresenter/DLGLView.h>
+
 
 @protocol DLGLPresenterDelegate;  // Forward declaration
 
 
-@interface DLGLPresenterView : NSOpenGLView {
+@interface DLGLPresenterView : DLGLView {
     CVDisplayLinkRef displayLink;
     uint64_t startHostTime, currentHostTime;
     int64_t previousVideoTime;
@@ -25,8 +27,6 @@
 @property(nonatomic, readonly) uint64_t elapsedTime;
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
-
-- (void)performBlockOnGLContext:(dispatch_block_t)block;
 
 @end
 
