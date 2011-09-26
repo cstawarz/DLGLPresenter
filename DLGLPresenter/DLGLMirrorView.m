@@ -24,7 +24,7 @@ static void checkGLError(const char *msg)
 @interface DLGLMirrorView ()
 
 - (void)allocateBufferStorage;
-- (void)storeBackBuffer;
+- (void)storeFrontBuffer;
 - (void)drawStoredBuffer;
 
 @end
@@ -46,7 +46,7 @@ static void checkGLError(const char *msg)
         
         dispatch_source_set_event_handler(timer, ^{
             if (self.sourceView) {
-                [self.sourceView performBlockOnGLContext:^{ [self storeBackBuffer]; }];
+                [self.sourceView performBlockOnGLContext:^{ [self storeFrontBuffer]; }];
                 [self setNeedsDisplay:YES];
             }
         });
@@ -76,10 +76,10 @@ static void checkGLError(const char *msg)
 
 - (void)prepareOpenGL
 {
-    NSAssert(([NSOpenGLContext currentContext] == [self openGLContext]), @"GL context is not current");
-    
-    glGenFramebuffers(1, &framebuffer);
-    glGenRenderbuffers(1, &renderbuffer);
+    [self performBlockOnGLContext:^{
+        glGenFramebuffers(1, &framebuffer);
+        glGenRenderbuffers(1, &renderbuffer);
+    }];
 }
 
 
@@ -121,7 +121,7 @@ static void checkGLError(const char *msg)
 }
 
 
-- (void)storeBackBuffer
+- (void)storeFrontBuffer
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
     glReadBuffer(GL_FRONT_LEFT);
@@ -136,7 +136,6 @@ static void checkGLError(const char *msg)
                       GL_COLOR_BUFFER_BIT,
                       GL_LINEAR);
     
-    glReadBuffer(GL_BACK_LEFT);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 

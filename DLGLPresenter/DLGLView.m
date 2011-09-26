@@ -62,6 +62,14 @@
 }
 
 
+- (void)update
+{
+    [self performBlockOnGLContext:^{
+        [super update];
+    }];
+}
+
+
 @end
 
 

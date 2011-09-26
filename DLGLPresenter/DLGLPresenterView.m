@@ -130,14 +130,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (void)update
-{
-    [self performBlockOnGLContext:^{
-        [super update];
-    }];
-}
-
-
 - (void)setPresenting:(BOOL)shouldPresent
 {
     CVReturn error;
