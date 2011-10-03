@@ -93,6 +93,43 @@ GLuint DLGLCreateProgramWithShaders(GLuint shader, ...)
 }
 
 
+GLuint DLGLCreateTextureFromImage(GLenum target, NSImage *image)
+{
+    NSRect imageRect;
+    imageRect.origin = NSZeroPoint;
+    imageRect.size = [image size];
+    
+    [image lockFocus];
+    NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc] initWithFocusedViewRect:imageRect];
+    [image unlockFocus];
+    
+    GLint samplesPerPixel = (GLint)[bitmap samplesPerPixel];
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, (GLint)[bitmap bytesPerRow] / samplesPerPixel);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(target, texture);
+    
+    NSCAssert((![bitmap isPlanar] && (samplesPerPixel == 3 || samplesPerPixel == 4)), @"Unsupported bitmap data");
+    
+    glTexImage2D(target,
+                 0,
+                 samplesPerPixel == 4 ? GL_RGBA8 : GL_RGB8,
+                 (GLsizei)[bitmap pixelsWide],
+                 (GLsizei)[bitmap pixelsHigh],
+                 0,
+                 samplesPerPixel == 4 ? GL_RGBA : GL_RGB,
+                 GL_UNSIGNED_BYTE,
+                 [bitmap bitmapData]);
+    
+    glBindTexture(target, 0);
+    [bitmap release];
+    
+    return texture;
+}
+
+
 
 
 

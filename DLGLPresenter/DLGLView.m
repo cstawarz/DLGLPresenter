@@ -26,10 +26,10 @@
         NSOpenGLPFAMinimumPolicy,
         NSOpenGLPFAColorSize, 24,
         NSOpenGLPFAAlphaSize, 8,
-        /*NSOpenGLPFAMultisample,
+        NSOpenGLPFAMultisample,
         NSOpenGLPFASampleBuffers, 1,
         NSOpenGLPFASamples, 4,
-        NSOpenGLPFASampleAlpha,*/
+        NSOpenGLPFASampleAlpha,
         0
     };
     

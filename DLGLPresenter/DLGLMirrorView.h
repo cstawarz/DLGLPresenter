@@ -14,8 +14,15 @@
 
 @interface DLGLMirrorView : DLGLView {
     dispatch_source_t timer;
+
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint program;
     
-    GLuint framebuffer, renderbuffer;
+    GLuint vertexPositionBufferObject, texCoordsBufferObject;
+    GLuint vertexArrayObject;
+    
+    GLuint texture;
     GLsizei mirrorWidth, mirrorHeight;
 }
 
