@@ -7,7 +7,6 @@
 //
 
 #import <AppKit/AppKit.h>
-#import <OpenGL/gl3.h>
 
 #import <DLGLPresenter/DLGLView.h>
 
@@ -22,8 +21,8 @@
     GLuint vertexPositionBufferObject, texCoordsBufferObject;
     GLuint vertexArrayObject;
     
-    GLuint texture;
-    GLsizei mirrorWidth, mirrorHeight;
+    GLuint framebuffer;
+    GLuint sourceTexture, mirrorTexture;
 }
 
 @property(nonatomic, assign) DLGLView *sourceView;

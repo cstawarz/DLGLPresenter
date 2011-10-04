@@ -7,9 +7,12 @@
 //
 
 #import <AppKit/AppKit.h>
+#import <OpenGL/gl3.h>
 
 
 @interface DLGLView : NSOpenGLView
+
+@property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
 - (void)performBlockOnGLContext:(dispatch_block_t)block;
 

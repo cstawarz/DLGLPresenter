@@ -27,7 +27,7 @@ static void checkGLError(const char *msg)
 
 - (void)prepareForRendering;
 - (void)storeFrontBuffer;
-- (void)drawStoredBuffer;
+- (void)drawTexture:(GLuint)texture;
 
 @end
 
@@ -48,7 +48,6 @@ static void checkGLError(const char *msg)
         
         dispatch_source_set_event_handler(timer, ^{
             if (self.sourceView) {
-                [self.sourceView performBlockOnGLContext:^{ [self storeFrontBuffer]; }];
                 [self setNeedsDisplay:YES];
             }
         });
@@ -70,6 +69,37 @@ static void checkGLError(const char *msg)
     [context setView:self];
     [context release];
     
+    [newSourceView performBlockOnGLContext:^{
+        glGenFramebuffers(1, &framebuffer);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+        
+        glGenTextures(1, &sourceTexture);
+        glBindTexture(GL_TEXTURE_2D, sourceTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        glGenTextures(1, &mirrorTexture);
+        glBindTexture(GL_TEXTURE_2D, mirrorTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_RGBA,
+                     self.viewportWidth,
+                     self.viewportHeight,
+                     0,
+                     GL_RGBA,
+                     GL_FLOAT,
+                     NULL);
+        glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mirrorTexture, 0);
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        
+        glFlush();
+    }];
+    
     sourceView = newSourceView;
 }
 
@@ -82,22 +112,14 @@ static void checkGLError(const char *msg)
 }
 
 
-- (void)reshape
-{
-    [self performBlockOnGLContext:^{
-        NSRect rect = [self bounds];
-        mirrorWidth = (GLsizei)(rect.size.width);
-        mirrorHeight = (GLsizei)(rect.size.height);
-        
-        glViewport(0, 0, mirrorWidth, mirrorHeight);
-    }];
-}
-
-
 - (void)drawRect:(NSRect)dirtyRect
 {
+    if (![self inLiveResize]) {
+        [self.sourceView performBlockOnGLContext:^{ [self storeFrontBuffer]; }];
+    }
+    
     [self performBlockOnGLContext:^{
-        [self drawStoredBuffer];
+        [self drawTexture:mirrorTexture];
         [[self openGLContext] flushBuffer];
     }];
 }
@@ -110,18 +132,18 @@ static NSString *vertexShaderSource =
 "smooth out vec2 varyingTexCoords;\n"
 "void main()\n"
 "{\n"
-"   varyingTexCoords = texCoords;\n"
 "   gl_Position = vertexPosition;\n"
+"   varyingTexCoords = texCoords;\n"
 "}\n";
 
 static NSString *fragmentShaderSource =
 @"#version 150\n"
 "uniform sampler2D colorMap;\n"
-"out vec4 fragColor;\n"
 "in vec2 varyingTexCoords;\n"
+"out vec4 fragColor;\n"
 "void main()\n"
 "{\n"
-"   fragColor = texture(colorMap, varyingTexCoords.st);\n"
+"   fragColor = texture(colorMap, varyingTexCoords);\n"
 "}\n";
 
 static const GLfloat vertexPosition[] = {
@@ -173,8 +195,6 @@ static const GLfloat texCoords[] = {
     GLint colorMapUniformLocation = glGetUniformLocation(program, "colorMap");
     glUniform1i(colorMapUniformLocation, 0);
     
-    glGenTextures(1, &texture);
-    
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     glUseProgram(0);
@@ -183,31 +203,39 @@ static const GLfloat texCoords[] = {
 
 - (void)storeFrontBuffer
 {
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, sourceTexture);
     glReadBuffer(GL_FRONT_LEFT);
     
-    NSSize sourceSize = [sourceView bounds].size;
     glCopyTexImage2D(GL_TEXTURE_2D,
                      0,
                      GL_RGBA,
                      0,
                      0,
-                     (GLsizei)(sourceSize.width),
-                     (GLsizei)(sourceSize.height),
+                     sourceView.viewportWidth,
+                     sourceView.viewportHeight,
                      0);
     
     glBindTexture(GL_TEXTURE_2D, 0);
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+    glDrawBuffers(1, drawBuffers);
+    
+    glViewport(0, 0, self.viewportWidth, self.viewportHeight);
+    [self drawTexture:sourceTexture];
+    glViewport(0, 0, sourceView.viewportWidth, sourceView.viewportHeight);
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    
+    glFlush();
 }
 
 
-- (void)drawStoredBuffer
+- (void)drawTexture:(GLuint)texture
 {
     glUseProgram(program);
     glBindVertexArray(vertexArrayObject);
     glBindTexture(GL_TEXTURE_2D, texture);
-    
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     glDrawArrays(GL_TRIANGLES, 0, 6);
     

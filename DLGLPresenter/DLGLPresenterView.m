@@ -9,7 +9,6 @@
 #import "DLGLPresenterView.h"
 
 #import <CoreAudio/HostTime.h>
-#import <OpenGL/gl3.h>
 
 
 //#define TRACE_METHOD_CALLS
@@ -116,8 +115,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 - (void)reshape
 {
     [self performBlockOnGLContext:^{
-        NSRect rect = [self bounds];
-        glViewport(0, 0, (GLsizei)(rect.size.width), (GLsizei)(rect.size.height));
+        [super reshape];
         
         if (presenting) {
             shouldDraw = YES;

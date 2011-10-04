@@ -8,10 +8,11 @@
 
 #import "DLGLView.h"
 
-#import <OpenGL/gl3.h>
-
 
 @implementation DLGLView
+
+
+@synthesize viewportWidth, viewportHeight;
 
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat
@@ -59,6 +60,18 @@
         error = CGLUnlockContext(contextObj);
         NSAssert1((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
     }
+}
+
+
+- (void)reshape
+{
+    [self performBlockOnGLContext:^{
+        NSRect rect = [self bounds];
+        viewportWidth = (GLsizei)(rect.size.width);
+        viewportHeight = (GLsizei)(rect.size.height);
+        
+        glViewport(0, 0, viewportWidth, viewportHeight);
+    }];
 }
 
 
