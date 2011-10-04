@@ -26,6 +26,7 @@ static void checkGLError(const char *msg)
 @interface DLGLMirrorView ()
 
 - (void)prepareForRendering;
+- (void)allocateBufferStorage;
 - (void)storeFrontBuffer;
 - (void)drawTexture:(GLuint)texture;
 
@@ -36,6 +37,24 @@ static void checkGLError(const char *msg)
 
 
 @synthesize sourceView;
+
+
++ (NSOpenGLPixelFormat *)defaultPixelFormat
+{
+    NSOpenGLPixelFormatAttribute attributes[] =
+    {
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+        NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFAAllowOfflineRenderers,
+        NSOpenGLPFAMinimumPolicy,
+        NSOpenGLPFAColorSize, 24,
+        NSOpenGLPFAAlphaSize, 8,
+        0
+    };
+    
+    return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+}
 
 
 - (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)pixelFormat
@@ -69,37 +88,6 @@ static void checkGLError(const char *msg)
     [context setView:self];
     [context release];
     
-    [newSourceView performBlockOnGLContext:^{
-        glGenFramebuffers(1, &framebuffer);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-        
-        glGenTextures(1, &sourceTexture);
-        glBindTexture(GL_TEXTURE_2D, sourceTexture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        glGenTextures(1, &mirrorTexture);
-        glBindTexture(GL_TEXTURE_2D, mirrorTexture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        glTexImage2D(GL_TEXTURE_2D,
-                     0,
-                     GL_RGBA,
-                     self.viewportWidth,
-                     self.viewportHeight,
-                     0,
-                     GL_RGBA,
-                     GL_FLOAT,
-                     NULL);
-        glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mirrorTexture, 0);
-        
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        
-        glFlush();
-    }];
-    
     sourceView = newSourceView;
 }
 
@@ -112,15 +100,23 @@ static void checkGLError(const char *msg)
 }
 
 
+- (void)reshape
+{
+    [self performBlockOnGLContext:^{
+        [super reshape];
+        [self allocateBufferStorage];
+    }];
+}
+
+
 - (void)drawRect:(NSRect)dirtyRect
 {
-    if (![self inLiveResize]) {
-        [self.sourceView performBlockOnGLContext:^{ [self storeFrontBuffer]; }];
-    }
-    
     [self performBlockOnGLContext:^{
+        [self.sourceView performBlockOnGLContext:^{
+            [self storeFrontBuffer];
+        }];
         [self drawTexture:mirrorTexture];
-        [[self openGLContext] flushBuffer];
+        glFlush();
     }];
 }
 
@@ -147,13 +143,13 @@ static NSString *fragmentShaderSource =
 "}\n";
 
 static const GLfloat vertexPosition[] = {
-     1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f, 0.0f, 1.0f,
-     1.0f, -1.0f, 0.0f, 1.0f,
+     1.0f,  1.0f,
+    -1.0f, -1.0f,
+     1.0f, -1.0f,
     
-     1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f,  1.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f, 0.0f, 1.0f,
+     1.0f,  1.0f,
+    -1.0f,  1.0f,
+    -1.0f, -1.0f,
 };
 
 static const GLfloat texCoords[] = {
@@ -183,7 +179,7 @@ static const GLfloat texCoords[] = {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPosition), vertexPosition, GL_STATIC_DRAW);
     GLint vertexPositionAttribLocation = glGetAttribLocation(program, "vertexPosition");
     glEnableVertexAttribArray(vertexPositionAttribLocation);
-    glVertexAttribPointer(vertexPositionAttribLocation, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(vertexPositionAttribLocation, 2, GL_FLOAT, GL_FALSE, 0, 0);
     
     glGenBuffers(1, &texCoordsBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, texCoordsBufferObject);
@@ -198,6 +194,50 @@ static const GLfloat texCoords[] = {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     glUseProgram(0);
+    
+    glGenFramebuffers(1, &framebuffer);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    
+    glGenTextures(1, &sourceTexture);
+    glBindTexture(GL_TEXTURE_2D, sourceTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    glGenTextures(1, &mirrorTexture);
+    glBindTexture(GL_TEXTURE_2D, mirrorTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    
+    glFlush();
+}
+
+
+- (void)allocateBufferStorage
+{
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    glBindTexture(GL_TEXTURE_2D, mirrorTexture);
+    
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA,
+                 self.viewportWidth,
+                 self.viewportHeight,
+                 0,
+                 GL_RGBA,
+                 GL_FLOAT,
+                 NULL);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mirrorTexture, 0);
+    
+    GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    NSAssert1((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    
+    glFlush();
 }
 
 

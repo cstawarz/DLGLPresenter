@@ -65,6 +65,29 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 @synthesize delegate, presenting, elapsedTime;
 
 
++ (NSOpenGLPixelFormat *)defaultPixelFormat
+{
+    NSOpenGLPixelFormatAttribute attributes[] =
+    {
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFAAllowOfflineRenderers,
+        NSOpenGLPFAMinimumPolicy,
+        NSOpenGLPFAColorSize, 24,
+        NSOpenGLPFAAlphaSize, 8,
+        NSOpenGLPFAMultisample,
+        NSOpenGLPFASampleBuffers, 1,
+        NSOpenGLPFASamples, 4,
+        NSOpenGLPFASampleAlpha,
+        0
+    };
+    
+    return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+}
+
+
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen
 {
     NSRect screenRect = [screen frame];
