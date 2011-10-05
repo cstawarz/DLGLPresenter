@@ -8,18 +8,7 @@
 
 #import "DLGLPresenterView.h"
 
-#import <CoreAudio/HostTime.h>
-
-
-//#define TRACE_METHOD_CALLS
-
-#ifdef TRACE_METHOD_CALLS
-#  define BEGIN_METHOD  NSLog(@"Entered %s", __PRETTY_FUNCTION__);
-#  define END_METHOD    NSLog(@"Exiting %s", __PRETTY_FUNCTION__);
-#else
-#  define BEGIN_METHOD
-#  define END_METHOD
-#endif
+#import "DLGLUtilities.h"
 
 
 @interface DLGLPresenterView ()
@@ -244,7 +233,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         return 0ull;
     }
     
-    return AudioConvertHostTimeToNanos(currentHostTime - startHostTime);
+    return DLGLConvertHostTimeToNanos(currentHostTime - startHostTime);
 }
 
 

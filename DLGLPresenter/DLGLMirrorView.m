@@ -14,15 +14,6 @@
 #define MIRROR_UPDATE_LEEWAY    ( 5ull * NSEC_PER_MSEC)  // with a leeway of 5ms
 
 
-static void checkGLError(const char *msg)
-{
-    GLenum error = glGetError();
-    if (GL_NO_ERROR != error) {
-        NSLog(@"%s: GL error = 0x%X", msg, error);
-    }
-}
-
-
 @interface DLGLMirrorView ()
 
 - (void)prepareForRendering;

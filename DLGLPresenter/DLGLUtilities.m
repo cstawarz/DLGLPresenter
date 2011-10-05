@@ -11,6 +11,24 @@
 #import <CoreAudio/HostTime.h>
 
 
+void DLGLErrorBreak(GLenum error);
+
+
+void _DLGLLogErrors(void)
+{
+    GLenum error;
+    while (GL_NO_ERROR != (error = glGetError())) {
+        DLGLErrorBreak(error);
+    }
+}
+
+
+void DLGLErrorBreak(GLenum error)
+{
+    NSLog(@"GL error = 0x%04X (set a breakpoint in %s to debug)", error, __func__);
+}
+
+
 uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime)
 {
     return AudioConvertHostTimeToNanos(hostTime);

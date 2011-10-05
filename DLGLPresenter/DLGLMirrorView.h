@@ -7,6 +7,7 @@
 //
 
 #import <AppKit/AppKit.h>
+#import <OpenGL/gl3.h>
 
 #import <DLGLPresenter/DLGLView.h>
 

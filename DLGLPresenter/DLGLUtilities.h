@@ -9,6 +9,14 @@
 #import <AppKit/AppKit.h>
 #import <OpenGL/gl3.h>
 
+#if DEBUG
+#define DLGLLogErrors() _DLGLLogErrors()
+#else
+#define DLGLLogErrors()
+#endif
+
+
+void _DLGLLogErrors(void);
 
 uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime);
 
