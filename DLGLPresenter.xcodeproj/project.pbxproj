@@ -403,6 +403,7 @@
 		E1E7AE28140E730800B50A9F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLGLPresenterDemo/DLGLPresenterDemo-Prefix.pch";
 				INFOPLIST_FILE = "DLGLPresenterDemo/DLGLPresenterDemo-Info.plist";
@@ -414,6 +415,7 @@
 		E1E7AE29140E730800B50A9F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLGLPresenterDemo/DLGLPresenterDemo-Prefix.pch";
 				INFOPLIST_FILE = "DLGLPresenterDemo/DLGLPresenterDemo-Info.plist";
@@ -470,6 +472,7 @@
 		E1EEA715140D31AC0054C95A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -484,6 +487,7 @@
 		E1EEA716140D31AC0054C95A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;

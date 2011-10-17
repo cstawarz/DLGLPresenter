@@ -44,7 +44,7 @@
         0
     };
     
-    return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+    return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
 }
 
 
@@ -77,7 +77,6 @@
 
     [self setOpenGLContext:context];
     [context setView:self];
-    [context release];
     
     sourceView = newSourceView;
 }

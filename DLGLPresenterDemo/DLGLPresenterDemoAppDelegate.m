@@ -26,7 +26,7 @@
     presenterDelegate = [[MovingTriangle alloc] init];
     
 #ifdef FULLSCREEN
-    fullScreenWindow = [[DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]] retain];
+    fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];
     presenterView = [fullScreenWindow contentView];
     mirrorView = [[DLGLMirrorView alloc] initWithFrame:[window frame]];
 #else
@@ -52,19 +52,6 @@
 #ifdef FULLSCREEN
     [fullScreenWindow orderOut:nil];
 #endif
-}
-
-
-- (void)dealloc
-{
-#ifdef FULLSCREEN
-    [fullScreenWindow release];
-    [mirrorView release];
-#else
-    [presenterView release];
-#endif
-    [presenterDelegate release];
-    [super dealloc];
 }
 
 

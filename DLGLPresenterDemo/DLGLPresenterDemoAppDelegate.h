@@ -12,13 +12,12 @@
 
 
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
     NSWindow *fullScreenWindow;
     DLGLPresenterView *presenterView;
     DLGLMirrorView *mirrorView;
     id <DLGLPresenterDelegate> presenterDelegate;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+@property (nonatomic, unsafe_unretained) IBOutlet NSWindow *window;
 
 @end

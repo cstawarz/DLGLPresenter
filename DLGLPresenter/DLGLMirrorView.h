@@ -26,6 +26,6 @@
     GLuint sourceTexture, mirrorTexture;
 }
 
-@property(nonatomic, assign) DLGLView *sourceView;
+@property(nonatomic, weak) DLGLView *sourceView;
 
 @end

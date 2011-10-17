@@ -142,7 +142,6 @@ GLuint DLGLCreateTextureFromImage(GLenum target, NSImage *image)
                  [bitmap bitmapData]);
     
     glBindTexture(target, 0);
-    [bitmap release];
     
     return texture;
 }

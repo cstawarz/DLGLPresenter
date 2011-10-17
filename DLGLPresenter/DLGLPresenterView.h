@@ -22,7 +22,7 @@
     BOOL shouldDraw;
 }
 
-@property(nonatomic, assign) id <DLGLPresenterDelegate> delegate;
+@property(nonatomic, unsafe_unretained) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
 @property(nonatomic, readonly) uint64_t elapsedTime;
 

@@ -33,15 +33,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSCAssert1((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
                @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
     
-    DLGLPresenterView *presenterView = (DLGLPresenterView *)displayLinkContext;
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
     
-    @try {
+    @autoreleasepool {
         [presenterView checkForSkippedFrames:outputTime];
         [presenterView presentFrameForTime:outputTime];
-    }
-    @finally {
-        [pool drain];
     }
     
     return kCVReturnSuccess;
@@ -73,7 +69,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         0
     };
     
-    return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+    return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
 }
 
 
@@ -82,18 +78,17 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSRect screenRect = [screen frame];
     NSRect windowRect = NSMakeRect(0.0, 0.0, screenRect.size.width, screenRect.size.height);
     
-    NSWindow *fullScreenWindow = [[[NSWindow alloc] initWithContentRect:windowRect
-                                                              styleMask:NSBorderlessWindowMask
-                                                                backing:NSBackingStoreBuffered
-                                                                  defer:YES
-                                                                 screen:screen] autorelease];
+    NSWindow *fullScreenWindow = [[NSWindow alloc] initWithContentRect:windowRect
+                                                             styleMask:NSBorderlessWindowMask
+                                                               backing:NSBackingStoreBuffered
+                                                                 defer:YES
+                                                                screen:screen];
     [fullScreenWindow setLevel:NSMainMenuWindowLevel+1];
     [fullScreenWindow setOpaque:YES];
     [fullScreenWindow setHidesOnDeactivate:NO];
     
     DLGLPresenterView *presenterView = [[self alloc] initWithFrame:windowRect];
     [fullScreenWindow setContentView:presenterView];
-    [presenterView release];
     
     return fullScreenWindow;
 }
@@ -107,7 +102,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
         NSAssert1((kCVReturnSuccess == error), @"Unable to create display link (error = %d)", error);
         
-        error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
+        error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, (__bridge void *)(self));
         NSAssert1((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
     }
     
@@ -240,7 +235,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 - (void)dealloc
 {
     CVDisplayLinkRelease(displayLink);
-    [super dealloc];
 }
 
 
