@@ -66,7 +66,7 @@ GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource)
     if (infoLogLength > 0) {
         GLchar infoLog[infoLogLength];
         glGetShaderInfoLog(shader, infoLogLength, NULL, infoLog);
-        NSLog(@"In %s: Shader compilation produced the following information log:\n%s", __PRETTY_FUNCTION__, infoLog);
+        NSLog(@"In %s: Shader compilation produced the following information log:\n%s", __func__, infoLog);
     }
     
     GLint compileStatus;
@@ -100,7 +100,7 @@ GLuint DLGLCreateProgramWithShaders(GLuint shader, ...)
     if (infoLogLength > 0) {
         GLchar infoLog[infoLogLength];
         glGetProgramInfoLog(program, infoLogLength, NULL, infoLog);
-        NSLog(@"In %s: Program linking produced the following information log:\n%s", __PRETTY_FUNCTION__, infoLog);
+        NSLog(@"In %s: Program linking produced the following information log:\n%s", __func__, infoLog);
     }
     
     GLint linkStatus;
