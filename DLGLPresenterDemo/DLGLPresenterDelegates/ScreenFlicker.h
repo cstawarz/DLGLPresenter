@@ -9,8 +9,6 @@
 #import <DLGLPresenter/DLGLPresenter.h>
 
 
-@interface ScreenFlicker : NSObject <DLGLPresenterDelegate> {
-    BOOL highFrame;
-}
+@interface ScreenFlicker : NSObject <DLGLPresenterDelegate>
 
 @end

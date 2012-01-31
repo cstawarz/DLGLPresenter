@@ -10,6 +10,9 @@
 
 
 @implementation ScreenFlicker
+{
+    BOOL highFrame;
+}
 
 
 - (void)presenterView:(DLGLPresenterView *)presenterView willDrawForTime:(const CVTimeStamp *)outputTime

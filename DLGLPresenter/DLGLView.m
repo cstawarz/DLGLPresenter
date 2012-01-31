@@ -51,22 +51,20 @@
 }
 
 
-- (void)reshape
-{
-    [self performBlockOnGLContext:^{
-        NSSize size = [self bounds].size;
-        viewportWidth = (GLsizei)(size.width);
-        viewportHeight = (GLsizei)(size.height);
-        glViewport(0, 0, viewportWidth, viewportHeight);
-    }];
-}
-
-
 - (void)update
 {
     [self performBlockOnGLContext:^{
         [super update];
     }];
+}
+
+
+- (void)updateViewport
+{
+    NSSize size = [self bounds].size;
+    viewportWidth = (GLsizei)(size.width);
+    viewportHeight = (GLsizei)(size.height);
+    glViewport(0, 0, viewportWidth, viewportHeight);
 }
 
 

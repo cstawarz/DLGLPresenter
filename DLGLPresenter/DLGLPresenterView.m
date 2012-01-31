@@ -8,6 +8,8 @@
 
 #import "DLGLPresenterView.h"
 
+#import <CoreVideo/CVDisplayLink.h>
+
 #import "DLGLUtilities.h"
 
 
@@ -45,6 +47,12 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 
 @implementation DLGLPresenterView
+{
+    CVDisplayLinkRef displayLink;
+    uint64_t startHostTime, currentHostTime;
+    int64_t previousVideoTime;
+    BOOL shouldDraw;
+}
 
 
 @synthesize delegate, presenting, elapsedTime;
@@ -122,7 +130,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 - (void)reshape
 {
     [self performBlockOnGLContext:^{
-        [super reshape];
+        [self updateViewport];
         
         if (presenting) {
             shouldDraw = YES;

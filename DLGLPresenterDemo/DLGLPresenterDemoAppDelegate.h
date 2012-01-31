@@ -8,15 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <DLGLPresenter/DLGLPresenter.h>
 
-
-@interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *fullScreenWindow;
-    DLGLPresenterView *presenterView;
-    DLGLMirrorView *mirrorView;
-    id <DLGLPresenterDelegate> presenterDelegate;
-}
+@interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (nonatomic, unsafe_unretained) IBOutlet NSWindow *window;
 

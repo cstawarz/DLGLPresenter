@@ -25,6 +25,19 @@
 
 
 @implementation DLGLMirrorView
+{
+    dispatch_source_t timer;
+    
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint program;
+    
+    GLuint vertexPositionBufferObject, texCoordsBufferObject;
+    GLuint vertexArrayObject;
+    
+    GLuint framebuffer;
+    GLuint sourceTexture, mirrorTexture;
+}
 
 
 @synthesize sourceView;
@@ -93,7 +106,7 @@
 - (void)reshape
 {
     [self performBlockOnGLContext:^{
-        [super reshape];
+        [self updateViewport];
         [self allocateBufferStorage];
     }];
 }

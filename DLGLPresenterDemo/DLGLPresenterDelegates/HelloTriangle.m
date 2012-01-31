@@ -10,6 +10,16 @@
 
 
 @implementation HelloTriangle
+{
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint program;
+    
+    GLuint positionBufferObject;
+    GLuint vertexArrayObject;
+    
+    BOOL didDraw;
+}
 
 
 static NSString *vertexShaderSource =

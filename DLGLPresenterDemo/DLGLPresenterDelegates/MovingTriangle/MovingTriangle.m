@@ -10,6 +10,16 @@
 
 
 @implementation MovingTriangle
+{
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint program;
+    
+    GLuint positionBufferObject;
+    GLuint vertexArrayObject;
+    
+    GLint timeUniformLocation;
+}
 
 
 static const float vertexPositions[] = {

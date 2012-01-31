@@ -8,6 +8,8 @@
 
 #import "DLGLPresenterDemoAppDelegate.h"
 
+#import <DLGLPresenter/DLGLPresenter.h>
+
 #import "ScreenFlicker.h"
 #import "HelloTriangle.h"
 #import "MovingTriangle.h"
@@ -16,6 +18,12 @@
 
 
 @implementation DLGLPresenterDemoAppDelegate
+{
+    NSWindow *fullScreenWindow;
+    DLGLPresenterView *presenterView;
+    DLGLMirrorView *mirrorView;
+    id <DLGLPresenterDelegate> presenterDelegate;
+}
 
 
 @synthesize window;

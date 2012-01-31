@@ -7,7 +7,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import <CoreVideo/CVDisplayLink.h>
+#import <CoreVideo/CVBase.h>
 
 #import <DLGLPresenter/DLGLView.h>
 
@@ -15,12 +15,7 @@
 @protocol DLGLPresenterDelegate;  // Forward declaration
 
 
-@interface DLGLPresenterView : DLGLView {
-    CVDisplayLinkRef displayLink;
-    uint64_t startHostTime, currentHostTime;
-    int64_t previousVideoTime;
-    BOOL shouldDraw;
-}
+@interface DLGLPresenterView : DLGLView
 
 @property(nonatomic, unsafe_unretained) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;

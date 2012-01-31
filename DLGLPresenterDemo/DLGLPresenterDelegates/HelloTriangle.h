@@ -9,15 +9,6 @@
 #import <DLGLPresenter/DLGLPresenter.h>
 
 
-@interface HelloTriangle : NSObject <DLGLPresenterDelegate> {
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint program;
-    
-    GLuint positionBufferObject;
-    GLuint vertexArrayObject;
-    
-    BOOL didDraw;
-}
+@interface HelloTriangle : NSObject <DLGLPresenterDelegate>
 
 @end
