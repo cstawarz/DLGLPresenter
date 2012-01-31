@@ -31,13 +31,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                                     CVOptionFlags *flagsOut,
                                     void *displayLinkContext)
 {
-    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
-              @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
-              @"Host time is invalid (%llu)", outputTime->hostTime);
-    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
-    
     DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
     
     @autoreleasepool {
@@ -247,6 +240,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime
 {
+    NSAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
+             @"Video time is invalid (%lld)", outputTime->videoTime);
+    NSAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
+             @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+    
     if (previousVideoTime) {
         int64_t delta = (outputTime->videoTime - previousVideoTime) - outputTime->videoRefreshPeriod;
         if (delta) {
@@ -266,6 +264,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime
 {
+    NSAssert((outputTime->flags & kCVTimeStampHostTimeValid),
+             @"Host time is invalid (%llu)", outputTime->hostTime);
+    
     if (!startHostTime) {
         startHostTime = outputTime->hostTime;
     }
