@@ -53,7 +53,7 @@ GLuint DLGLLoadShaderFromURL(GLenum shaderType, NSURL *url, NSError **error)
 GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource)
 {
     GLuint shader = glCreateShader(shaderType);
-    NSCAssert1(shader, @"Shader creation failed (GL error = %d)", glGetError());
+    NSCAssert(shader, @"Shader creation failed (GL error = %d)", glGetError());
     
     const char *shaderSourceUTF8 = [shaderSource UTF8String];
     glShaderSource(shader, 1, &shaderSourceUTF8, NULL);

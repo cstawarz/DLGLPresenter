@@ -30,7 +30,7 @@
     CGLContextObj contextObj = [context CGLContextObj];
     
     CGLError error = CGLLockContext(contextObj);
-    NSAssert1((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
+    NSAssert((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
     
     @try {
         if (previousContext != context) {
@@ -46,7 +46,7 @@
     }
     @finally {
         error = CGLUnlockContext(contextObj);
-        NSAssert1((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
+        NSAssert((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
     }
 }
 

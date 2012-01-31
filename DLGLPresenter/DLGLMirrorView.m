@@ -222,7 +222,7 @@ static const GLfloat texCoords[] = {
     glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mirrorTexture, 0);
     
     GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
-    NSAssert1((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
+    NSAssert((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
     
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);

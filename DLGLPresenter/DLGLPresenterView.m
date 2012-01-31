@@ -26,12 +26,12 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                                     CVOptionFlags *flagsOut,
                                     void *displayLinkContext)
 {
-    NSCAssert1((outputTime->flags & kCVTimeStampVideoTimeValid),
-               @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSCAssert1((outputTime->flags & kCVTimeStampHostTimeValid),
-               @"Host time is invalid (%llu)", outputTime->hostTime);
-    NSCAssert1((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-               @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
+              @"Video time is invalid (%lld)", outputTime->videoTime);
+    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
+              @"Host time is invalid (%llu)", outputTime->hostTime);
+    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
+              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
     
     DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
     
@@ -100,10 +100,10 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         CVReturn error;
         
         error = CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to create display link (error = %d)", error);
+        NSAssert((kCVReturnSuccess == error), @"Unable to create display link (error = %d)", error);
         
         error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, (__bridge void *)(self));
-        NSAssert1((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
+        NSAssert((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
     }
     
     return self;
@@ -155,15 +155,15 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
                                                                   [[self openGLContext] CGLContextObj],
                                                                   [[self pixelFormat] CGLPixelFormatObj]);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+        NSAssert((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
         
         error = CVDisplayLinkStart(displayLink);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
+        NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
         
     } else if (!shouldPresent && presenting) {
         
         error = CVDisplayLinkStop(displayLink);
-        NSAssert1((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+        NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
         
         presenting = NO;
         
