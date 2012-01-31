@@ -38,7 +38,7 @@
         }
         
         block();
-        DLGLLogErrors();
+        DLGLLogGLErrors();
         
         if (previousContext && (previousContext != context)) {
             [previousContext makeCurrentContext];

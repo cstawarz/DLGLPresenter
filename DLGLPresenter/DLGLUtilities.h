@@ -10,13 +10,13 @@
 #import <OpenGL/gl3.h>
 
 #if DEBUG
-#define DLGLLogErrors() _DLGLLogErrors()
+#define DLGLLogGLErrors() _DLGLLogGLErrors()
 #else
-#define DLGLLogErrors()
+#define DLGLLogGLErrors() do {} while (0)
 #endif
 
 
-void _DLGLLogErrors(void);
+void _DLGLLogGLErrors(void);
 
 uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime);
 

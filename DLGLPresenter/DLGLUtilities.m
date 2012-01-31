@@ -14,7 +14,7 @@
 void DLGLErrorBreak(GLenum error);
 
 
-void _DLGLLogErrors(void)
+void _DLGLLogGLErrors(void)
 {
     GLenum error;
     while (GL_NO_ERROR != (error = glGetError())) {
