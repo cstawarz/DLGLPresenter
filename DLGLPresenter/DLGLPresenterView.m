@@ -15,6 +15,9 @@
 
 @interface DLGLPresenterView ()
 
+- (void)allocateBufferStorage;
+- (void)storeBackBuffer;
+- (void)drawStoredBuffer;
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 
@@ -52,6 +55,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     uint64_t startHostTime, currentHostTime;
     int64_t previousVideoTime;
     BOOL shouldDraw;
+    
+    GLuint framebuffer, renderbuffer;
 }
 
 
@@ -123,6 +128,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     [self performBlockOnGLContext:^{
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+        
+        glGenFramebuffers(1, &framebuffer);
+        glGenRenderbuffers(1, &renderbuffer);
     }];
 }
 
@@ -131,6 +139,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 {
     [self performBlockOnGLContext:^{
         [self updateViewport];
+        [self allocateBufferStorage];  // Resize the renderbuffer
         
         if (presenting) {
             shouldDraw = YES;
@@ -140,6 +149,57 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             [[self openGLContext] flushBuffer];
         }
     }];
+}
+
+
+- (void)allocateBufferStorage
+{
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, self.viewportWidth, self.viewportHeight);
+    glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
+    
+    GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    NSAssert((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+}
+
+
+- (void)storeBackBuffer
+{
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    glReadBuffer(GL_BACK_LEFT);
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+    glDrawBuffers(1, drawBuffers);
+    
+    glBlitFramebuffer(0, 0, self.viewportWidth, self.viewportHeight,
+                      0, 0, self.viewportWidth, self.viewportHeight,
+                      GL_COLOR_BUFFER_BIT,
+                      GL_LINEAR);
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+
+- (void)drawStoredBuffer
+{
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer);
+    glReadBuffer(GL_COLOR_ATTACHMENT0);
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    GLenum drawBuffers[] = { GL_BACK_LEFT };
+    glDrawBuffers(1, drawBuffers);
+    
+    glBlitFramebuffer(0, 0, self.viewportWidth, self.viewportHeight,
+                      0, 0, self.viewportWidth, self.viewportHeight,
+                      GL_COLOR_BUFFER_BIT,
+                      GL_LINEAR);
+    
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 }
 
 
@@ -212,18 +272,27 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     currentHostTime = outputTime->hostTime;
     
     [self performBlockOnGLContext:^{
-        if (shouldDraw ||
-            ![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
-            [delegate presenterView:self shouldDrawForTime:outputTime])
-        {
+        if (!shouldDraw) {
+            if (![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
+                [delegate presenterView:self shouldDrawForTime:outputTime])
+            {
+                shouldDraw = YES;
+            }
+        }
+        
+        if (!shouldDraw) {
+            [self drawStoredBuffer];
+        } else {
             [delegate presenterView:self willDrawForTime:outputTime];
-            
-            [[self openGLContext] flushBuffer];
-            
+            [self storeBackBuffer];
+        }
+        
+        [[self openGLContext] flushBuffer];
+        
+        if (shouldDraw) {
             if ([delegate respondsToSelector:@selector(presenterView:didDrawForTime:)]) {
                 [delegate presenterView:self didDrawForTime:outputTime];
             }
-            
             shouldDraw = NO;
         }
     }];
