@@ -202,11 +202,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     if (shouldPresent && !presenting) {
         
-        if ([delegate respondsToSelector:@selector(presenterViewWillStartPresentation:)]) {
-            [self performBlockOnGLContext:^{
-                [delegate presenterViewWillStartPresentation:self];
-            }];
-        }
+        [self performBlockOnGLContext:^{
+            [delegate presenterViewWillStartPresentation:self];
+        }];
         
         shouldDraw = YES;
         presenting = YES;
@@ -228,11 +226,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         
         presenting = NO;
         
-        if ([delegate respondsToSelector:@selector(presenterViewDidStopPresentation:)]) {
-            [self performBlockOnGLContext:^{
-                [delegate presenterViewDidStopPresentation:self];
-            }];
-        }
+        [self performBlockOnGLContext:^{
+            [delegate presenterViewDidStopPresentation:self];
+        }];
         
     }
 }
@@ -249,12 +245,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         int64_t delta = (outputTime->videoTime - previousVideoTime) - outputTime->videoRefreshPeriod;
         if (delta) {
             double skippedFrameCount = (double)delta / (double)(outputTime->videoRefreshPeriod);
-            if ([delegate respondsToSelector:@selector(presenterView:skippedFrames:)]) {
-                [delegate presenterView:self skippedFrames:skippedFrameCount];
-            } else {
-                NSLog(@"In %s: Display link skipped %g frame%s", __PRETTY_FUNCTION__, skippedFrameCount,
-                      ((skippedFrameCount == 1.0) ? "" : "s"));
-            }
+            [delegate presenterView:self skippedFrames:skippedFrameCount];
         }
     }
     
@@ -273,12 +264,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     currentHostTime = outputTime->hostTime;
     
     [self performBlockOnGLContext:^{
-        if (!shouldDraw) {
-            if (![delegate respondsToSelector:@selector(presenterView:shouldDrawForTime:)] ||
-                [delegate presenterView:self shouldDrawForTime:outputTime])
-            {
-                shouldDraw = YES;
-            }
+        if (!shouldDraw && [delegate presenterView:self shouldDrawForTime:outputTime]) {
+            shouldDraw = YES;
         }
         
         if (!shouldDraw) {
@@ -291,9 +278,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         [[self openGLContext] flushBuffer];
         
         if (shouldDraw) {
-            if ([delegate respondsToSelector:@selector(presenterView:didDrawForTime:)]) {
-                [delegate presenterView:self didDrawForTime:outputTime];
-            }
+            [delegate presenterView:self didDrawForTime:outputTime];
             shouldDraw = NO;
         }
     }];

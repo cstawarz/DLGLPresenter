@@ -28,18 +28,11 @@
 
 @protocol DLGLPresenterDelegate <NSObject>
 
-@optional
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView;
 - (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldDrawForTime:(const CVTimeStamp *)outputTime;
-
-@required
 - (void)presenterView:(DLGLPresenterView *)presenterView willDrawForTime:(const CVTimeStamp *)outputTime;
-
-@optional
 - (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime;
 - (void)presenterViewDidStopPresentation:(DLGLPresenterView *)presenterView;
-
-@optional
 - (void)presenterView:(DLGLPresenterView *)presenterView skippedFrames:(double)skippedFrameCount;
 
 @end

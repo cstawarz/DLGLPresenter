@@ -13,6 +13,7 @@
 		E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */; };
 		E1BB86D5141E63D90041B4F4 /* DLGLErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = E1BB86D3141E63D90041B4F4 /* DLGLErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1BB86D6141E63D90041B4F4 /* DLGLErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = E1BB86D4141E63D90041B4F4 /* DLGLErrors.m */; };
+		E1DB140914E034FB007C0098 /* PresenterDelegateBase.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */; };
 		E1E7AE15140E730800B50A9F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA702140D31AC0054C95A /* Cocoa.framework */; };
 		E1E7AE1B140E730800B50A9F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE19140E730800B50A9F /* InfoPlist.strings */; };
 		E1E7AE1D140E730800B50A9F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE1C140E730800B50A9F /* main.m */; };
@@ -45,6 +46,8 @@
 		E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLMirrorView.m; sourceTree = "<group>"; };
 		E1BB86D3141E63D90041B4F4 /* DLGLErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLErrors.h; sourceTree = "<group>"; };
 		E1BB86D4141E63D90041B4F4 /* DLGLErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLErrors.m; sourceTree = "<group>"; };
+		E1DB140714E034FB007C0098 /* PresenterDelegateBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresenterDelegateBase.h; path = DLGLPresenterDelegates/PresenterDelegateBase.h; sourceTree = "<group>"; };
+		E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PresenterDelegateBase.m; path = DLGLPresenterDelegates/PresenterDelegateBase.m; sourceTree = "<group>"; };
 		E1E7AE13140E730800B50A9F /* DLGLPresenterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLGLPresenterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1E7AE18140E730800B50A9F /* DLGLPresenterDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenterDemo-Info.plist"; sourceTree = "<group>"; };
 		E1E7AE1A140E730800B50A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 		E1E7AE63140E7A5B00B50A9F /* DLGLPresenterDelegates */ = {
 			isa = PBXGroup;
 			children = (
+				E1DB140714E034FB007C0098 /* PresenterDelegateBase.h */,
+				E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */,
 				E1E7AE65140E7A7600B50A9F /* ScreenFlicker.h */,
 				E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */,
 				E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */,
@@ -347,6 +352,7 @@
 				E1E7AE67140E7A7600B50A9F /* ScreenFlicker.m in Sources */,
 				E1E7AE6F140E9E9300B50A9F /* HelloTriangle.m in Sources */,
 				E1F64919141954B9005455C8 /* MovingTriangle.m in Sources */,
+				E1DB140914E034FB007C0098 /* PresenterDelegateBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

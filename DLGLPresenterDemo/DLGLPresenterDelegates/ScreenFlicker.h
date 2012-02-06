@@ -6,9 +6,9 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <DLGLPresenter/DLGLPresenter.h>
+#import "PresenterDelegateBase.h"
 
 
-@interface ScreenFlicker : NSObject <DLGLPresenterDelegate>
+@interface ScreenFlicker : PresenterDelegateBase
 
 @end

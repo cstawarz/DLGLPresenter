@@ -6,9 +6,9 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <DLGLPresenter/DLGLPresenter.h>
+#import "PresenterDelegateBase.h"
 
 
-@interface HelloTriangle : NSObject <DLGLPresenterDelegate>
+@interface HelloTriangle : PresenterDelegateBase
 
 @end
