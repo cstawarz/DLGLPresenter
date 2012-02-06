@@ -31,17 +31,8 @@ static const float vertexPositions[] = {
 
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView
 {
-    NSURL *vertexShaderURL = [[NSBundle mainBundle] URLForResource:@"calcOffset" withExtension:@"vert"];
-    NSAssert(vertexShaderURL, @"Cannot obtain URL for vertex shader");
-    
-    vertexShader = DLGLLoadShaderFromURL(GL_VERTEX_SHADER, vertexShaderURL, nil);
-    NSAssert(vertexShader, @"Vertex shader creation failed");
-
-    NSURL *fragmentShaderURL = [[NSBundle mainBundle] URLForResource:@"calcColor" withExtension:@"frag"];
-    NSAssert(fragmentShaderURL, @"Cannot obtain URL for fragment shader");
-    
-    fragmentShader = DLGLLoadShaderFromURL(GL_FRAGMENT_SHADER, fragmentShaderURL, nil);
-    NSAssert(fragmentShader, @"Fragment shader creation failed");
+    vertexShader = [self loadShader:GL_VERTEX_SHADER fromResource:@"calcOffset" withExtension:@"vert"];
+    fragmentShader = [self loadShader:GL_FRAGMENT_SHADER fromResource:@"calcColor" withExtension:@"frag"];
     
     program = DLGLCreateProgramWithShaders(vertexShader, fragmentShader, 0);
     glUseProgram(program);
