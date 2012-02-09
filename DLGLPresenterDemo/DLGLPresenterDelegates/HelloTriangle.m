@@ -22,16 +22,16 @@
 }
 
 
-static NSString *vertexShaderSource =
-@"#version 150\n"
+static const GLchar *vertexShaderSource =
+"#version 150\n"
 "in vec4 position;\n"
 "void main()\n"
 "{\n"
 "   gl_Position = position;\n"
 "}\n";
 
-static NSString *fragmentShaderSource =
-@"#version 150\n"
+static const GLchar *fragmentShaderSource =
+"#version 150\n"
 "out vec4 outputColor;\n"
 "void main()\n"
 "{\n"

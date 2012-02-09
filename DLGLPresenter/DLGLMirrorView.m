@@ -124,8 +124,8 @@
 }
 
 
-static NSString *vertexShaderSource =
-@"#version 150\n"
+static const GLchar *vertexShaderSource =
+"#version 150\n"
 "in vec4 vertexPosition;\n"
 "in vec2 texCoords;\n"
 "smooth out vec2 varyingTexCoords;\n"
@@ -135,8 +135,8 @@ static NSString *vertexShaderSource =
 "   varyingTexCoords = texCoords;\n"
 "}\n";
 
-static NSString *fragmentShaderSource =
-@"#version 150\n"
+static const GLchar *fragmentShaderSource =
+"#version 150\n"
 "uniform sampler2D colorMap;\n"
 "in vec2 varyingTexCoords;\n"
 "out vec4 fragColor;\n"

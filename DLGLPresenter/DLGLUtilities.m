@@ -35,14 +35,12 @@ uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime)
 }
 
 
-GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource)
+GLuint DLGLCreateShader(GLenum shaderType, const GLchar *shaderSource)
 {
     GLuint shader = glCreateShader(shaderType);
     NSCAssert(shader, @"Shader creation failed (GL error = %d)", glGetError());
     
-    const char *shaderSourceUTF8 = [shaderSource UTF8String];
-    glShaderSource(shader, 1, &shaderSourceUTF8, NULL);
-    
+    glShaderSource(shader, 1, &shaderSource, NULL);
     glCompileShader(shader);
     
     GLint infoLogLength;

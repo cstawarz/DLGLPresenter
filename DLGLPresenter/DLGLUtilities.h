@@ -6,7 +6,6 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <OpenGL/gl3.h>
 
 #if DEBUG
@@ -20,5 +19,5 @@ void _DLGLLogGLErrors(void);
 
 uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime);
 
-GLuint DLGLCreateShader(GLenum shaderType, NSString *shaderSource);
+GLuint DLGLCreateShader(GLenum shaderType, const GLchar *shaderSource);
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...);
