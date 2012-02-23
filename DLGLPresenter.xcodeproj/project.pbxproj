@@ -292,6 +292,7 @@
 		E1EEA6F5140D31AC0054C95A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = MIT;
 			};
 			buildConfigurationList = E1EEA6F8140D31AC0054C95A /* Build configuration list for PBXProject "DLGLPresenter" */;
