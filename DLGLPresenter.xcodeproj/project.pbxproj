@@ -32,7 +32,6 @@
 		E1F64910141941ED005455C8 /* DLGLUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = E1F6490E141941ED005455C8 /* DLGLUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1F64911141941ED005455C8 /* DLGLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F6490F141941ED005455C8 /* DLGLUtilities.m */; };
 		E1F64919141954B9005455C8 /* MovingTriangle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F64918141954B9005455C8 /* MovingTriangle.m */; };
-		E1F6491B14195A43005455C8 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F6491A14195A42005455C8 /* CoreAudio.framework */; };
 		E1F6491C14195BDD005455C8 /* calcOffset.vert in Resources */ = {isa = PBXBuildFile; fileRef = E1F6491414195441005455C8 /* calcOffset.vert */; };
 		E1F6491D14195BE0005455C8 /* calcColor.frag in Resources */ = {isa = PBXBuildFile; fileRef = E1F6491314195441005455C8 /* calcColor.frag */; };
 /* End PBXBuildFile section */
@@ -77,7 +76,6 @@
 		E1F6491414195441005455C8 /* calcOffset.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = calcOffset.vert; sourceTree = "<group>"; };
 		E1F64917141954B9005455C8 /* MovingTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovingTriangle.h; sourceTree = "<group>"; };
 		E1F64918141954B9005455C8 /* MovingTriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovingTriangle.m; sourceTree = "<group>"; };
-		E1F6491A14195A42005455C8 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +96,6 @@
 				E1EEA703140D31AC0054C95A /* Cocoa.framework in Frameworks */,
 				E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */,
 				E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */,
-				E1F6491B14195A43005455C8 /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +173,6 @@
 				E1EEA702140D31AC0054C95A /* Cocoa.framework */,
 				E1EEA727140D3F240054C95A /* OpenGL.framework */,
 				E1EEA72D140D50860054C95A /* CoreVideo.framework */,
-				E1F6491A14195A42005455C8 /* CoreAudio.framework */,
 				E1EEA704140D31AC0054C95A /* Other Frameworks */,
 			);
 			name = Frameworks;

@@ -8,6 +8,7 @@
 
 #import "DLGLPresenterView.h"
 
+#import <CoreVideo/CVHostTime.h>
 #import <CoreVideo/CVDisplayLink.h>
 
 #import "DLGLUtilities.h"
@@ -285,13 +286,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (uint64_t)elapsedTime
+- (double)elapsedTime
 {
     if (!presenting) {
-        return 0ull;
+        return 0.0;
     }
     
-    return DLGLConvertHostTimeToNanos(currentHostTime - startHostTime);
+    return (double)(currentHostTime - startHostTime) / CVGetHostClockFrequency();
 }
 
 

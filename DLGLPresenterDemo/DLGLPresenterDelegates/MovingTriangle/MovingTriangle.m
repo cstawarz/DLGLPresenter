@@ -70,7 +70,7 @@ static const float vertexPositions[] = {
     glUseProgram(program);
     glBindVertexArray(vertexArrayObject);
     
-    glUniform1f(timeUniformLocation, (float)(presenterView.elapsedTime) / 1.0e9f);
+    glUniform1f(timeUniformLocation, (GLfloat)(presenterView.elapsedTime));
     
     glDrawArrays(GL_TRIANGLES, 0, 3);
     

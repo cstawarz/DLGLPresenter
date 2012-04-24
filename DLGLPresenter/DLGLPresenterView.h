@@ -19,7 +19,7 @@
 
 @property(nonatomic, weak) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
-@property(nonatomic, readonly) uint64_t elapsedTime;
+@property(nonatomic, readonly) double elapsedTime;
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
 

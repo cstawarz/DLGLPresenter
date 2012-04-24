@@ -17,7 +17,5 @@
 
 void _DLGLLogGLErrors(void);
 
-uint64_t DLGLConvertHostTimeToNanos(uint64_t hostTime);
-
 GLuint DLGLCreateShader(GLenum shaderType, const GLchar *shaderSource);
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...);
