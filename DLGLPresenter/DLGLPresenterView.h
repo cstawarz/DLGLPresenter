@@ -19,6 +19,10 @@
 
 @property(nonatomic, weak) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
+
+@property(nonatomic, readonly) CVTime nominalRefreshPeriod;
+@property(nonatomic, readonly) double actualRefreshPeriod;
+@property(nonatomic, readonly) CVTime nominalLatency;
 @property(nonatomic, readonly) double elapsedTime;
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
@@ -29,10 +33,15 @@
 @protocol DLGLPresenterDelegate <NSObject>
 
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView;
+- (void)presenterViewDidStartPresentation:(DLGLPresenterView *)presenterView;
+
 - (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldDrawForTime:(const CVTimeStamp *)outputTime;
 - (void)presenterView:(DLGLPresenterView *)presenterView willDrawForTime:(const CVTimeStamp *)outputTime;
 - (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime;
+
+- (void)presenterViewWillStopPresentation:(DLGLPresenterView *)presenterView;
 - (void)presenterViewDidStopPresentation:(DLGLPresenterView *)presenterView;
+
 - (void)presenterView:(DLGLPresenterView *)presenterView skippedFrames:(double)skippedFrameCount;
 
 @end

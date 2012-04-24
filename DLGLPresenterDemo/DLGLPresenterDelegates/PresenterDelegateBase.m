@@ -18,6 +18,26 @@
 }
 
 
+- (void)presenterViewDidStartPresentation:(DLGLPresenterView *)presenterView
+{
+    CVTime nominalRefreshPeriod = [presenterView nominalRefreshPeriod];
+    if (nominalRefreshPeriod.flags & kCVTimeIsIndefinite) {
+        NSLog(@"nominalRefreshPeriod is indefinite");
+    } else {
+        NSLog(@"nominalRefreshPeriod: %lld/%d", nominalRefreshPeriod.timeValue, nominalRefreshPeriod.timeScale);
+    }
+    
+    NSLog(@"actualRefreshPeriod: %g", [presenterView actualRefreshPeriod]);
+    
+    CVTime nominalLatency = [presenterView nominalLatency];
+    if (nominalLatency.flags & kCVTimeIsIndefinite) {
+        NSLog(@"nominalLatency is indefinite");
+    } else {
+        NSLog(@"nominalLatency: %lld/%d", nominalLatency.timeValue, nominalLatency.timeScale);
+    }
+}
+
+
 - (BOOL)presenterView:(DLGLPresenterView *)presenterView shouldDrawForTime:(const CVTimeStamp *)outputTime
 {
     return YES;
@@ -31,6 +51,12 @@
 
 
 - (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime
+{
+    // Do nothing
+}
+
+
+- (void)presenterViewWillStopPresentation:(DLGLPresenterView *)presenterView
 {
     // Do nothing
 }

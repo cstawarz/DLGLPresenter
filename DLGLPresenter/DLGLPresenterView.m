@@ -54,7 +54,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-@synthesize delegate, presenting, elapsedTime;
+@synthesize delegate, presenting;
 
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat
@@ -220,7 +220,15 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkStart(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
         
+        [self performBlockOnGLContext:^{
+            [delegate presenterViewDidStartPresentation:self];
+        }];
+        
     } else if (!shouldPresent && presenting) {
+        
+        [self performBlockOnGLContext:^{
+            [delegate presenterViewWillStopPresentation:self];
+        }];
         
         error = CVDisplayLinkStop(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
@@ -283,6 +291,24 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             shouldDraw = NO;
         }
     }];
+}
+
+
+- (CVTime)nominalRefreshPeriod
+{
+    return CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
+}
+
+
+- (double)actualRefreshPeriod
+{
+    return CVDisplayLinkGetActualOutputVideoRefreshPeriod(displayLink);
+}
+
+
+- (CVTime)nominalLatency
+{
+    return CVDisplayLinkGetOutputVideoLatency(displayLink);
 }
 
 
