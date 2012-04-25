@@ -8,6 +8,8 @@
 
 #import "DLGLUtilities.h"
 
+#import <Foundation/Foundation.h>
+
 
 void DLGLErrorBreak(GLenum error);
 
