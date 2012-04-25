@@ -8,8 +8,6 @@
 
 #import "DLGLView.h"
 
-#import "DLGLUtilities.h"
-
 
 @implementation DLGLView
 
@@ -20,42 +18,6 @@
 - (id)initWithFrame:(NSRect)frameRect
 {
     return [self initWithFrame:frameRect pixelFormat:[[self class] defaultPixelFormat]];
-}
-
-
-- (void)performBlockOnGLContext:(dispatch_block_t)block
-{
-    NSOpenGLContext *previousContext = [NSOpenGLContext currentContext];
-    NSOpenGLContext *context = [self openGLContext];
-    CGLContextObj contextObj = [context CGLContextObj];
-    
-    CGLError error = CGLLockContext(contextObj);
-    NSAssert((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
-    
-    @try {
-        if (previousContext != context) {
-            [context makeCurrentContext];
-        }
-        
-        block();
-        DLGLLogGLErrors();
-        
-        if (previousContext && (previousContext != context)) {
-            [previousContext makeCurrentContext];
-        }
-    }
-    @finally {
-        error = CGLUnlockContext(contextObj);
-        NSAssert((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
-    }
-}
-
-
-- (void)update
-{
-    [self performBlockOnGLContext:^{
-        [super update];
-    }];
 }
 
 

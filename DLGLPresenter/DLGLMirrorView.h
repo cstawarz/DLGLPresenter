@@ -9,10 +9,11 @@
 #import <AppKit/AppKit.h>
 
 #import <DLGLPresenter/DLGLView.h>
+#import <DLGLPresenter/DLGLPresenterView.h>
 
 
 @interface DLGLMirrorView : DLGLView
 
-@property(nonatomic, weak) DLGLView *sourceView;
+@property(nonatomic, weak) DLGLPresenterView *sourceView;
 
 @end

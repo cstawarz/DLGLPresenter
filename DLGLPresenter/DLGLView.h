@@ -14,7 +14,6 @@
 
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
-- (void)performBlockOnGLContext:(dispatch_block_t)block;
 - (void)updateViewport;
 
 @end

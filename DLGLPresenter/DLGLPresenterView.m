@@ -117,9 +117,26 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
+- (void)performBlockWithContextLock:(dispatch_block_t)block
+{
+    CGLContextObj contextObj = [[self openGLContext] CGLContextObj];
+    CGLError error = CGLLockContext(contextObj);
+    NSAssert((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
+    
+    @try {
+        block();
+        DLGLLogGLErrors();
+    }
+    @finally {
+        error = CGLUnlockContext(contextObj);
+        NSAssert((kCGLNoError == error), @"Unable to release GL context lock (error = %d)", error);
+    }
+}
+
+
 - (void)prepareOpenGL
 {
-    [self performBlockOnGLContext:^{
+    [self performBlockWithContextLock:^{
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
         
@@ -131,7 +148,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)reshape
 {
-    [self performBlockOnGLContext:^{
+    [[self openGLContext] makeCurrentContext];
+    [self performBlockWithContextLock:^{
         [self updateViewport];
         [self allocateBufferStorage];  // Resize the renderbuffer
         
@@ -142,6 +160,14 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             glClear(GL_COLOR_BUFFER_BIT);
             [[self openGLContext] flushBuffer];
         }
+    }];
+}
+
+
+- (void)update
+{
+    [self performBlockWithContextLock:^{
+        [super update];
     }];
 }
 
@@ -199,11 +225,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)setPresenting:(BOOL)shouldPresent
 {
+    [[self openGLContext] makeCurrentContext];
+    
     CVReturn error;
     
     if (shouldPresent && !presenting) {
         
-        [self performBlockOnGLContext:^{
+        [self performBlockWithContextLock:^{
             [delegate presenterViewWillStartPresentation:self];
         }];
         
@@ -220,13 +248,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkStart(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
         
-        [self performBlockOnGLContext:^{
+        [self performBlockWithContextLock:^{
             [delegate presenterViewDidStartPresentation:self];
         }];
         
     } else if (!shouldPresent && presenting) {
         
-        [self performBlockOnGLContext:^{
+        [self performBlockWithContextLock:^{
             [delegate presenterViewWillStopPresentation:self];
         }];
         
@@ -235,7 +263,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         
         presenting = NO;
         
-        [self performBlockOnGLContext:^{
+        [self performBlockWithContextLock:^{
             [delegate presenterViewDidStopPresentation:self];
         }];
         
@@ -272,7 +300,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     }
     currentHostTime = outputTime->hostTime;
     
-    [self performBlockOnGLContext:^{
+    [[self openGLContext] makeCurrentContext];
+    [self performBlockWithContextLock:^{
         if (!shouldDraw && [delegate presenterView:self shouldDrawForTime:outputTime]) {
             shouldDraw = YES;
         }

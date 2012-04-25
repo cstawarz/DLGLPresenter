@@ -82,7 +82,7 @@
 }
 
 
-- (void)setSourceView:(DLGLView *)newSourceView
+- (void)setSourceView:(DLGLPresenterView *)newSourceView
 {
     NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:[self pixelFormat]
                                                           shareContext:[newSourceView openGLContext]];
@@ -97,30 +97,28 @@
 
 - (void)prepareOpenGL
 {
-    [self performBlockOnGLContext:^{
-        [self prepareForRendering];
-    }];
+    [self prepareForRendering];
 }
 
 
 - (void)reshape
 {
-    [self performBlockOnGLContext:^{
-        [self updateViewport];
-        [self allocateBufferStorage];
-    }];
+    [[self openGLContext] makeCurrentContext];
+    [self updateViewport];
+    [self allocateBufferStorage];
 }
 
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    [self performBlockOnGLContext:^{
-        [self.sourceView performBlockOnGLContext:^{
-            [self storeFrontBuffer];
-        }];
-        [self drawTexture:mirrorTexture];
-        glFlush();
+    [[self.sourceView openGLContext] makeCurrentContext];
+    [self.sourceView performBlockWithContextLock:^{
+        [self storeFrontBuffer];
     }];
+    
+    [[self openGLContext] makeCurrentContext];
+    [self drawTexture:mirrorTexture];
+    glFlush();
 }
 
 
