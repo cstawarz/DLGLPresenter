@@ -10,9 +10,6 @@
 
 #import "DLGLUtilities.h"
 
-#define MIRROR_UPDATE_INTERVAL  (33ull * NSEC_PER_MSEC)  // Update ~30 times per second
-#define MIRROR_UPDATE_LEEWAY    ( 5ull * NSEC_PER_MSEC)  // with a leeway of 5ms
-
 
 @interface DLGLMirrorView ()
 
@@ -26,8 +23,6 @@
 
 @implementation DLGLMirrorView
 {
-    dispatch_source_t timer;
-    
     GLuint vertexShader;
     GLuint fragmentShader;
     GLuint program;
@@ -58,27 +53,6 @@
     };
     
     return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
-}
-
-
-- (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)pixelFormat
-{
-    if ((self = [super initWithFrame:frameRect pixelFormat:pixelFormat])) {
-        timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-        NSAssert(timer, @"Unable to create dispatch timer");
-        
-        dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, MIRROR_UPDATE_INTERVAL, MIRROR_UPDATE_LEEWAY);
-        
-        dispatch_source_set_event_handler(timer, ^{
-            if (self.sourceView) {
-                [self setNeedsDisplay:YES];
-            }
-        });
-        
-        dispatch_resume(timer);
-    }
-    
-    return self;
 }
 
 

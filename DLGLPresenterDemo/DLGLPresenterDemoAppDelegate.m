@@ -16,17 +16,44 @@
 
 #define FULLSCREEN
 
+#define MIRROR_UPDATE_INTERVAL  (33ull * NSEC_PER_MSEC)  // Update ~30 times per second
+#define MIRROR_UPDATE_LEEWAY    ( 5ull * NSEC_PER_MSEC)  // with a leeway of 5ms
+
+
+@interface DLGLPresenterDemoAppDelegate ()
+
+- (void)startMirrorViewUpdates;
+
+@end
+
 
 @implementation DLGLPresenterDemoAppDelegate
 {
     NSWindow *fullScreenWindow;
     DLGLPresenterView *presenterView;
-    DLGLMirrorView *mirrorView;
     id <DLGLPresenterDelegate> presenterDelegate;
+    
+    DLGLMirrorView *mirrorView;
+    dispatch_source_t mirrorViewTimer;
 }
 
 
 @synthesize window;
+
+
+- (void)startMirrorViewUpdates
+{
+    mirrorViewTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    NSAssert(mirrorViewTimer, @"Unable to create dispatch timer");
+    
+    dispatch_source_set_timer(mirrorViewTimer, DISPATCH_TIME_NOW, MIRROR_UPDATE_INTERVAL, MIRROR_UPDATE_LEEWAY);
+    
+    dispatch_source_set_event_handler(mirrorViewTimer, ^{
+        [mirrorView setNeedsDisplay:YES];
+    });
+    
+    dispatch_resume(mirrorViewTimer);
+}
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -46,6 +73,7 @@
     [fullScreenWindow makeKeyAndOrderFront:self];
     [window setContentView:mirrorView];
     mirrorView.sourceView = presenterView;
+    [self startMirrorViewUpdates];
 #else
     [window setContentView:presenterView];
 #endif
