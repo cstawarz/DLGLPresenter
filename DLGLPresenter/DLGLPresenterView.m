@@ -140,6 +140,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
         
+        glEnable(GL_MULTISAMPLE);
+        
         glGenFramebuffers(1, &framebuffer);
         glGenRenderbuffers(1, &renderbuffer);
     }];
