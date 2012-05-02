@@ -7,6 +7,7 @@
 //
 
 #import <DLGLPresenter/DLGLUtilities.h>
+#import <DLGLPresenter/NSOpenGLView+DLGLPresenterAdditions.h>
 #import <DLGLPresenter/DLGLView.h>
 #import <DLGLPresenter/DLGLPresenterView.h>
 #import <DLGLPresenter/DLGLMirrorView.h>

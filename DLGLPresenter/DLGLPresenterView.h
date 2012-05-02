@@ -27,8 +27,6 @@
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
 
-- (void)performBlockWithContextLock:(dispatch_block_t)block;
-
 @end
 
 

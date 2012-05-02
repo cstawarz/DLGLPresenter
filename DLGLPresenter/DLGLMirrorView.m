@@ -9,6 +9,7 @@
 #import "DLGLMirrorView.h"
 
 #import "DLGLUtilities.h"
+#import "NSOpenGLView+DLGLPresenterAdditions.h"
 
 
 @interface DLGLMirrorView ()
@@ -86,7 +87,7 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
     [[self.sourceView openGLContext] makeCurrentContext];
-    [self.sourceView performBlockWithContextLock:^{
+    [self.sourceView DLGLPerformBlockWithContextLock:^{
         [self storeFrontBuffer];
     }];
     

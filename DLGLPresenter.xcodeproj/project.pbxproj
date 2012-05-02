@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E136003E1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = E136003C1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E136003F1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E136003D1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m */; };
 		E14DCD461430DAAD008904A4 /* DLGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E14DCD441430DAAD008904A4 /* DLGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E14DCD451430DAAD008904A4 /* DLGLView.m */; };
 		E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E136003C1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOpenGLView+DLGLPresenterAdditions.h"; sourceTree = "<group>"; };
+		E136003D1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOpenGLView+DLGLPresenterAdditions.m"; sourceTree = "<group>"; };
 		E14DCD441430DAAD008904A4 /* DLGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLView.h; sourceTree = "<group>"; };
 		E14DCD451430DAAD008904A4 /* DLGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLView.m; sourceTree = "<group>"; };
 		E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLMirrorView.h; sourceTree = "<group>"; };
@@ -195,6 +199,8 @@
 				E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */,
 				E1F6490E141941ED005455C8 /* DLGLUtilities.h */,
 				E1F6490F141941ED005455C8 /* DLGLUtilities.m */,
+				E136003C1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h */,
+				E136003D1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m */,
 				E14DCD441430DAAD008904A4 /* DLGLView.h */,
 				E14DCD451430DAAD008904A4 /* DLGLView.m */,
 				E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */,
@@ -241,6 +247,7 @@
 				E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */,
 				E1F64910141941ED005455C8 /* DLGLUtilities.h in Headers */,
 				E14DCD461430DAAD008904A4 /* DLGLView.h in Headers */,
+				E136003E1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +361,7 @@
 				E1F64911141941ED005455C8 /* DLGLUtilities.m in Sources */,
 				E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */,
 				E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */,
+				E136003F1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
