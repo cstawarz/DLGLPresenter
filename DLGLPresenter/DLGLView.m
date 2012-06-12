@@ -23,7 +23,7 @@
 
 - (void)updateViewport
 {
-    NSSize size = [self bounds].size;
+    NSSize size = [self convertRectToBacking:[self bounds]].size;
     viewportWidth = (GLsizei)(size.width);
     viewportHeight = (GLsizei)(size.height);
     glViewport(0, 0, viewportWidth, viewportHeight);
