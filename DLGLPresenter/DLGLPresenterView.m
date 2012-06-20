@@ -33,6 +33,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                                     CVOptionFlags *flagsOut,
                                     void *displayLinkContext)
 {
+    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
+              @"Video time is invalid (%lld)", outputTime->videoTime);
+    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
+              @"Host time is invalid (%llu)", outputTime->hostTime);
+    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
+              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+    
     DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
     
     @autoreleasepool {
@@ -47,7 +54,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 @implementation DLGLPresenterView
 {
     CVDisplayLinkRef displayLink;
-    uint64_t startHostTime, currentHostTime;
+    uint64_t startHostTime, currentHostTime, previousHostTime;
     int64_t previousVideoTime;
     BOOL shouldDraw;
     
@@ -223,7 +230,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         
         shouldDraw = YES;
         presenting = YES;
-        startHostTime = currentHostTime = 0ull;
+        startHostTime = currentHostTime = previousHostTime = 0ull;
         previousVideoTime = 0ll;
         
         error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
@@ -259,32 +266,33 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime
 {
-    NSAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
-             @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-             @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+    double expectedInterval = 1.0;
     
     if (previousVideoTime) {
         int64_t delta = (outputTime->videoTime - previousVideoTime) - outputTime->videoRefreshPeriod;
         if (delta) {
             double skippedFrameCount = (double)delta / (double)(outputTime->videoRefreshPeriod);
             [delegate presenterView:self skippedFrames:skippedFrameCount];
+            expectedInterval += skippedFrameCount;
         }
     }
     
-    previousVideoTime = outputTime->videoTime;
+    if (previousHostTime) {
+        double interval = DLGLGetTimeInterval(previousHostTime, outputTime->hostTime) / self.actualRefreshPeriod;
+        // FIXME: The tolerance should be configurable, and the delegate should be notified when the test fails
+        if (fabs(interval - expectedInterval) / expectedInterval > 0.01) {
+            NSLog(@"interval = %g", interval);
+        }
+    }
 }
 
 
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime
 {
-    NSAssert((outputTime->flags & kCVTimeStampHostTimeValid),
-             @"Host time is invalid (%llu)", outputTime->hostTime);
-    
-    if (!startHostTime) {
-        startHostTime = outputTime->hostTime;
-    }
     currentHostTime = outputTime->hostTime;
+    if (!startHostTime) {
+        startHostTime = currentHostTime;
+    }
     
     [[self openGLContext] makeCurrentContext];
     [self DLGLPerformBlockWithContextLock:^{
@@ -306,6 +314,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             shouldDraw = NO;
         }
     }];
+    
+    previousHostTime = currentHostTime;
+    previousVideoTime = outputTime->videoTime;
 }
 
 
@@ -315,7 +326,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (double)actualRefreshPeriod
+- (NSTimeInterval)actualRefreshPeriod
 {
     return CVDisplayLinkGetActualOutputVideoRefreshPeriod(displayLink);
 }
@@ -327,13 +338,13 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (double)elapsedTime
+- (NSTimeInterval)elapsedTime
 {
     if (!presenting) {
         return 0.0;
     }
     
-    return (double)(currentHostTime - startHostTime) / CVGetHostClockFrequency();
+    return DLGLGetTimeInterval(startHostTime, currentHostTime);
 }
 
 

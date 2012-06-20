@@ -6,6 +6,7 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <OpenGL/gl3.h>
 
 #if DEBUG
@@ -19,3 +20,5 @@ void _DLGLLogGLErrors(void);
 
 GLuint DLGLCreateShader(GLenum shaderType, const GLchar *shaderSource);
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...);
+
+NSTimeInterval DLGLGetTimeInterval(uint64_t startHostTime, uint64_t endHostTime);

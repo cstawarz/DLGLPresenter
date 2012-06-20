@@ -8,7 +8,7 @@
 
 #import "DLGLUtilities.h"
 
-#import <Foundation/Foundation.h>
+#import <CoreVideo/CVHostTime.h>
 
 
 void DLGLErrorBreak(GLenum error);
@@ -85,6 +85,12 @@ GLuint DLGLCreateProgramWithShaders(GLuint shader, ...)
     NSCAssert((GL_TRUE == linkStatus), @"Program linking failed");
     
     return program;
+}
+
+
+NSTimeInterval DLGLGetTimeInterval(uint64_t startHostTime, uint64_t endHostTime)
+{
+    return (double)(endHostTime - startHostTime) / CVGetHostClockFrequency();
 }
 
 

@@ -21,6 +21,15 @@
 }
 
 
+- (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)format
+{
+    if ((self = [super initWithFrame:frameRect pixelFormat:format])) {
+        [self setWantsBestResolutionOpenGLSurface:YES];
+    }
+    return self;
+}
+
+
 - (void)updateViewport
 {
     NSSize size = [self convertRectToBacking:[self bounds]].size;
