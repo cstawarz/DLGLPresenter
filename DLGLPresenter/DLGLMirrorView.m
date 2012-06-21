@@ -119,23 +119,17 @@ static const GLchar *fragmentShaderSource =
 "}\n";
 
 static const GLfloat vertexPosition[] = {
-     1.0f,  1.0f,
-    -1.0f, -1.0f,
      1.0f, -1.0f,
-    
      1.0f,  1.0f,
-    -1.0f,  1.0f,
     -1.0f, -1.0f,
+    -1.0f,  1.0f,
 };
 
 static const GLfloat texCoords[] = {
-    1.0f, 1.0f,
-    0.0f, 0.0f,
     1.0f, 0.0f,
-    
     1.0f, 1.0f,
-    0.0f, 1.0f,
     0.0f, 0.0f,
+    0.0f, 1.0f,
 };
 
 
@@ -253,7 +247,7 @@ static const GLfloat texCoords[] = {
     glBindVertexArray(vertexArrayObject);
     glBindTexture(GL_TEXTURE_2D, texture);
     
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);

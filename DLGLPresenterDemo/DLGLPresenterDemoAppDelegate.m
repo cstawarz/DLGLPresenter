@@ -12,6 +12,7 @@
 
 #import "ScreenFlicker.h"
 #import "HelloTriangle.h"
+#import "HelloCircle.h"
 #import "MovingTriangle.h"
 
 #define FULLSCREEN
@@ -58,7 +59,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    presenterDelegate = [[MovingTriangle alloc] init];
+    presenterDelegate = [[HelloCircle alloc] init];
     
 #ifdef FULLSCREEN
     fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];
@@ -72,6 +73,12 @@
 #ifdef FULLSCREEN
     [fullScreenWindow makeKeyAndOrderFront:self];
     [window setContentView:mirrorView];
+    
+    NSSize aspectRatio = presenterView.bounds.size;
+    [window setContentAspectRatio:presenterView.bounds.size];
+    CGFloat windowHeight = [window frame].size.height;
+    [window setContentSize:NSMakeSize(windowHeight * aspectRatio.width / aspectRatio.height, windowHeight)];
+    
     mirrorView.sourceView = presenterView;
     [self startMirrorViewUpdates];
 #else

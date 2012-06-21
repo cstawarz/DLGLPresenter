@@ -31,8 +31,8 @@ static const float vertexPositions[] = {
 
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView
 {
-    vertexShader = [self loadShader:GL_VERTEX_SHADER fromResource:@"calcOffset" withExtension:@"vert"];
-    fragmentShader = [self loadShader:GL_FRAGMENT_SHADER fromResource:@"calcColor" withExtension:@"frag"];
+    vertexShader = [self loadShader:GL_VERTEX_SHADER fromResource:@"MovingTriangle" withExtension:@"vert"];
+    fragmentShader = [self loadShader:GL_FRAGMENT_SHADER fromResource:@"MovingTriangle" withExtension:@"frag"];
     
     program = DLGLCreateProgramWithShaders(vertexShader, fragmentShader, 0);
     glUseProgram(program);
