@@ -16,6 +16,6 @@ void main()
     float delta = 1.0;
     if (dist > radius+delta)
         discard;
-    outputColor.xyz = vec3(0.9, 0.9, 0.9);
+    outputColor.rgb = vec3(0.9, 0.9, 0.9);
     outputColor.a = 1.0 - smoothstep(radius-delta, radius+delta, dist);
 }

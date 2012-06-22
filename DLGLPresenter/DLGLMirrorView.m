@@ -14,9 +14,11 @@
 
 @interface DLGLMirrorView ()
 
-- (void)prepareForRendering;
+- (void)prepareProgram;
+- (void)prepareTextures;
 - (void)allocateBufferStorage;
 - (void)storeFrontBuffer;
+- (void)drawStoredBuffer;
 - (void)drawTexture:(GLuint)texture;
 
 @end
@@ -72,7 +74,10 @@
 
 - (void)prepareOpenGL
 {
-    [self prepareForRendering];
+    [self prepareProgram];
+    glGenFramebuffers(1, &framebuffer);
+    [self prepareTextures];
+    glFlush();
 }
 
 
@@ -81,6 +86,7 @@
     [[self openGLContext] makeCurrentContext];
     [self updateViewport];
     [self allocateBufferStorage];
+    glFlush();
 }
 
 
@@ -89,10 +95,11 @@
     [[self.sourceView openGLContext] makeCurrentContext];
     [self.sourceView DLGLPerformBlockWithContextLock:^{
         [self storeFrontBuffer];
+        glFlush();
     }];
     
     [[self openGLContext] makeCurrentContext];
-    [self drawTexture:mirrorTexture];
+    [self drawStoredBuffer];
     glFlush();
 }
 
@@ -133,7 +140,7 @@ static const GLfloat texCoords[] = {
 };
 
 
-- (void)prepareForRendering
+- (void)prepareProgram
 {
     vertexShader = DLGLCreateShader(GL_VERTEX_SHADER, vertexShaderSource);
     fragmentShader = DLGLCreateShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
@@ -164,10 +171,11 @@ static const GLfloat texCoords[] = {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     glUseProgram(0);
-    
-    glGenFramebuffers(1, &framebuffer);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-    
+}
+
+
+- (void)prepareTextures
+{
     glGenTextures(1, &sourceTexture);
     glBindTexture(GL_TEXTURE_2D, sourceTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -179,9 +187,6 @@ static const GLfloat texCoords[] = {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     glBindTexture(GL_TEXTURE_2D, 0);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    
-    glFlush();
 }
 
 
@@ -206,8 +211,6 @@ static const GLfloat texCoords[] = {
     
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    
-    glFlush();
 }
 
 
@@ -225,8 +228,6 @@ static const GLfloat texCoords[] = {
                      sourceView.viewportHeight,
                      0);
     
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
     GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
     glDrawBuffers(1, drawBuffers);
@@ -236,8 +237,15 @@ static const GLfloat texCoords[] = {
     glViewport(0, 0, sourceView.viewportWidth, sourceView.viewportHeight);
     
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    
-    glFlush();
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+
+- (void)drawStoredBuffer
+{
+    glBindTexture(GL_TEXTURE_2D, mirrorTexture);
+    [self drawTexture:mirrorTexture];
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -245,11 +253,9 @@ static const GLfloat texCoords[] = {
 {
     glUseProgram(program);
     glBindVertexArray(vertexArrayObject);
-    glBindTexture(GL_TEXTURE_2D, texture);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glUseProgram(0);
 }
