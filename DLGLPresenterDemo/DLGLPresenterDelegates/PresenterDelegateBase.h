@@ -15,6 +15,5 @@
 @interface PresenterDelegateBase : NSObject <DLGLPresenterDelegate>
 
 - (GLuint)loadShader:(GLenum)shaderType fromResource:(NSString *)name withExtension:(NSString *)extension;
-- (GLuint)createTexture:(GLenum)target fromImage:(NSImage *)image;
 
 @end
