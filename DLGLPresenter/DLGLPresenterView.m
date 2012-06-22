@@ -241,15 +241,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkStart(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
         
-        [self DLGLPerformBlockWithContextLock:^{
-            [delegate presenterViewDidStartPresentation:self];
-        }];
-        
     } else if (!shouldPresent && presenting) {
-        
-        [self DLGLPerformBlockWithContextLock:^{
-            [delegate presenterViewWillStopPresentation:self];
-        }];
         
         error = CVDisplayLinkStop(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);

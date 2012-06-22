@@ -24,6 +24,7 @@
 @interface DLGLPresenterDemoAppDelegate ()
 
 - (void)startMirrorViewUpdates;
+- (void)logDisplayInfo;
 
 @end
 
@@ -40,21 +41,6 @@
 
 
 @synthesize window;
-
-
-- (void)startMirrorViewUpdates
-{
-    mirrorViewTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    NSAssert(mirrorViewTimer, @"Unable to create dispatch timer");
-    
-    dispatch_source_set_timer(mirrorViewTimer, DISPATCH_TIME_NOW, MIRROR_UPDATE_INTERVAL, MIRROR_UPDATE_LEEWAY);
-    
-    dispatch_source_set_event_handler(mirrorViewTimer, ^{
-        [mirrorView setNeedsDisplay:YES];
-    });
-    
-    dispatch_resume(mirrorViewTimer);
-}
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -86,6 +72,7 @@
 #endif
     
     presenterView.presenting = YES;
+    [self logDisplayInfo];
 }
 
 
@@ -95,6 +82,41 @@
 #ifdef FULLSCREEN
     [fullScreenWindow orderOut:nil];
 #endif
+}
+
+
+- (void)startMirrorViewUpdates
+{
+    mirrorViewTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    NSAssert(mirrorViewTimer, @"Unable to create dispatch timer");
+    
+    dispatch_source_set_timer(mirrorViewTimer, DISPATCH_TIME_NOW, MIRROR_UPDATE_INTERVAL, MIRROR_UPDATE_LEEWAY);
+    
+    dispatch_source_set_event_handler(mirrorViewTimer, ^{
+        [mirrorView setNeedsDisplay:YES];
+    });
+    
+    dispatch_resume(mirrorViewTimer);
+}
+
+
+- (void)logDisplayInfo
+{
+    CVTime nominalRefreshPeriod = [presenterView nominalRefreshPeriod];
+    if (nominalRefreshPeriod.flags & kCVTimeIsIndefinite) {
+        NSLog(@"nominalRefreshPeriod is indefinite");
+    } else {
+        NSLog(@"nominalRefreshPeriod: %lld/%d", nominalRefreshPeriod.timeValue, nominalRefreshPeriod.timeScale);
+    }
+    
+    NSLog(@"actualRefreshPeriod: %g", [presenterView actualRefreshPeriod]);
+    
+    CVTime nominalLatency = [presenterView nominalLatency];
+    if (nominalLatency.flags & kCVTimeIsIndefinite) {
+        NSLog(@"nominalLatency is indefinite");
+    } else {
+        NSLog(@"nominalLatency: %lld/%d", nominalLatency.timeValue, nominalLatency.timeScale);
+    }
 }
 
 
