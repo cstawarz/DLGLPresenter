@@ -126,17 +126,17 @@ static const GLchar *fragmentShaderSource =
 "}\n";
 
 static const GLfloat vertexPosition[] = {
-     1.0f, -1.0f,
-     1.0f,  1.0f,
     -1.0f, -1.0f,
+     1.0f, -1.0f,
     -1.0f,  1.0f,
+     1.0f,  1.0f,
 };
 
 static const GLfloat texCoords[] = {
-    1.0f, 0.0f,
-    1.0f, 1.0f,
     0.0f, 0.0f,
+    1.0f, 0.0f,
     0.0f, 1.0f,
+    1.0f, 1.0f,
 };
 
 
@@ -201,11 +201,8 @@ static const GLfloat texCoords[] = {
                  self.viewportWidth,
                  self.viewportHeight,
                  0,
-                 // TODO: GL_BGRA/GL_UNSIGNED_INT_8_8_8_8_REV is one of the format/type pairs recommended by Apple.
-                 // Test whether using these settings reduces the amount of CPU time spent transferring the data
-                 // between graphics cards on a multi-card system (vs. the more obvious GL_RGBA/GL_FLOAT combo).
-                 GL_BGRA,
-                 GL_UNSIGNED_INT_8_8_8_8_REV,
+                 GL_RGBA,
+                 GL_FLOAT,
                  NULL);
     glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mirrorTexture, 0);
     

@@ -26,10 +26,10 @@
 
 
 static const float vertexPositions[] = {
-     0.75f, -0.75f,
-     0.75f,  0.75f,
     -0.75f, -0.75f,
+     0.75f, -0.75f,
     -0.75f,  0.75f,
+     0.75f,  0.75f,
 };
 
 
