@@ -6,7 +6,7 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/NSApplication.h>
 
 
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate>

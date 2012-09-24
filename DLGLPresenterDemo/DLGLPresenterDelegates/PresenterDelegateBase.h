@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 MIT. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 #import <OpenGL/gl3.h>
 
 #import <DLGLPresenter/DLGLPresenter.h>

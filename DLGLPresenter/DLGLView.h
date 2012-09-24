@@ -6,7 +6,7 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <AppKit/NSOpenGLView.h>
 #import <OpenGL/gl3.h>
 
 

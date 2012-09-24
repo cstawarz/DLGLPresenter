@@ -8,6 +8,8 @@
 
 #import "DLGLMirrorView.h"
 
+#import <AppKit/NSOpenGL.h>
+
 #import "DLGLUtilities.h"
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 

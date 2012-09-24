@@ -8,6 +8,9 @@
 
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 
+#import <AppKit/NSOpenGL.h>
+#import <OpenGL/OpenGL.h>
+
 
 @implementation NSOpenGLView (DLGLPresenterAdditions)
 

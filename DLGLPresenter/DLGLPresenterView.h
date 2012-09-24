@@ -6,7 +6,8 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <AppKit/NSScreen.h>
+#import <AppKit/NSWindow.h>
 #import <CoreVideo/CVBase.h>
 
 #import <DLGLPresenter/DLGLView.h>

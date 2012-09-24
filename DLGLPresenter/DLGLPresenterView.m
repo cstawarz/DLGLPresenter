@@ -8,6 +8,7 @@
 
 #import "DLGLPresenterView.h"
 
+#import <AppKit/NSOpenGL.h>
 #import <CoreVideo/CVHostTime.h>
 #import <CoreVideo/CVDisplayLink.h>
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 MIT. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <AppKit/NSOpenGLView.h>
 
 
 @interface NSOpenGLView (DLGLPresenterAdditions)
