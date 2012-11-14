@@ -21,14 +21,6 @@
 #define MIRROR_UPDATE_LEEWAY    ( 5ull * NSEC_PER_MSEC)  // with a leeway of 5ms
 
 
-@interface DLGLPresenterDemoAppDelegate ()
-
-- (void)startMirrorViewUpdates;
-- (void)logDisplayInfo;
-
-@end
-
-
 @implementation DLGLPresenterDemoAppDelegate
 {
     NSWindow *fullScreenWindow;
@@ -40,17 +32,14 @@
 }
 
 
-@synthesize window;
-
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    presenterDelegate = [[HelloCircle alloc] init];
+    presenterDelegate = [[MovingTriangle alloc] init];
     
 #ifdef FULLSCREEN
     fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];
     presenterView = [fullScreenWindow contentView];
-    mirrorView = [[DLGLMirrorView alloc] initWithFrame:[window frame]];
+    mirrorView = [[DLGLMirrorView alloc] initWithFrame:[self.window frame]];
 #else
     presenterView = [[DLGLPresenterView alloc] initWithFrame:[window frame]];
 #endif
@@ -58,12 +47,12 @@
     
 #ifdef FULLSCREEN
     [fullScreenWindow makeKeyAndOrderFront:self];
-    [window setContentView:mirrorView];
+    [self.window setContentView:mirrorView];
     
     NSSize aspectRatio = presenterView.bounds.size;
-    [window setContentAspectRatio:presenterView.bounds.size];
-    CGFloat windowHeight = [window frame].size.height;
-    [window setContentSize:NSMakeSize(windowHeight * aspectRatio.width / aspectRatio.height, windowHeight)];
+    [self.window setContentAspectRatio:presenterView.bounds.size];
+    CGFloat windowHeight = [self.window frame].size.height;
+    [self.window setContentSize:NSMakeSize(windowHeight * aspectRatio.width / aspectRatio.height, windowHeight)];
     
     mirrorView.sourceView = presenterView;
     [self startMirrorViewUpdates];

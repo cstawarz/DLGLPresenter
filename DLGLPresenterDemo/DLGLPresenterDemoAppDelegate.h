@@ -11,6 +11,6 @@
 
 @interface DLGLPresenterDemoAppDelegate : NSObject <NSApplicationDelegate>
 
-@property (nonatomic, unsafe_unretained) IBOutlet NSWindow *window;
+@property (nonatomic, weak) IBOutlet NSWindow *window;
 
 @end

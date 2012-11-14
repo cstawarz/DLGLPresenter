@@ -12,9 +12,6 @@
 @implementation DLGLView
 
 
-@synthesize viewportWidth, viewportHeight;
-
-
 - (id)initWithFrame:(NSRect)frameRect
 {
     return [self initWithFrame:frameRect pixelFormat:[[self class] defaultPixelFormat]];
@@ -33,9 +30,9 @@
 - (void)updateViewport
 {
     NSSize size = [self convertRectToBacking:[self bounds]].size;
-    viewportWidth = (GLsizei)(size.width);
-    viewportHeight = (GLsizei)(size.height);
-    glViewport(0, 0, viewportWidth, viewportHeight);
+    _viewportWidth = (GLsizei)(size.width);
+    _viewportHeight = (GLsizei)(size.height);
+    glViewport(0, 0, self.viewportWidth, self.viewportHeight);
 }
 
 

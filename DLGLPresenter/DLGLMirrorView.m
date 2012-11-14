@@ -14,18 +14,6 @@
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 
 
-@interface DLGLMirrorView ()
-
-- (void)prepareProgram;
-- (void)prepareTextures;
-- (void)allocateBufferStorage;
-- (void)storeFrontBuffer;
-- (void)drawStoredBuffer;
-- (void)drawTexture:(GLuint)texture;
-
-@end
-
-
 @implementation DLGLMirrorView
 {
     GLuint vertexShader;
@@ -38,9 +26,6 @@
     GLuint framebuffer;
     GLuint sourceTexture, mirrorTexture;
 }
-
-
-@synthesize sourceView;
 
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat
@@ -70,7 +55,7 @@
     [self setOpenGLContext:context];
     [context setView:self];
     
-    sourceView = newSourceView;
+    _sourceView = newSourceView;
 }
 
 
@@ -226,8 +211,8 @@ static const GLfloat texCoords[] = {
                      GL_RGBA,
                      0,
                      0,
-                     sourceView.viewportWidth,
-                     sourceView.viewportHeight,
+                     self.sourceView.viewportWidth,
+                     self.sourceView.viewportHeight,
                      0);
     
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
@@ -236,7 +221,7 @@ static const GLfloat texCoords[] = {
     
     glViewport(0, 0, self.viewportWidth, self.viewportHeight);
     [self drawTexture:sourceTexture];
-    glViewport(0, 0, sourceView.viewportWidth, sourceView.viewportHeight);
+    glViewport(0, 0, self.sourceView.viewportWidth, self.sourceView.viewportHeight);
     
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);

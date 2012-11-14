@@ -18,9 +18,6 @@
 
 @interface DLGLPresenterView ()
 
-- (void)allocateBufferStorage;
-- (void)storeBackBuffer;
-- (void)drawStoredBuffer;
 - (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
 - (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
 
@@ -61,9 +58,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     GLuint framebuffer, renderbuffer;
 }
-
-
-@synthesize delegate, presenting;
 
 
 + (NSOpenGLPixelFormat *)defaultPixelFormat
@@ -147,7 +141,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         [self updateViewport];
         [self allocateBufferStorage];  // Resize the renderbuffer
         
-        if (presenting) {
+        if (self.presenting) {
             shouldDraw = YES;
         } else {
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -223,14 +217,14 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     CVReturn error;
     
-    if (shouldPresent && !presenting) {
+    if (shouldPresent && !self.presenting) {
         
         [self DLGLPerformBlockWithContextLock:^{
-            [delegate presenterViewWillStartPresentation:self];
+            [self.delegate presenterViewWillStartPresentation:self];
         }];
         
         shouldDraw = YES;
-        presenting = YES;
+        _presenting = YES;
         startHostTime = currentHostTime = previousHostTime = 0ull;
         previousVideoTime = 0ll;
         
@@ -242,15 +236,15 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         error = CVDisplayLinkStart(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
         
-    } else if (!shouldPresent && presenting) {
+    } else if (!shouldPresent && self.presenting) {
         
         error = CVDisplayLinkStop(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
         
-        presenting = NO;
+        _presenting = NO;
         
         [self DLGLPerformBlockWithContextLock:^{
-            [delegate presenterViewDidStopPresentation:self];
+            [self.delegate presenterViewDidStopPresentation:self];
         }];
         
     }
@@ -265,7 +259,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         int64_t delta = (outputTime->videoTime - previousVideoTime) - outputTime->videoRefreshPeriod;
         if (delta) {
             double skippedFrameCount = (double)delta / (double)(outputTime->videoRefreshPeriod);
-            [delegate presenterView:self skippedFrames:skippedFrameCount];
+            [self.delegate presenterView:self skippedFrames:skippedFrameCount];
             expectedInterval += skippedFrameCount;
         }
     }
@@ -289,21 +283,21 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     [[self openGLContext] makeCurrentContext];
     [self DLGLPerformBlockWithContextLock:^{
-        if (!shouldDraw && [delegate presenterView:self shouldDrawForTime:outputTime]) {
+        if (!shouldDraw && [self.delegate presenterView:self shouldDrawForTime:outputTime]) {
             shouldDraw = YES;
         }
         
         if (!shouldDraw) {
             [self drawStoredBuffer];
         } else {
-            [delegate presenterView:self willDrawForTime:outputTime];
+            [self.delegate presenterView:self willDrawForTime:outputTime];
             [self storeBackBuffer];
         }
         
         [[self openGLContext] flushBuffer];
         
         if (shouldDraw) {
-            [delegate presenterView:self didDrawForTime:outputTime];
+            [self.delegate presenterView:self didDrawForTime:outputTime];
             shouldDraw = NO;
         }
     }];
@@ -333,7 +327,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (NSTimeInterval)elapsedTime
 {
-    if (!presenting) {
+    if (!self.presenting) {
         return 0.0;
     }
     
