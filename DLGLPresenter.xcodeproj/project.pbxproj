@@ -13,10 +13,6 @@
 		E136003F1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E136003D1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m */; };
 		E14DCD461430DAAD008904A4 /* DLGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E14DCD441430DAAD008904A4 /* DLGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E14DCD451430DAAD008904A4 /* DLGLView.m */; };
-		E175A7B61610E07100B0E10B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA707140D31AC0054C95A /* Foundation.framework */; };
-		E175A7B71610E07400B0E10B /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA705140D31AC0054C95A /* AppKit.framework */; };
-		E175A7B81610E0E800B0E10B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA707140D31AC0054C95A /* Foundation.framework */; };
-		E175A7B91610E0EA00B0E10B /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA705140D31AC0054C95A /* AppKit.framework */; };
 		E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */; };
 		E1B5E9B8159235BD004271BA /* HelloCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B5E9B7159235BD004271BA /* HelloCircle.m */; };
@@ -26,15 +22,17 @@
 		E1E7AE21140E730800B50A9F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE1F140E730800B50A9F /* Credits.rtf */; };
 		E1E7AE24140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE23140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m */; };
 		E1E7AE27140E730800B50A9F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE25140E730800B50A9F /* MainMenu.xib */; };
-		E1E7AE34140E739E00B50A9F /* DLGLPresenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */; };
 		E1E7AE67140E7A7600B50A9F /* ScreenFlicker.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */; };
-		E1E7AE6C140E7D4800B50A9F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1E7AE6B140E7D4800B50A9F /* OpenGL.framework */; };
 		E1E7AE6F140E9E9300B50A9F /* HelloTriangle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */; };
+		E1EA8C2C16CACFE000B98B76 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA727140D3F240054C95A /* OpenGL.framework */; };
+		E1EA8C2D16CACFEE00B98B76 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA72D140D50860054C95A /* CoreVideo.framework */; };
+		E1EA8C2E16CACFF700B98B76 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA705140D31AC0054C95A /* AppKit.framework */; };
+		E1EA8C2F16CAD01D00B98B76 /* DLGLPresenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */; };
+		E1EA8C3016CAD02A00B98B76 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA705140D31AC0054C95A /* AppKit.framework */; };
+		E1EA8C3116CAD03600B98B76 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA727140D3F240054C95A /* OpenGL.framework */; };
 		E1EEA70D140D31AC0054C95A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1EEA70B140D31AC0054C95A /* InfoPlist.strings */; };
 		E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1EEA71E140D3B150054C95A /* DLGLPresenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */; };
-		E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA727140D3F240054C95A /* OpenGL.framework */; };
-		E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA72D140D50860054C95A /* CoreVideo.framework */; };
 		E1F6490D1419409B005455C8 /* DLGLPresenter.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA70F140D31AC0054C95A /* DLGLPresenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1F64910141941ED005455C8 /* DLGLUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = E1F6490E141941ED005455C8 /* DLGLUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1F64911141941ED005455C8 /* DLGLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F6490F141941ED005455C8 /* DLGLUtilities.m */; };
@@ -67,12 +65,10 @@
 		E1E7AE26140E730800B50A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		E1E7AE65140E7A7600B50A9F /* ScreenFlicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenFlicker.h; path = DLGLPresenterDelegates/ScreenFlicker.h; sourceTree = "<group>"; };
 		E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenFlicker.m; path = DLGLPresenterDelegates/ScreenFlicker.m; sourceTree = "<group>"; };
-		E1E7AE6B140E7D4800B50A9F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HelloTriangle.h; path = DLGLPresenterDelegates/HelloTriangle.h; sourceTree = "<group>"; };
 		E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HelloTriangle.m; path = DLGLPresenterDelegates/HelloTriangle.m; sourceTree = "<group>"; };
 		E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLGLPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1EEA705140D31AC0054C95A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		E1EEA707140D31AC0054C95A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenter-Info.plist"; sourceTree = "<group>"; };
 		E1EEA70C140D31AC0054C95A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E1EEA70E140D31AC0054C95A /* DLGLPresenter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DLGLPresenter-Prefix.pch"; sourceTree = "<group>"; };
@@ -94,10 +90,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E175A7B81610E0E800B0E10B /* Foundation.framework in Frameworks */,
-				E175A7B91610E0EA00B0E10B /* AppKit.framework in Frameworks */,
-				E1E7AE6C140E7D4800B50A9F /* OpenGL.framework in Frameworks */,
-				E1E7AE34140E739E00B50A9F /* DLGLPresenter.framework in Frameworks */,
+				E1EA8C2F16CAD01D00B98B76 /* DLGLPresenter.framework in Frameworks */,
+				E1EA8C3016CAD02A00B98B76 /* AppKit.framework in Frameworks */,
+				E1EA8C3116CAD03600B98B76 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,10 +100,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E175A7B61610E07100B0E10B /* Foundation.framework in Frameworks */,
-				E175A7B71610E07400B0E10B /* AppKit.framework in Frameworks */,
-				E1EEA728140D3F240054C95A /* OpenGL.framework in Frameworks */,
-				E1EEA72E140D50860054C95A /* CoreVideo.framework in Frameworks */,
+				E1EA8C2E16CACFF700B98B76 /* AppKit.framework in Frameworks */,
+				E1EA8C2D16CACFEE00B98B76 /* CoreVideo.framework in Frameworks */,
+				E1EA8C2C16CACFE000B98B76 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +129,6 @@
 				E1E7AE63140E7A5B00B50A9F /* DLGLPresenterDelegates */,
 				E1E7AE25140E730800B50A9F /* MainMenu.xib */,
 				E1E7AE17140E730800B50A9F /* Supporting Files */,
-				E1E7AE6A140E7D2D00B50A9F /* Frameworks */,
 			);
 			path = DLGLPresenterDemo;
 			sourceTree = "<group>";
@@ -167,19 +160,12 @@
 			name = DLGLPresenterDelegates;
 			sourceTree = "<group>";
 		};
-		E1E7AE6A140E7D2D00B50A9F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E1E7AE6B140E7D4800B50A9F /* OpenGL.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		E1EEA6F3140D31AC0054C95A = {
 			isa = PBXGroup;
 			children = (
 				E1EEA708140D31AC0054C95A /* DLGLPresenter */,
 				E1E7AE16140E730800B50A9F /* DLGLPresenterDemo */,
+				E1EEA701140D31AC0054C95A /* Frameworks */,
 				E1EEA700140D31AC0054C95A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -196,13 +182,11 @@
 		E1EEA701140D31AC0054C95A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E1EEA707140D31AC0054C95A /* Foundation.framework */,
 				E1EEA705140D31AC0054C95A /* AppKit.framework */,
-				E1EEA727140D3F240054C95A /* OpenGL.framework */,
 				E1EEA72D140D50860054C95A /* CoreVideo.framework */,
+				E1EEA727140D3F240054C95A /* OpenGL.framework */,
 			);
 			name = Frameworks;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		E1EEA708140D31AC0054C95A /* DLGLPresenter */ = {
@@ -220,7 +204,6 @@
 				E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */,
 				E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */,
 				E1EEA709140D31AC0054C95A /* Supporting Files */,
-				E1EEA701140D31AC0054C95A /* Frameworks */,
 			);
 			path = DLGLPresenter;
 			sourceTree = "<group>";
@@ -307,7 +290,7 @@
 		E1EEA6F5140D31AC0054C95A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = MIT;
 			};
 			buildConfigurationList = E1EEA6F8140D31AC0054C95A /* Build configuration list for PBXProject "DLGLPresenter" */;
@@ -422,6 +405,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLGLPresenterDemo/DLGLPresenterDemo-Prefix.pch";
 				INFOPLIST_FILE = "DLGLPresenterDemo/DLGLPresenterDemo-Info.plist";
@@ -434,6 +418,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLGLPresenterDemo/DLGLPresenterDemo-Prefix.pch";
 				INFOPLIST_FILE = "DLGLPresenterDemo/DLGLPresenterDemo-Info.plist";
@@ -447,8 +432,12 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -462,6 +451,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -474,15 +464,20 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -493,6 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -508,6 +504,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
