@@ -41,7 +41,7 @@
     presenterView = [fullScreenWindow contentView];
     mirrorView = [[DLGLMirrorView alloc] initWithFrame:[self.window frame]];
 #else
-    presenterView = [[DLGLPresenterView alloc] initWithFrame:[window frame]];
+    presenterView = [[DLGLPresenterView alloc] initWithFrame:[self.window frame]];
 #endif
     presenterView.delegate = presenterDelegate;
     
@@ -57,7 +57,7 @@
     mirrorView.sourceView = presenterView;
     [self startMirrorViewUpdates];
 #else
-    [window setContentView:presenterView];
+    [self.window setContentView:presenterView];
 #endif
     
     presenterView.presenting = YES;
