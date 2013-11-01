@@ -220,7 +220,7 @@ static const GLfloat texCoords[] = {
     glDrawBuffers(1, drawBuffers);
     
     glViewport(0, 0, self.viewportWidth, self.viewportHeight);
-    [self drawTexture:sourceTexture];
+    [self drawBoundTexture];
     glViewport(0, 0, self.sourceView.viewportWidth, self.sourceView.viewportHeight);
     
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -231,12 +231,12 @@ static const GLfloat texCoords[] = {
 - (void)drawStoredBuffer
 {
     glBindTexture(GL_TEXTURE_2D, mirrorTexture);
-    [self drawTexture:mirrorTexture];
+    [self drawBoundTexture];
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
-- (void)drawTexture:(GLuint)texture
+- (void)drawBoundTexture
 {
     glUseProgram(program);
     glBindVertexArray(vertexArrayObject);
