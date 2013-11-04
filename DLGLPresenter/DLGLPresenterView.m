@@ -69,10 +69,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSOpenGLPFAMinimumPolicy,
         NSOpenGLPFAColorSize, 24,
         NSOpenGLPFAAlphaSize, 8,
-        NSOpenGLPFAMultisample,
-        NSOpenGLPFASampleBuffers, 1,
-        NSOpenGLPFASamples, 4,
-        NSOpenGLPFASampleAlpha,
         0
     };
     
@@ -122,8 +118,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     [self DLGLPerformBlockWithContextLock:^{
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-        
-        glEnable(GL_MULTISAMPLE);
         
         glGenFramebuffers(1, &framebuffer);
         glGenRenderbuffers(1, &renderbuffer);
