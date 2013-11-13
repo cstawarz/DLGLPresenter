@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>BD249EF5-8CCC-4DFD-8CFF-AC884B9B4B39</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DLGLPresenter</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BD079B03-853B-4511-BEEF-1D0703239549</key>
+		<string>ssh://github.com/cstawarz/DLGLPresenter.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DLGLPresenter.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BD079B03-853B-4511-BEEF-1D0703239549</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/cstawarz/DLGLPresenter.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BD079B03-853B-4511-BEEF-1D0703239549</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BD079B03-853B-4511-BEEF-1D0703239549</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DLGLPresenter</string>
+		</dict>
+	</array>
+</dict>
+</plist>
