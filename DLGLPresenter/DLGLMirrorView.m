@@ -33,9 +33,6 @@
     NSOpenGLPixelFormatAttribute attributes[] =
     {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        NSOpenGLPFAAccelerated,
-        NSOpenGLPFANoRecovery,
-        NSOpenGLPFAAllowOfflineRenderers,
         NSOpenGLPFAMinimumPolicy,
         NSOpenGLPFAColorSize, 24,
         NSOpenGLPFAAlphaSize, 8,
