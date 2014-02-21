@@ -34,7 +34,7 @@
     {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
         NSOpenGLPFAMinimumPolicy,
-        NSOpenGLPFAColorSize, 24,
+        NSOpenGLPFAColorSize, 32,
         NSOpenGLPFAAlphaSize, 8,
         0
     };
