@@ -28,6 +28,8 @@
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
 
+- (void)drawStoredBuffer;
+
 @end
 
 
