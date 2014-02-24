@@ -16,39 +16,6 @@
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 
 
-@interface DLGLPresenterView ()
-
-- (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime;
-- (void)presentFrameForTime:(const CVTimeStamp *)outputTime;
-
-@end
-
-
-static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
-                                    const CVTimeStamp *now,
-                                    const CVTimeStamp *outputTime,
-                                    CVOptionFlags flagsIn,
-                                    CVOptionFlags *flagsOut,
-                                    void *displayLinkContext)
-{
-    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
-              @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
-              @"Host time is invalid (%llu)", outputTime->hostTime);
-    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
-    
-    DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
-    
-    @autoreleasepool {
-        [presenterView checkForSkippedFrames:outputTime];
-        [presenterView presentFrameForTime:outputTime];
-    }
-    
-    return kCVReturnSuccess;
-}
-
-
 @implementation DLGLPresenterView
 {
     CVDisplayLinkRef displayLink;
@@ -73,9 +40,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
         NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFAMinimumPolicy,
-        NSOpenGLPFAColorSize, 32,
-        NSOpenGLPFAAlphaSize, 8,
         NSOpenGLPFAMultisample,
         NSOpenGLPFASampleBuffers, 1,
         NSOpenGLPFASamples, 4,
@@ -218,9 +182,8 @@ static const GLfloat texCoords[] = {
 
 - (void)reshape
 {
-    [[self openGLContext] makeCurrentContext];
     [self DLGLPerformBlockWithContextLock:^{
-        [self updateViewport];
+        [super reshape];
         
         if (self.presenting) {
             shouldDraw = YES;
@@ -310,6 +273,31 @@ static const GLfloat texCoords[] = {
         }];
         
     }
+}
+
+
+static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
+                                    const CVTimeStamp *now,
+                                    const CVTimeStamp *outputTime,
+                                    CVOptionFlags flagsIn,
+                                    CVOptionFlags *flagsOut,
+                                    void *displayLinkContext)
+{
+    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
+              @"Video time is invalid (%lld)", outputTime->videoTime);
+    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
+              @"Host time is invalid (%llu)", outputTime->hostTime);
+    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
+              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
+    
+    DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
+    
+    @autoreleasepool {
+        [presenterView checkForSkippedFrames:outputTime];
+        [presenterView presentFrameForTime:outputTime];
+    }
+    
+    return kCVReturnSuccess;
 }
 
 

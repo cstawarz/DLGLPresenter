@@ -8,6 +8,8 @@
 
 #import "DLGLView.h"
 
+#import <AppKit/NSOpenGL.h>
+
 
 @implementation DLGLView
 
@@ -27,11 +29,15 @@
 }
 
 
-- (void)updateViewport
+- (void)reshape
 {
+    [[self openGLContext] makeCurrentContext];
+    
     NSSize size = [self convertRectToBacking:[self bounds]].size;
+    
     _viewportWidth = (GLsizei)(size.width);
     _viewportHeight = (GLsizei)(size.height);
+    
     glViewport(0, 0, self.viewportWidth, self.viewportHeight);
 }
 

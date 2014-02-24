@@ -14,6 +14,4 @@
 
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
-- (void)updateViewport;
-
 @end

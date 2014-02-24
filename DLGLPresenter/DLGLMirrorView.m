@@ -19,9 +19,6 @@
     NSOpenGLPixelFormatAttribute attributes[] =
     {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        NSOpenGLPFAMinimumPolicy,
-        NSOpenGLPFAColorSize, 32,
-        NSOpenGLPFAAlphaSize, 8,
         0
     };
     
@@ -39,13 +36,6 @@
     [context setView:self];
     
     _sourceView = newSourceView;
-}
-
-
-- (void)reshape
-{
-    [[self openGLContext] makeCurrentContext];
-    [self updateViewport];
 }
 
 
