@@ -6,7 +6,6 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import <DLGLPresenter/DLGLView.h>
 #import <DLGLPresenter/DLGLPresenterView.h>
 
 

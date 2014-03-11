@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E10BE74F18CF8F470063EF35 /* S2fzq.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E10BE74E18CF8F3A0063EF35 /* S2fzq.jpg */; };
 		E10F0A0A15936D3000EF7FD6 /* HelloCircle.vert in Resources */ = {isa = PBXBuildFile; fileRef = E10F0A0715936CC400EF7FD6 /* HelloCircle.vert */; };
 		E10F0A0B15936D3000EF7FD6 /* HelloCircle.frag in Resources */ = {isa = PBXBuildFile; fileRef = E10F0A0615936CC400EF7FD6 /* HelloCircle.frag */; };
 		E136003E1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = E136003C1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -15,6 +16,9 @@
 		E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E14DCD451430DAAD008904A4 /* DLGLView.m */; };
 		E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */; };
+		E183A0F118CE127000012129 /* HelloImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E183A0F018CE127000012129 /* HelloImage.m */; };
+		E183A0F918CE239300012129 /* HelloImage.vert in Resources */ = {isa = PBXBuildFile; fileRef = E183A0F818CE238500012129 /* HelloImage.vert */; };
+		E183A0FB18CE251000012129 /* HelloImage.frag in Resources */ = {isa = PBXBuildFile; fileRef = E183A0FA18CE24FC00012129 /* HelloImage.frag */; };
 		E1B5E9B8159235BD004271BA /* HelloCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B5E9B7159235BD004271BA /* HelloCircle.m */; };
 		E1DB140914E034FB007C0098 /* PresenterDelegateBase.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */; };
 		E1E7AE1B140E730800B50A9F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE19140E730800B50A9F /* InfoPlist.strings */; };
@@ -42,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E10BE74E18CF8F3A0063EF35 /* S2fzq.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = S2fzq.jpg; sourceTree = "<group>"; };
 		E10F0A0615936CC400EF7FD6 /* HelloCircle.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = HelloCircle.frag; sourceTree = "<group>"; };
 		E10F0A0715936CC400EF7FD6 /* HelloCircle.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = HelloCircle.vert; sourceTree = "<group>"; };
 		E136003C1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOpenGLView+DLGLPresenterAdditions.h"; sourceTree = "<group>"; };
@@ -50,10 +55,14 @@
 		E14DCD451430DAAD008904A4 /* DLGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLView.m; sourceTree = "<group>"; };
 		E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLMirrorView.h; sourceTree = "<group>"; };
 		E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLMirrorView.m; sourceTree = "<group>"; };
+		E183A0EF18CE127000012129 /* HelloImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloImage.h; sourceTree = "<group>"; };
+		E183A0F018CE127000012129 /* HelloImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloImage.m; sourceTree = "<group>"; };
+		E183A0F818CE238500012129 /* HelloImage.vert */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = HelloImage.vert; sourceTree = "<group>"; };
+		E183A0FA18CE24FC00012129 /* HelloImage.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = HelloImage.frag; sourceTree = "<group>"; };
 		E1B5E9B6159235BD004271BA /* HelloCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloCircle.h; sourceTree = "<group>"; };
 		E1B5E9B7159235BD004271BA /* HelloCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloCircle.m; sourceTree = "<group>"; };
-		E1DB140714E034FB007C0098 /* PresenterDelegateBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresenterDelegateBase.h; path = DLGLPresenterDelegates/PresenterDelegateBase.h; sourceTree = "<group>"; };
-		E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PresenterDelegateBase.m; path = DLGLPresenterDelegates/PresenterDelegateBase.m; sourceTree = "<group>"; };
+		E1DB140714E034FB007C0098 /* PresenterDelegateBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresenterDelegateBase.h; sourceTree = "<group>"; };
+		E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresenterDelegateBase.m; sourceTree = "<group>"; };
 		E1E7AE13140E730800B50A9F /* DLGLPresenterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLGLPresenterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1E7AE18140E730800B50A9F /* DLGLPresenterDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenterDemo-Info.plist"; sourceTree = "<group>"; };
 		E1E7AE1A140E730800B50A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -63,10 +72,10 @@
 		E1E7AE22140E730800B50A9F /* DLGLPresenterDemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLGLPresenterDemoAppDelegate.h; sourceTree = "<group>"; };
 		E1E7AE23140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DLGLPresenterDemoAppDelegate.m; sourceTree = "<group>"; };
 		E1E7AE26140E730800B50A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		E1E7AE65140E7A7600B50A9F /* ScreenFlicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenFlicker.h; path = DLGLPresenterDelegates/ScreenFlicker.h; sourceTree = "<group>"; };
-		E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenFlicker.m; path = DLGLPresenterDelegates/ScreenFlicker.m; sourceTree = "<group>"; };
-		E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HelloTriangle.h; path = DLGLPresenterDelegates/HelloTriangle.h; sourceTree = "<group>"; };
-		E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HelloTriangle.m; path = DLGLPresenterDelegates/HelloTriangle.m; sourceTree = "<group>"; };
+		E1E7AE65140E7A7600B50A9F /* ScreenFlicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenFlicker.h; sourceTree = "<group>"; };
+		E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenFlicker.m; sourceTree = "<group>"; };
+		E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloTriangle.h; sourceTree = "<group>"; };
+		E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloTriangle.m; sourceTree = "<group>"; };
 		E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLGLPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1EEA705140D31AC0054C95A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenter-Info.plist"; sourceTree = "<group>"; };
@@ -109,6 +118,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E183A0EE18CE112D00012129 /* HelloImage */ = {
+			isa = PBXGroup;
+			children = (
+				E183A0EF18CE127000012129 /* HelloImage.h */,
+				E183A0F018CE127000012129 /* HelloImage.m */,
+				E183A0F818CE238500012129 /* HelloImage.vert */,
+				E183A0FA18CE24FC00012129 /* HelloImage.frag */,
+				E10BE74E18CF8F3A0063EF35 /* S2fzq.jpg */,
+			);
+			path = HelloImage;
+			sourceTree = "<group>";
+		};
 		E1B883A21593684400BDC1F3 /* HelloCircle */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,8 +138,7 @@
 				E10F0A0715936CC400EF7FD6 /* HelloCircle.vert */,
 				E10F0A0615936CC400EF7FD6 /* HelloCircle.frag */,
 			);
-			name = HelloCircle;
-			path = DLGLPresenterDelegates/HelloCircle;
+			path = HelloCircle;
 			sourceTree = "<group>";
 		};
 		E1E7AE16140E730800B50A9F /* DLGLPresenterDemo */ = {
@@ -155,9 +175,10 @@
 				E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */,
 				E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */,
 				E1B883A21593684400BDC1F3 /* HelloCircle */,
+				E183A0EE18CE112D00012129 /* HelloImage */,
 				E1F6491214195441005455C8 /* MovingTriangle */,
 			);
-			name = DLGLPresenterDelegates;
+			path = DLGLPresenterDelegates;
 			sourceTree = "<group>";
 		};
 		E1EEA6F3140D31AC0054C95A = {
@@ -226,8 +247,7 @@
 				E1F6491414195441005455C8 /* MovingTriangle.vert */,
 				E1F6491314195441005455C8 /* MovingTriangle.frag */,
 			);
-			name = MovingTriangle;
-			path = DLGLPresenterDelegates/MovingTriangle;
+			path = MovingTriangle;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,6 +341,9 @@
 				E1E7AE27140E730800B50A9F /* MainMenu.xib in Resources */,
 				E10F0A0A15936D3000EF7FD6 /* HelloCircle.vert in Resources */,
 				E10F0A0B15936D3000EF7FD6 /* HelloCircle.frag in Resources */,
+				E183A0F918CE239300012129 /* HelloImage.vert in Resources */,
+				E183A0FB18CE251000012129 /* HelloImage.frag in Resources */,
+				E10BE74F18CF8F470063EF35 /* S2fzq.jpg in Resources */,
 				E1F6491C14195BDD005455C8 /* MovingTriangle.vert in Resources */,
 				E1F6491D14195BE0005455C8 /* MovingTriangle.frag in Resources */,
 			);
@@ -347,6 +370,7 @@
 				E1E7AE6F140E9E9300B50A9F /* HelloTriangle.m in Sources */,
 				E1F64919141954B9005455C8 /* MovingTriangle.m in Sources */,
 				E1DB140914E034FB007C0098 /* PresenterDelegateBase.m in Sources */,
+				E183A0F118CE127000012129 /* HelloImage.m in Sources */,
 				E1B5E9B8159235BD004271BA /* HelloCircle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
