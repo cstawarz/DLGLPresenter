@@ -73,7 +73,8 @@ static const GLfloat texCoords[] = {
     glBindVertexArray(0);
     glUseProgram(0);
     
-    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"S2fzq" withExtension:@"jpg"];
+    //NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"car" withExtension:@"jpg"];
+    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"grayscale_gradient" withExtension:@"png"];
     CGImageSourceRef imageSource = CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, NULL);
     
     CGImageRef image = CGImageSourceCreateImageAtIndex(imageSource, 0, NULL);
@@ -112,9 +113,9 @@ static const GLfloat texCoords[] = {
     
     // NOTE: Because the image is both premultiplied and stored in sRGB format, blending is going to be
     // incorrect for images with translucency:  The source components are multiplied with the source alpha
-    // *before* converting from sRGB to linear, whereas they should be multiplied after.  We need to either
-    // undo the premultiplication or store the image in a linear color space.  (The latter will probably require
-    // more than 8 bits per channel in order to avoid banding.)
+    // *before* converting from sRGB to linear, whereas they should be multiplied after.  If we want to fix
+    // this, we'll need to either undo the premultiplication or store the image in a linear color space.  (The
+    // latter will require more than 8 bits per channel in order to avoid banding.)
     
     glBindTexture(GL_TEXTURE_2D, 0);
     
