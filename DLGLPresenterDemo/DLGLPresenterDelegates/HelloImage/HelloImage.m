@@ -73,11 +73,40 @@ static const GLfloat texCoords[] = {
     glBindVertexArray(0);
     glUseProgram(0);
     
-    //NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"car" withExtension:@"jpg"];
-    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"grayscale_gradient" withExtension:@"png"];
+    //[self createTextureFromImage:@"car" withExtension:@"jpg"];
+    [self createTextureFromImage:@"grayscale_gradient" withExtension:@"png"];
+    
+    didDraw = NO;
+}
+
+
+- (void)createTextureFromImage:(NSString *)imageName withExtension:(NSString *)imageExtension {
+    
+    //
+    // Create a CGImageRef for the image
+    //
+    
+    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:imageName withExtension:imageExtension];
     CGImageSourceRef imageSource = CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, NULL);
     
-    CGImageRef image = CGImageSourceCreateImageAtIndex(imageSource, 0, NULL);
+    const void *imageSourceOptionsKeys[] = { kCGImageSourceShouldAllowFloat };
+    const void *imageSourceOptionsValues[] = { kCFBooleanTrue };
+    CFDictionaryRef imageSourceOptions = CFDictionaryCreate(kCFAllocatorDefault,
+                                                            imageSourceOptionsKeys,
+                                                            imageSourceOptionsValues,
+                                                            1,
+                                                            &kCFTypeDictionaryKeyCallBacks,
+                                                            &kCFTypeDictionaryValueCallBacks);
+    
+    CGImageRef image = CGImageSourceCreateImageAtIndex(imageSource, 0, imageSourceOptions);
+    
+    CFRelease(imageSourceOptions);
+    CFRelease(imageSource);
+    
+    //
+    // Extract the image data and convert it to sRGB
+    //
+    
     size_t imageWidth = CGImageGetWidth(image);
     size_t imageHeight = CGImageGetHeight(image);
     
@@ -92,6 +121,10 @@ static const GLfloat texCoords[] = {
     
     CGContextSetBlendMode(bitmapContext, kCGBlendModeCopy);
     CGContextDrawImage(bitmapContext, CGRectMake(0, 0, imageWidth, imageHeight), image);
+    
+    //
+    // Create the texture
+    //
     
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -122,9 +155,6 @@ static const GLfloat texCoords[] = {
     CGContextRelease(bitmapContext);
     CGColorSpaceRelease(colorSpace);
     CGImageRelease(image);
-    CFRelease(imageSource);
-    
-    didDraw = NO;
 }
 
 
