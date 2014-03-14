@@ -8,6 +8,8 @@
 
 #import "HelloImage.h"
 
+#import <ApplicationServices/ApplicationServices.h>
+
 
 @implementation HelloImage
 {
@@ -73,58 +75,26 @@ static const GLfloat texCoords[] = {
     glBindVertexArray(0);
     glUseProgram(0);
     
-    //[self createTextureFromImage:@"car" withExtension:@"jpg"];
-    [self createTextureFromImage:@"grayscale_gradient" withExtension:@"png"];
+    //NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"car" withExtension:@"jpg"];
+    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"grayscale_gradient" withExtension:@"png"];
+    [self createTextureFromImage:imageURL];
     
     didDraw = NO;
 }
 
 
-- (void)createTextureFromImage:(NSString *)imageName withExtension:(NSString *)imageExtension {
-    
-    //
-    // Create a CGImageRef for the image
-    //
-    
-    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:imageName withExtension:imageExtension];
-    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, NULL);
-    
-    const void *imageSourceOptionsKeys[] = { kCGImageSourceShouldAllowFloat };
-    const void *imageSourceOptionsValues[] = { kCFBooleanTrue };
-    CFDictionaryRef imageSourceOptions = CFDictionaryCreate(kCFAllocatorDefault,
-                                                            imageSourceOptionsKeys,
-                                                            imageSourceOptionsValues,
-                                                            1,
-                                                            &kCFTypeDictionaryKeyCallBacks,
-                                                            &kCFTypeDictionaryValueCallBacks);
-    
-    CGImageRef image = CGImageSourceCreateImageAtIndex(imageSource, 0, imageSourceOptions);
-    
-    CFRelease(imageSourceOptions);
-    CFRelease(imageSource);
-    
-    //
-    // Extract the image data and convert it to sRGB
-    //
-    
-    size_t imageWidth = CGImageGetWidth(image);
-    size_t imageHeight = CGImageGetHeight(image);
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-    CGContextRef bitmapContext = CGBitmapContextCreate(NULL,
-                                                       imageWidth,
-                                                       imageHeight,
-                                                       8,
-                                                       imageWidth * 4,
-                                                       colorSpace,
-                                                       kCGBitmapByteOrder32Host | kCGImageAlphaPremultipliedFirst);
-    
-    CGContextSetBlendMode(bitmapContext, kCGBlendModeCopy);
-    CGContextDrawImage(bitmapContext, CGRectMake(0, 0, imageWidth, imageHeight), image);
+- (void)createTextureFromImage:(NSURL *)imageURL
+{
+    CGImageRef image = [self createCGImageFromImage:imageURL];
+    ColorSyncTransformRef colorSyncTransform = [self createColorSyncTransform:CGImageGetColorSpace(image)];
+    NSData *imageData = [self getDataFromCGImage:image usingTransform:colorSyncTransform];
     
     //
     // Create the texture
     //
+    
+    size_t imageWidth = CGImageGetWidth(image);
+    size_t imageHeight = CGImageGetHeight(image);
     
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -141,20 +111,149 @@ static const GLfloat texCoords[] = {
                  (GLsizei)imageHeight,
                  0,
                  GL_BGRA,
-                 GL_UNSIGNED_INT_8_8_8_8_REV,
-                 CGBitmapContextGetData(bitmapContext));
-    
-    // NOTE: Because the image is both premultiplied and stored in sRGB format, blending is going to be
-    // incorrect for images with translucency:  The source components are multiplied with the source alpha
-    // *before* converting from sRGB to linear, whereas they should be multiplied after.  If we want to fix
-    // this, we'll need to either undo the premultiplication or store the image in a linear color space.  (The
-    // latter will require more than 8 bits per channel in order to avoid banding.)
+                 GL_UNSIGNED_INT_8_8_8_8,
+                 [imageData bytes]);
     
     glBindTexture(GL_TEXTURE_2D, 0);
     
-    CGContextRelease(bitmapContext);
-    CGColorSpaceRelease(colorSpace);
+    CFRelease(colorSyncTransform);
     CGImageRelease(image);
+}
+
+
+- (CGImageRef)createCGImageFromImage:(NSURL *)imageURL
+{
+    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, NULL);
+    
+    const void *imageSourceOptionsKeys[] = { kCGImageSourceShouldAllowFloat };
+    const void *imageSourceOptionsValues[] = { kCFBooleanTrue };
+    CFDictionaryRef imageSourceOptions = CFDictionaryCreate(kCFAllocatorDefault,
+                                                            imageSourceOptionsKeys,
+                                                            imageSourceOptionsValues,
+                                                            1,
+                                                            &kCFTypeDictionaryKeyCallBacks,
+                                                            &kCFTypeDictionaryValueCallBacks);
+    
+    CGImageRef image = CGImageSourceCreateImageAtIndex(imageSource, 0, imageSourceOptions);
+    
+    CFRelease(imageSourceOptions);
+    CFRelease(imageSource);
+    
+    return image;
+}
+
+
+- (ColorSyncTransformRef)createColorSyncTransform:(CGColorSpaceRef)imageColorSpace
+{
+    CFDataRef imageProfileData = CGColorSpaceCopyICCProfile(imageColorSpace);
+    NSAssert(imageProfileData, @"Unable to copy image ICC profile data");
+    ColorSyncProfileRef srcProfile = ColorSyncProfileCreate(imageProfileData, NULL);
+    
+    ColorSyncProfileRef dstProfile = ColorSyncProfileCreateWithName(kColorSyncSRGBProfile);
+    
+    const void *keys[] = { kColorSyncProfile, kColorSyncRenderingIntent, kColorSyncTransformTag };
+    const void *srcVals[] = { srcProfile, kColorSyncRenderingIntentUseProfileHeader, kColorSyncTransformDeviceToPCS };
+    const void *dstVals[] = { dstProfile, kColorSyncRenderingIntentUseProfileHeader, kColorSyncTransformPCSToDevice };
+    
+    CFDictionaryRef srcDict = CFDictionaryCreate(kCFAllocatorDefault,
+                                                 keys,
+                                                 srcVals,
+                                                 3,
+                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                 &kCFTypeDictionaryValueCallBacks);
+    
+    CFDictionaryRef dstDict = CFDictionaryCreate(kCFAllocatorDefault,
+                                                 keys,
+                                                 dstVals,
+                                                 3,
+                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                 &kCFTypeDictionaryValueCallBacks);
+    
+    const void *arrayVals[] = { srcDict, dstDict };
+    CFArrayRef profileSequence = CFArrayCreate(kCFAllocatorDefault, arrayVals, 2, &kCFTypeArrayCallBacks);
+    
+    ColorSyncTransformRef transform = ColorSyncTransformCreate(profileSequence, NULL);
+    NSAssert(transform, @"Unable to create ColorSync transform");
+    
+    CFRelease(profileSequence);
+    CFRelease(dstDict);
+    CFRelease(srcDict);
+    CFRelease(dstProfile);
+    CFRelease(srcProfile);
+    CFRelease(imageProfileData);
+    
+    return transform;
+}
+
+
+- (NSData *)getDataFromCGImage:(CGImageRef)image usingTransform:(ColorSyncTransformRef)transform
+{
+    size_t width = CGImageGetWidth(image);
+    size_t height = CGImageGetHeight(image);
+    
+    NSMutableData *dstData = [NSMutableData dataWithLength:(width * height * 4)];
+    // Set all bytes in the destination data to 255 (i.e. maximum luminance) in order to provide a default alpha
+    // component.  Otherwise, images with no alpha channel (e.g. JPEGs) would have each alpha component set to zero.
+    memset([dstData mutableBytes], UCHAR_MAX, [dstData length]);
+    
+    NSData *srcData = (__bridge_transfer NSData *)CGDataProviderCopyData(CGImageGetDataProvider(image));
+    CGBitmapInfo srcBitmapInfo = CGImageGetBitmapInfo(image);
+    ColorSyncDataDepth srcDepth = [self getDataDepthFromBitmapInfo:srcBitmapInfo
+                                                  bitsPerComponent:CGImageGetBitsPerComponent(image)];
+    
+    // NOTE: Because the image will be stored in an sRGB-format texture, it's important that the destination pixels'
+    // RGB components are *not* premultiplied by their alpha.  Otherwise, blending would be incorrect for images with
+    // translucency, because the source RGB components must be multiplied with the source alpha *after* converting from
+    // sRGB to linear, not before.
+    bool success = ColorSyncTransformConvert(transform,
+                                             width,
+                                             height,
+                                             [dstData mutableBytes],
+                                             kColorSync8BitInteger,
+                                             kColorSyncAlphaFirst,
+                                             width * 4,
+                                             [srcData bytes],
+                                             srcDepth,
+                                             (ColorSyncDataLayout)srcBitmapInfo,
+                                             CGImageGetBytesPerRow(image),
+                                             NULL);
+    
+    NSAssert(success, @"ColorSync conversion failed");
+    
+    return dstData;
+}
+
+
+- (ColorSyncDataDepth)getDataDepthFromBitmapInfo:(CGBitmapInfo)bitmapInfo bitsPerComponent:(size_t)bitsPerComponent
+{
+    if (bitmapInfo & kCGBitmapFloatComponents) {
+        
+        switch (bitsPerComponent) {
+            case 16:
+                return kColorSync16BitFloat;
+            case 32:
+                return kColorSync32BitFloat;
+            default:
+                break;
+        }
+        
+    } else {
+        
+        switch (bitsPerComponent) {
+            case 8:
+                return kColorSync8BitInteger;
+            case 16:
+                return kColorSync16BitInteger;
+            case 32:
+                return kColorSync32BitInteger;
+            default:
+                break;
+        }
+        
+    }
+    
+    NSAssert(NO, @"Unsupported image data type");
+    return 0;
 }
 
 
@@ -177,8 +276,8 @@ static const GLfloat texCoords[] = {
     glBindVertexArray(vertexArrayObject);
     glBindTexture(GL_TEXTURE_2D, texture);
     
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
