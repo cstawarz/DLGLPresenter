@@ -8,8 +8,6 @@
 
 #import "HelloImage.h"
 
-#import <ApplicationServices/ApplicationServices.h>
-
 
 @implementation HelloImage
 {
@@ -86,7 +84,9 @@ static const GLfloat texCoords[] = {
 - (void)createTextureFromImage:(NSURL *)imageURL
 {
     CGImageRef image = [self createCGImageFromImage:imageURL];
-    ColorSyncTransformRef colorSyncTransform = [self createColorSyncTransform:CGImageGetColorSpace(image)];
+    ColorSyncTransformRef colorSyncTransform =
+        DLGLCreateColorSyncTransform([[NSColorSpace alloc] initWithCGColorSpace:CGImageGetColorSpace(image)],
+                                     [NSColorSpace sRGBColorSpace]);
     NSData *imageData = [self getDataFromCGImage:image usingTransform:colorSyncTransform];
     
     //
@@ -140,49 +140,6 @@ static const GLfloat texCoords[] = {
     CFRelease(imageSource);
     
     return image;
-}
-
-
-- (ColorSyncTransformRef)createColorSyncTransform:(CGColorSpaceRef)imageColorSpace
-{
-    CFDataRef imageProfileData = CGColorSpaceCopyICCProfile(imageColorSpace);
-    NSAssert(imageProfileData, @"Unable to copy image ICC profile data");
-    ColorSyncProfileRef srcProfile = ColorSyncProfileCreate(imageProfileData, NULL);
-    
-    ColorSyncProfileRef dstProfile = ColorSyncProfileCreateWithName(kColorSyncSRGBProfile);
-    
-    const void *keys[] = { kColorSyncProfile, kColorSyncRenderingIntent, kColorSyncTransformTag };
-    const void *srcVals[] = { srcProfile, kColorSyncRenderingIntentUseProfileHeader, kColorSyncTransformDeviceToPCS };
-    const void *dstVals[] = { dstProfile, kColorSyncRenderingIntentUseProfileHeader, kColorSyncTransformPCSToDevice };
-    
-    CFDictionaryRef srcDict = CFDictionaryCreate(kCFAllocatorDefault,
-                                                 keys,
-                                                 srcVals,
-                                                 3,
-                                                 &kCFTypeDictionaryKeyCallBacks,
-                                                 &kCFTypeDictionaryValueCallBacks);
-    
-    CFDictionaryRef dstDict = CFDictionaryCreate(kCFAllocatorDefault,
-                                                 keys,
-                                                 dstVals,
-                                                 3,
-                                                 &kCFTypeDictionaryKeyCallBacks,
-                                                 &kCFTypeDictionaryValueCallBacks);
-    
-    const void *arrayVals[] = { srcDict, dstDict };
-    CFArrayRef profileSequence = CFArrayCreate(kCFAllocatorDefault, arrayVals, 2, &kCFTypeArrayCallBacks);
-    
-    ColorSyncTransformRef transform = ColorSyncTransformCreate(profileSequence, NULL);
-    NSAssert(transform, @"Unable to create ColorSync transform");
-    
-    CFRelease(profileSequence);
-    CFRelease(dstDict);
-    CFRelease(srcDict);
-    CFRelease(dstProfile);
-    CFRelease(srcProfile);
-    CFRelease(imageProfileData);
-    
-    return transform;
 }
 
 

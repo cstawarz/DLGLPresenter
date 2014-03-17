@@ -6,6 +6,8 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
+#import <AppKit/NSColorSpace.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <Foundation/Foundation.h>
 #import <OpenGL/gl3.h>
 
@@ -20,5 +22,7 @@ void _DLGLLogGLErrors(void);
 
 GLuint DLGLCreateShader(GLenum shaderType, const GLchar *shaderSource);
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...);
+
+ColorSyncTransformRef DLGLCreateColorSyncTransform(NSColorSpace *srcColorSpace, NSColorSpace *dstColorSpace);
 
 NSTimeInterval DLGLGetTimeInterval(uint64_t startHostTime, uint64_t endHostTime);

@@ -88,6 +88,46 @@ GLuint DLGLCreateProgramWithShaders(GLuint shader, ...)
 }
 
 
+ColorSyncTransformRef DLGLCreateColorSyncTransform(NSColorSpace *srcColorSpace, NSColorSpace *dstColorSpace)
+{
+    ColorSyncProfileRef srcProfile = [srcColorSpace colorSyncProfile];
+    NSCAssert(srcProfile, @"Unable to obtain source ColorSync profile");
+    
+    ColorSyncProfileRef dstProfile = [dstColorSpace colorSyncProfile];
+    NSCAssert(dstProfile, @"Unable to obtain destination ColorSync profile");
+    
+    const void *keys[] = { kColorSyncProfile, kColorSyncRenderingIntent, kColorSyncTransformTag };
+    const void *srcVals[] = { srcProfile, kColorSyncRenderingIntentUseProfileHeader, kColorSyncTransformDeviceToPCS };
+    const void *dstVals[] = { dstProfile, kColorSyncRenderingIntentUseProfileHeader, kColorSyncTransformPCSToDevice };
+    
+    CFDictionaryRef srcDict = CFDictionaryCreate(kCFAllocatorDefault,
+                                                 keys,
+                                                 srcVals,
+                                                 3,
+                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                 &kCFTypeDictionaryValueCallBacks);
+    
+    CFDictionaryRef dstDict = CFDictionaryCreate(kCFAllocatorDefault,
+                                                 keys,
+                                                 dstVals,
+                                                 3,
+                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                 &kCFTypeDictionaryValueCallBacks);
+    
+    const void *arrayVals[] = { srcDict, dstDict };
+    CFArrayRef profileSequence = CFArrayCreate(kCFAllocatorDefault, arrayVals, 2, &kCFTypeArrayCallBacks);
+    
+    ColorSyncTransformRef transform = ColorSyncTransformCreate(profileSequence, NULL);
+    NSCAssert(transform, @"Unable to create ColorSync transform");
+    
+    CFRelease(profileSequence);
+    CFRelease(dstDict);
+    CFRelease(srcDict);
+    
+    return transform;
+}
+
+
 NSTimeInterval DLGLGetTimeInterval(uint64_t startHostTime, uint64_t endHostTime)
 {
     return (double)(endHostTime - startHostTime) / CVGetHostClockFrequency();
