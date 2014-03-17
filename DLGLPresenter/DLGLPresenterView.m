@@ -11,6 +11,7 @@
 #import <AppKit/NSOpenGL.h>
 #import <CoreVideo/CVHostTime.h>
 #import <CoreVideo/CVDisplayLink.h>
+#import <OpenGL/gl3ext.h>
 
 #import "DLGLUtilities.h"
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
@@ -30,6 +31,7 @@
     GLuint vertexPositionBufferObject, texCoordsBufferObject;
     GLuint vertexArrayObject;
     
+    GLuint framebuffer;
     GLuint texture;
 }
 
@@ -127,6 +129,8 @@ static const GLfloat texCoords[] = {
 - (void)prepareOpenGL
 {
     [self DLGLPerformBlockWithContextLock:^{
+        [super prepareOpenGL];
+        
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
         
@@ -167,6 +171,12 @@ static const GLfloat texCoords[] = {
         glUseProgram(0);
         
         //
+        // Prepare framebuffer
+        //
+        
+        glGenFramebuffers(1, &framebuffer);
+        
+        //
         // Prepare texture
         //
         
@@ -174,6 +184,10 @@ static const GLfloat texCoords[] = {
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        NSAssert([self supportsExtension:@"GL_EXT_texture_sRGB_decode"],
+                 @"Missing required extension GL_EXT_texture_sRGB_decode");
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SRGB_DECODE_EXT, GL_SKIP_DECODE_EXT);
         
         glBindTexture(GL_TEXTURE_2D, 0);
     }];
@@ -184,6 +198,34 @@ static const GLfloat texCoords[] = {
 {
     [self DLGLPerformBlockWithContextLock:^{
         [super reshape];
+        
+        //
+        // Resize the framebuffer texture
+        //
+        
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_SRGB8_ALPHA8,
+                     self.viewportWidth,
+                     self.viewportHeight,
+                     0,
+                     GL_BGRA,
+                     GL_UNSIGNED_INT_8_8_8_8,
+                     NULL);
+        glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+        
+        GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+        NSAssert((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        
+        //
+        // Redraw
+        //
         
         if (self.presenting) {
             shouldDraw = YES;
@@ -201,24 +243,6 @@ static const GLfloat texCoords[] = {
     [self DLGLPerformBlockWithContextLock:^{
         [super update];
     }];
-}
-
-
-- (void)storeBackBuffer
-{
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glReadBuffer(GL_BACK_LEFT);
-    
-    glCopyTexImage2D(GL_TEXTURE_2D,
-                     0,
-                     GL_RGBA,
-                     0,
-                     0,
-                     self.viewportWidth,
-                     self.viewportHeight,
-                     0);
-    
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -337,13 +361,21 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             shouldDraw = YES;
         }
         
-        if (!shouldDraw) {
-            [self drawStoredBuffer];
-        } else {
+        if (shouldDraw) {
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+            GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+            glDrawBuffers(1, drawBuffers);
+            
+            glEnable(GL_FRAMEBUFFER_SRGB);
+            
             [self.delegate presenterView:self willDrawForTime:outputTime];
-            [self storeBackBuffer];
+            
+            glDisable(GL_FRAMEBUFFER_SRGB);
+            
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
         
+        [self drawStoredBuffer];
         [[self openGLContext] flushBuffer];
         
         if (shouldDraw) {

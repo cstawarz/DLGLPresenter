@@ -12,6 +12,9 @@
 
 
 @implementation DLGLView
+{
+    NSSet *supportedExtensions;
+}
 
 
 - (id)initWithFrame:(NSRect)frameRect
@@ -29,6 +32,20 @@
 }
 
 
+- (void)prepareOpenGL
+{
+    GLint numExtensions;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
+    NSMutableArray *extensionNames = [NSMutableArray arrayWithCapacity:numExtensions];
+    
+    for (GLuint i = 0; i < numExtensions; i++) {
+        [extensionNames addObject:[NSString stringWithUTF8String:(const char *)glGetStringi(GL_EXTENSIONS, i)]];
+    }
+    
+    supportedExtensions = [NSSet setWithArray:extensionNames];
+}
+
+
 - (void)reshape
 {
     [[self openGLContext] makeCurrentContext];
@@ -39,6 +56,12 @@
     _viewportHeight = (GLsizei)(size.height);
     
     glViewport(0, 0, self.viewportWidth, self.viewportHeight);
+}
+
+
+- (BOOL)supportsExtension:(NSString *)name
+{
+    return [supportedExtensions containsObject:name];
 }
 
 

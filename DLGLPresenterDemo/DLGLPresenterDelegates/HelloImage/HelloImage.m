@@ -267,8 +267,6 @@ static const GLfloat texCoords[] = {
 {
     NSLog(@"Drawing in %s", __PRETTY_FUNCTION__);
     
-    glEnable(GL_FRAMEBUFFER_SRGB);
-    
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
@@ -287,8 +285,6 @@ static const GLfloat texCoords[] = {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glUseProgram(0);
-    
-    glDisable(GL_FRAMEBUFFER_SRGB);
 }
 
 

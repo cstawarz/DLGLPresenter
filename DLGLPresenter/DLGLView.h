@@ -14,4 +14,6 @@
 
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
+- (BOOL)supportsExtension:(NSString *)name;
+
 @end
