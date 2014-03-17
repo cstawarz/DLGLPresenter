@@ -42,10 +42,6 @@
     {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
         NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFAMultisample,
-        NSOpenGLPFASampleBuffers, 1,
-        NSOpenGLPFASamples, 4,
-        NSOpenGLPFASampleAlpha,
         0
     };
     
@@ -133,8 +129,6 @@ static const GLfloat texCoords[] = {
         
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-        
-        glEnable(GL_MULTISAMPLE);
         
         //
         // Prepare program
