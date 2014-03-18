@@ -42,7 +42,7 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
     [[self openGLContext] makeCurrentContext];
-    [self.sourceView drawStoredBuffer];
+    [self drawTextureWithColorMatching:self.sourceView.sceneTexture];
     glFlush();
 }
 

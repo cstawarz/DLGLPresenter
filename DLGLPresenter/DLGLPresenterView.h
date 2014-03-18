@@ -21,14 +21,14 @@
 @property(nonatomic, weak) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
 
+@property(nonatomic, readonly) GLuint sceneTexture;
+
 @property(nonatomic, readonly) CVTime nominalRefreshPeriod;
 @property(nonatomic, readonly) NSTimeInterval actualRefreshPeriod;
 @property(nonatomic, readonly) CVTime nominalLatency;
 @property(nonatomic, readonly) NSTimeInterval elapsedTime;
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
-
-- (void)drawStoredBuffer;
 
 @end
 

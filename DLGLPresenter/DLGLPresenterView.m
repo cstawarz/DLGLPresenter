@@ -24,13 +24,6 @@
     int64_t previousVideoTime;
     BOOL shouldDraw;
     
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint program;
-    
-    GLuint vertexPositionBufferObject, texCoordsBufferObject;
-    GLuint vertexArrayObject;
-    
     GLuint framebuffer;
     GLuint texture;
 }
@@ -86,42 +79,6 @@
 }
 
 
-static const GLchar *vertexShaderSource =
-"#version 150\n"
-"in vec4 vertexPosition;\n"
-"in vec2 texCoords;\n"
-"smooth out vec2 varyingTexCoords;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vertexPosition;\n"
-"   varyingTexCoords = texCoords;\n"
-"}\n";
-
-static const GLchar *fragmentShaderSource =
-"#version 150\n"
-"uniform sampler2D colorMap;\n"
-"in vec2 varyingTexCoords;\n"
-"out vec4 fragColor;\n"
-"void main()\n"
-"{\n"
-"   fragColor = texture(colorMap, varyingTexCoords);\n"
-"}\n";
-
-static const GLfloat vertexPosition[] = {
-    -1.0f, -1.0f,
-     1.0f, -1.0f,
-    -1.0f,  1.0f,
-     1.0f,  1.0f,
-};
-
-static const GLfloat texCoords[] = {
-    0.0f, 0.0f,
-    1.0f, 0.0f,
-    0.0f, 1.0f,
-    1.0f, 1.0f,
-};
-
-
 - (void)prepareOpenGL
 {
     [self DLGLPerformBlockWithContextLock:^{
@@ -129,40 +86,6 @@ static const GLfloat texCoords[] = {
         
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-        
-        //
-        // Prepare program
-        //
-        
-        vertexShader = DLGLCreateShader(GL_VERTEX_SHADER, vertexShaderSource);
-        fragmentShader = DLGLCreateShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-        
-        program = DLGLCreateProgramWithShaders(vertexShader, fragmentShader, 0);
-        glUseProgram(program);
-        
-        glGenVertexArrays(1, &vertexArrayObject);
-        glBindVertexArray(vertexArrayObject);
-        
-        glGenBuffers(1, &vertexPositionBufferObject);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexPositionBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPosition), vertexPosition, GL_STATIC_DRAW);
-        GLint vertexPositionAttribLocation = glGetAttribLocation(program, "vertexPosition");
-        glEnableVertexAttribArray(vertexPositionAttribLocation);
-        glVertexAttribPointer(vertexPositionAttribLocation, 2, GL_FLOAT, GL_FALSE, 0, 0);
-        
-        glGenBuffers(1, &texCoordsBufferObject);
-        glBindBuffer(GL_ARRAY_BUFFER, texCoordsBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
-        GLint texCoordsAttribLocation = glGetAttribLocation(program, "texCoords");
-        glEnableVertexAttribArray(texCoordsAttribLocation);
-        glVertexAttribPointer(texCoordsAttribLocation, 2, GL_FLOAT, GL_FALSE, 0, 0);
-        
-        GLint colorMapUniformLocation = glGetUniformLocation(program, "colorMap");
-        glUniform1i(colorMapUniformLocation, 0);
-        
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-        glUseProgram(0);
         
         //
         // Prepare framebuffer
@@ -237,20 +160,6 @@ static const GLfloat texCoords[] = {
     [self DLGLPerformBlockWithContextLock:^{
         [super update];
     }];
-}
-
-
-- (void)drawStoredBuffer
-{
-    glUseProgram(program);
-    glBindVertexArray(vertexArrayObject);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindVertexArray(0);
-    glUseProgram(0);
 }
 
 
@@ -369,7 +278,7 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
         
-        [self drawStoredBuffer];
+        [self drawTextureWithColorMatching:texture];
         [[self openGLContext] flushBuffer];
         
         if (shouldDraw) {
@@ -380,6 +289,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     
     previousHostTime = currentHostTime;
     previousVideoTime = outputTime->videoTime;
+}
+
+
+- (GLuint)sceneTexture {
+    return texture;
 }
 
 

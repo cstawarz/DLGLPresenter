@@ -49,13 +49,13 @@
 #ifdef FULLSCREEN
     [fullScreenWindow makeKeyAndOrderFront:self];
     [self.window setContentView:mirrorView];
+    mirrorView.sourceView = presenterView;
     
     NSSize aspectRatio = presenterView.bounds.size;
     [self.window setContentAspectRatio:presenterView.bounds.size];
     CGFloat windowHeight = [self.window frame].size.height;
     [self.window setContentSize:NSMakeSize(windowHeight * aspectRatio.width / aspectRatio.height, windowHeight)];
     
-    mirrorView.sourceView = presenterView;
     [self startMirrorViewUpdates];
 #else
     [self.window setContentView:presenterView];
