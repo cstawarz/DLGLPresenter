@@ -74,7 +74,8 @@ static const GLfloat texCoords[] = {
     glUseProgram(0);
     
     //NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"car" withExtension:@"jpg"];
-    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"grayscale_gradient" withExtension:@"png"];
+    //NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"grayscale_gradient" withExtension:@"png"];
+    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"color_checker_chart" withExtension:@"png"];
     [self createTextureFromImage:imageURL];
     
     didDraw = NO;

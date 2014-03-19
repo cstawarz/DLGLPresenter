@@ -151,18 +151,7 @@ static const GLfloat texCoords[] = {
     // Create color conversion lookup table
     //
     
-    ColorSyncTransformRef transform = DLGLCreateColorSyncTransform([NSColorSpace sRGBColorSpace],
-                                                                   [[self window] colorSpace]);
-    
-    NSDictionary *options =
-        @{ (__bridge NSString *)kColorSyncConversionGridPoints: [NSNumber numberWithInt:numGridPoints] };
-    NSArray *properties = (__bridge_transfer NSArray *)
-        ColorSyncTransformCopyProperty(transform,
-                                       kColorSyncTransformSimplifiedConversionData,
-                                       (__bridge CFDictionaryRef)options);
-    NSData *colorConversionLUTData =
-        [(NSDictionary *)[properties firstObject] objectForKey:(__bridge NSString *)kColorSyncConversion3DLut];
-    NSAssert(colorConversionLUTData, @"Unable to obtain color conversion lookup table data");
+    NSData *colorConversionLUTData = [self getColorConversionLUTData:numGridPoints];
     
     glGenTextures(1, &colorConversionLUT);
     glBindTexture(GL_TEXTURE_3D, colorConversionLUT);
@@ -180,13 +169,52 @@ static const GLfloat texCoords[] = {
                  numGridPoints,
                  numGridPoints,
                  0,
-                 GL_BGR,
+                 GL_RGB,
                  GL_UNSIGNED_SHORT,
                  [colorConversionLUTData bytes]);
     
     glBindTexture(GL_TEXTURE_3D, 0);
+}
+
+
+- (NSData *)getColorConversionLUTData:(GLint)numGridPoints
+{
+    ColorSyncTransformRef transform = DLGLCreateColorSyncTransform([NSColorSpace sRGBColorSpace],
+                                                                   [[self window] colorSpace]);
+    
+    NSDictionary *options =
+        @{ (__bridge NSString *)kColorSyncConversionGridPoints: [NSNumber numberWithInt:numGridPoints] };
+    NSArray *properties = (__bridge_transfer NSArray *)
+        ColorSyncTransformCopyProperty(transform,
+                                       kColorSyncTransformSimplifiedConversionData,
+                                       (__bridge CFDictionaryRef)options);
+    NSData *srcData =
+        [(NSDictionary *)[properties firstObject] objectForKey:(__bridge NSString *)kColorSyncConversion3DLut];
+    NSAssert(srcData, @"Unable to obtain color conversion lookup table data");
+    
+    //
+    // The data returned by ColorSyncTransformCopyProperty is ordered such that the blue channel varies fastest.
+    // However, OpenGL expects red to vary fastest, so we need to reorder the grid points.
+    //
+    
+    NSMutableData *dstData = [NSMutableData dataWithLength:[srcData length]];
+    const size_t numComponents = 3;
+    
+    for (GLint rr = 0; rr < numGridPoints; rr++) {
+        for (GLint gg = 0; gg < numGridPoints; gg++) {
+            for (GLint bb = 0; bb < numGridPoints; bb++) {
+                ptrdiff_t srcOffset = (rr*numGridPoints*numGridPoints + gg*numGridPoints + bb) * numComponents;
+                ptrdiff_t dstOffset = (bb*numGridPoints*numGridPoints + gg*numGridPoints + rr) * numComponents;
+                memcpy((GLushort *)[dstData mutableBytes] + dstOffset,
+                       (GLushort *)[srcData bytes] + srcOffset,
+                       sizeof(GLushort) * numComponents);
+            }
+        }
+    }
     
     CFRelease(transform);
+    
+    return dstData;
 }
 
 

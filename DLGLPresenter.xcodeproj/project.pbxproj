@@ -35,6 +35,7 @@
 		E1EA8C2F16CAD01D00B98B76 /* DLGLPresenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */; };
 		E1EA8C3016CAD02A00B98B76 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA705140D31AC0054C95A /* AppKit.framework */; };
 		E1EA8C3116CAD03600B98B76 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1EEA727140D3F240054C95A /* OpenGL.framework */; };
+		E1ECBE9018DA0DCC006A0D2E /* color_checker_chart.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ECBE8F18DA0DB6006A0D2E /* color_checker_chart.png */; };
 		E1EEA70D140D31AC0054C95A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1EEA70B140D31AC0054C95A /* InfoPlist.strings */; };
 		E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1EEA71E140D3B150054C95A /* DLGLPresenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */; };
@@ -78,6 +79,7 @@
 		E1E7AE66140E7A7600B50A9F /* ScreenFlicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenFlicker.m; sourceTree = "<group>"; };
 		E1E7AE6D140E9E9300B50A9F /* HelloTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloTriangle.h; sourceTree = "<group>"; };
 		E1E7AE6E140E9E9300B50A9F /* HelloTriangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloTriangle.m; sourceTree = "<group>"; };
+		E1ECBE8F18DA0DB6006A0D2E /* color_checker_chart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color_checker_chart.png; sourceTree = "<group>"; };
 		E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DLGLPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1EEA705140D31AC0054C95A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E1EEA70A140D31AC0054C95A /* DLGLPresenter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DLGLPresenter-Info.plist"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				E183A0FA18CE24FC00012129 /* HelloImage.frag */,
 				E10BE74E18CF8F3A0063EF35 /* car.jpg */,
 				E18D8CD118D0E44D00CF7102 /* grayscale_gradient.png */,
+				E1ECBE8F18DA0DB6006A0D2E /* color_checker_chart.png */,
 			);
 			path = HelloImage;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				E183A0FB18CE251000012129 /* HelloImage.frag in Resources */,
 				E10BE74F18CF8F470063EF35 /* car.jpg in Resources */,
 				E18D8CD218D0E46600CF7102 /* grayscale_gradient.png in Resources */,
+				E1ECBE9018DA0DCC006A0D2E /* color_checker_chart.png in Resources */,
 				E1F6491C14195BDD005455C8 /* MovingTriangle.vert in Resources */,
 				E1F6491D14195BE0005455C8 /* MovingTriangle.frag in Resources */,
 			);
