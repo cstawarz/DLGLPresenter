@@ -44,36 +44,37 @@
 }
 
 
-static const GLchar *vertexShaderSource =
-"#version 150\n"
-"in vec4 vertexPosition;\n"
-"in vec2 texCoords;\n"
-"smooth out vec2 varyingTexCoords;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vertexPosition;\n"
-"   varyingTexCoords = texCoords;\n"
-"}\n";
+static const GLchar *vertexShaderSource = DLGL_SHADER_SOURCE
+(
+ in vec4 vertexPosition;
+ in vec2 texCoords;
+ 
+ smooth out vec2 varyingTexCoords;
+ 
+ void main() {
+     gl_Position = vertexPosition;
+     varyingTexCoords = texCoords;
+ }
+ );
 
 
-static const GLchar *fragmentShaderSource =
-"#version 150\n"
-
-"uniform sampler2D inputTexture;\n"
-"uniform sampler3D colorLUT;\n"
-"uniform float colorScale;\n"
-"uniform float colorOffset;\n"
-
-"in vec2 varyingTexCoords;\n"
-
-"out vec4 fragColor;\n"
-
-"void main()\n"
-"{\n"
-"   vec4 rawColor = texture(inputTexture, varyingTexCoords);\n"
-"   fragColor.rgb = texture(colorLUT, rawColor.rgb * colorScale + colorOffset).rgb;\n"
-"   fragColor.a = rawColor.a;\n"
-"}\n";
+static const GLchar *fragmentShaderSource = DLGL_SHADER_SOURCE
+(
+ uniform sampler2D inputTexture;
+ uniform sampler3D colorLUT;
+ uniform float colorScale;
+ uniform float colorOffset;
+ 
+ in vec2 varyingTexCoords;
+ 
+ out vec4 fragColor;
+ 
+ void main() {
+     vec4 rawColor = texture(inputTexture, varyingTexCoords);
+     fragColor.rgb = texture(colorLUT, rawColor.rgb * colorScale + colorOffset).rgb;
+     fragColor.a = rawColor.a;
+ }
+ );
 
 
 static const GLfloat vertexPosition[] = {

@@ -17,6 +17,8 @@
 #define DLGLLogGLErrors() do {} while (0)
 #endif
 
+#define DLGL_SHADER_SOURCE(...) "#version 150\n" #__VA_ARGS__
+
 
 void _DLGLLogGLErrors(void);
 

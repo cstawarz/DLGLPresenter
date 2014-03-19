@@ -22,25 +22,27 @@
 }
 
 
-static const GLchar *vertexShaderSource =
-"#version 150\n"
-"in vec4 position;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = position;\n"
-"}\n";
+static const GLchar *vertexShaderSource = DLGL_SHADER_SOURCE
+(
+ in vec4 position;
+ void main() {
+     gl_Position = position;
+ }
+ );
 
-static const GLchar *fragmentShaderSource =
-"#version 150\n"
-"out vec4 outputColor;\n"
-"void main()\n"
-"{\n"
-"   outputColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
-"}\n";
+
+static const GLchar *fragmentShaderSource = DLGL_SHADER_SOURCE
+(
+ out vec4 outputColor;
+ void main() {
+     outputColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+ }
+ );
+
 
 static const float vertexPositions[] = {
-    0.75f, 0.75f, 0.0f, 1.0f,
-    0.75f, -0.75f, 0.0f, 1.0f,
+     0.75f,  0.75f, 0.0f, 1.0f,
+     0.75f, -0.75f, 0.0f, 1.0f,
     -0.75f, -0.75f, 0.0f, 1.0f,
 };
 
