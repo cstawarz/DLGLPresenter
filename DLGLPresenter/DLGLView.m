@@ -104,7 +104,7 @@ static const GLfloat texCoords[] = {
     NSMutableArray *extensionNames = [NSMutableArray arrayWithCapacity:numExtensions];
     
     for (GLuint i = 0; i < numExtensions; i++) {
-        [extensionNames addObject:[NSString stringWithUTF8String:(const char *)glGetStringi(GL_EXTENSIONS, i)]];
+        [extensionNames addObject:@((const char *)glGetStringi(GL_EXTENSIONS, i))];
     }
     
     supportedExtensions = [NSSet setWithArray:extensionNames];
@@ -183,13 +183,13 @@ static const GLfloat texCoords[] = {
                                                                    [[self window] colorSpace]);
     
     NSDictionary *options =
-        @{ (__bridge NSString *)kColorSyncConversionGridPoints: [NSNumber numberWithInt:numGridPoints] };
+        @{ (__bridge NSString *)kColorSyncConversionGridPoints: @(numGridPoints) };
     NSArray *properties = (__bridge_transfer NSArray *)
         ColorSyncTransformCopyProperty(transform,
                                        kColorSyncTransformSimplifiedConversionData,
                                        (__bridge CFDictionaryRef)options);
     NSData *srcData =
-        [(NSDictionary *)[properties firstObject] objectForKey:(__bridge NSString *)kColorSyncConversion3DLut];
+        ((NSDictionary *)[properties firstObject])[(__bridge NSString *)kColorSyncConversion3DLut];
     NSAssert(srcData, @"Unable to obtain color conversion lookup table data");
     
     //
