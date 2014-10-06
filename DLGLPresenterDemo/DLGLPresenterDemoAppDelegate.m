@@ -18,24 +18,19 @@
 
 #define FULLSCREEN
 
-#define MIRROR_UPDATE_INTERVAL  (33ull * NSEC_PER_MSEC)  // Update ~30 times per second
-#define MIRROR_UPDATE_LEEWAY    ( 5ull * NSEC_PER_MSEC)  // with a leeway of 5ms
-
 
 @implementation DLGLPresenterDemoAppDelegate
 {
     NSWindow *fullScreenWindow;
     DLGLPresenterView *presenterView;
-    id <DLGLPresenterDelegate> presenterDelegate;
-    
+    PresenterDelegateBase *presenterDelegate;
     DLGLMirrorView *mirrorView;
-    dispatch_source_t mirrorViewTimer;
 }
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    presenterDelegate = [[HelloImage alloc] init];
+    presenterDelegate = [[MovingTriangle alloc] init];
     
 #ifdef FULLSCREEN
     fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];
@@ -50,13 +45,12 @@
     [fullScreenWindow makeKeyAndOrderFront:self];
     [self.window setContentView:mirrorView];
     mirrorView.sourceView = presenterView;
+    presenterDelegate.mirrorView = mirrorView;
     
     NSSize aspectRatio = presenterView.bounds.size;
     [self.window setContentAspectRatio:presenterView.bounds.size];
     CGFloat windowHeight = [self.window frame].size.height;
     [self.window setContentSize:NSMakeSize(windowHeight * aspectRatio.width / aspectRatio.height, windowHeight)];
-    
-    [self startMirrorViewUpdates];
 #else
     [self.window setContentView:presenterView];
 #endif
@@ -72,21 +66,6 @@
 #ifdef FULLSCREEN
     [fullScreenWindow orderOut:nil];
 #endif
-}
-
-
-- (void)startMirrorViewUpdates
-{
-    mirrorViewTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    NSAssert(mirrorViewTimer, @"Unable to create dispatch timer");
-    
-    dispatch_source_set_timer(mirrorViewTimer, DISPATCH_TIME_NOW, MIRROR_UPDATE_INTERVAL, MIRROR_UPDATE_LEEWAY);
-    
-    dispatch_source_set_event_handler(mirrorViewTimer, ^{
-        [mirrorView setNeedsDisplay:YES];
-    });
-    
-    dispatch_resume(mirrorViewTimer);
 }
 
 

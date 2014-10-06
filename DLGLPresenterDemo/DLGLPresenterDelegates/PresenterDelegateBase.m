@@ -9,7 +9,9 @@
 #import "PresenterDelegateBase.h"
 
 
-@implementation PresenterDelegateBase
+@implementation PresenterDelegateBase {
+    int64_t lastFrameTime;
+}
 
 
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView
@@ -32,7 +34,17 @@
 
 - (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime
 {
-    // Do nothing
+    if (self.mirrorView) {
+        // Refresh mirror view at most every other frame
+        if (!lastFrameTime ||
+            (outputTime->videoTime - lastFrameTime) > outputTime->videoRefreshPeriod)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mirrorView setNeedsDisplay:YES];
+            });
+            lastFrameTime = outputTime->videoTime;
+        }
+    }
 }
 
 

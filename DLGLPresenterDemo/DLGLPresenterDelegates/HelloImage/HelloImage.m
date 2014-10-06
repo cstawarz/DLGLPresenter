@@ -248,6 +248,7 @@ static const GLfloat texCoords[] = {
 
 - (void)presenterView:(DLGLPresenterView *)presenterView didDrawForTime:(const CVTimeStamp *)outputTime
 {
+    [super presenterView:presenterView didDrawForTime:outputTime];
     didDraw = YES;
 }
 
