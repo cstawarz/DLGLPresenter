@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 MIT. All rights reserved.
 //
 
-#import <CoreVideo/CVDisplayLink.h>
-
 #import "DLGLView.h"
 
 

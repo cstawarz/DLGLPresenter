@@ -9,7 +9,7 @@
 #import "DLGLViewPrivate.h"
 
 #import <AppKit/NSOpenGL.h>
-#import <AppKit/NSWindow.h>
+#import <CoreVideo/CVDisplayLink.h>
 
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 
@@ -17,6 +17,19 @@
 @implementation DLGLView
 {
     CVDisplayLinkRef displayLink;
+}
+
+
++ (NSOpenGLPixelFormat *)defaultPixelFormat
+{
+    NSOpenGLPixelFormatAttribute attributes[] =
+    {
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+        NSOpenGLPFADoubleBuffer,
+        0
+    };
+    
+    return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
 }
 
 
@@ -44,6 +57,10 @@
 
 - (void)prepareOpenGL
 {
+    [self DLGLPerformBlockWithContextLock:^{
+        GLint swapInterval = 1;
+        [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+    }];
 }
 
 
@@ -75,7 +92,6 @@
         [self DLGLPerformBlockWithContextLock:^{
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
-            glFlush();
             [[self openGLContext] flushBuffer];
         }];
     }

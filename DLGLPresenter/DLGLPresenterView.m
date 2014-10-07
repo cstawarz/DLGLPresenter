@@ -9,8 +9,6 @@
 #import "DLGLPresenterViewPrivate.h"
 
 #import <AppKit/NSOpenGL.h>
-#import <CoreVideo/CVHostTime.h>
-#import <OpenGL/gl3ext.h>
 
 #import "DLGLUtilities.h"
 #import "DLGLViewPrivate.h"
@@ -25,19 +23,6 @@
     
     GLuint framebuffer;
     GLuint renderbuffer;
-}
-
-
-+ (NSOpenGLPixelFormat *)defaultPixelFormat
-{
-    NSOpenGLPixelFormatAttribute attributes[] =
-    {
-        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        NSOpenGLPFADoubleBuffer,
-        0
-    };
-    
-    return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
 }
 
 
@@ -66,9 +51,6 @@
 {
     [self DLGLPerformBlockWithContextLock:^{
         [super prepareOpenGL];
-        
-        GLint swapInterval = 1;
-        [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
         
         glGenFramebuffers(1, &framebuffer);
         glGenRenderbuffers(1, &renderbuffer);
@@ -206,7 +188,8 @@
 }
 
 
-- (GLuint)sceneFramebuffer {
+- (GLuint)sceneFramebuffer
+{
     return framebuffer;
 }
 

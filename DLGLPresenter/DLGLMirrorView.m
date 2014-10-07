@@ -18,18 +18,6 @@
 @implementation DLGLMirrorView
 
 
-+ (NSOpenGLPixelFormat *)defaultPixelFormat
-{
-    NSOpenGLPixelFormatAttribute attributes[] =
-    {
-        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        0
-    };
-    
-    return [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
-}
-
-
 - (void)setSourceView:(DLGLPresenterView *)newSourceView
 {
     NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:[self pixelFormat]
@@ -39,9 +27,7 @@
     [self setOpenGLContext:context];
     [context setView:self];
     
-    if (self.sourceView) {
-        [self.sourceView removeObserver:self forKeyPath:@"presenting"];
-    }
+    [self.sourceView removeObserver:self forKeyPath:@"presenting"];
     [newSourceView addObserver:self forKeyPath:@"presenting" options:0 context:NULL];
     
     _sourceView = newSourceView;
@@ -68,7 +54,7 @@
     [[self openGLContext] makeCurrentContext];
     [self DLGLPerformBlockWithContextLock:^{
         [self drawFramebuffer:self.sourceView.sceneFramebuffer fromView:self.sourceView inView:self];
-        glFlush();
+        [[self openGLContext] flushBuffer];
     }];
 }
 
