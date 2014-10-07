@@ -6,20 +6,19 @@
 //  Copyright 2011 MIT. All rights reserved.
 //
 
-#import "DLGLPresenterView.h"
+#import "DLGLPresenterViewPrivate.h"
 
 #import <AppKit/NSOpenGL.h>
 #import <CoreVideo/CVHostTime.h>
-#import <CoreVideo/CVDisplayLink.h>
 #import <OpenGL/gl3ext.h>
 
 #import "DLGLUtilities.h"
+#import "DLGLViewPrivate.h"
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 
 
 @implementation DLGLPresenterView
 {
-    CVDisplayLinkRef displayLink;
     uint64_t startHostTime, currentHostTime, previousHostTime;
     int64_t previousVideoTime;
     BOOL shouldDraw;
@@ -63,22 +62,6 @@
 }
 
 
-- (instancetype)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)pixelFormat
-{
-    if ((self = [super initWithFrame:frameRect pixelFormat:pixelFormat])) {
-        CVReturn error;
-        
-        error = CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
-        NSAssert((kCVReturnSuccess == error), @"Unable to create display link (error = %d)", error);
-        
-        error = CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, (__bridge void *)(self));
-        NSAssert((kCVReturnSuccess == error), @"Unable to set display link output callback (error = %d)", error);
-    }
-    
-    return self;
-}
-
-
 - (void)prepareOpenGL
 {
     [self DLGLPerformBlockWithContextLock:^{
@@ -115,24 +98,12 @@
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         
         //
-        // Redraw
+        // Trigger redraw
         //
         
         if (self.presenting) {
             shouldDraw = YES;
-        } else {
-            glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-            [[self openGLContext] flushBuffer];
         }
-    }];
-}
-
-
-- (void)update
-{
-    [self DLGLPerformBlockWithContextLock:^{
-        [super update];
     }];
 }
 
@@ -140,8 +111,6 @@
 - (void)setPresenting:(BOOL)shouldPresent
 {
     [[self openGLContext] makeCurrentContext];
-    
-    CVReturn error;
     
     if (shouldPresent && !self.presenting) {
         
@@ -154,18 +123,11 @@
         startHostTime = currentHostTime = previousHostTime = 0ull;
         previousVideoTime = 0ll;
         
-        error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                                  [[self openGLContext] CGLContextObj],
-                                                                  [[self pixelFormat] CGLPixelFormatObj]);
-        NSAssert((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
-        
-        error = CVDisplayLinkStart(displayLink);
-        NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
+        [self startDisplayLink];
         
     } else if (!shouldPresent && self.presenting) {
         
-        error = CVDisplayLinkStop(displayLink);
-        NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+        [self stopDisplayLink];
         
         _presenting = NO;
         
@@ -177,28 +139,10 @@
 }
 
 
-static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
-                                    const CVTimeStamp *now,
-                                    const CVTimeStamp *outputTime,
-                                    CVOptionFlags flagsIn,
-                                    CVOptionFlags *flagsOut,
-                                    void *displayLinkContext)
+- (void)drawForTime:(const CVTimeStamp *)outputTime
 {
-    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
-              @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
-              @"Host time is invalid (%llu)", outputTime->hostTime);
-    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
-    
-    DLGLPresenterView *presenterView = (__bridge DLGLPresenterView *)displayLinkContext;
-    
-    @autoreleasepool {
-        [presenterView checkForSkippedFrames:outputTime];
-        [presenterView presentFrameForTime:outputTime];
-    }
-    
-    return kCVReturnSuccess;
+    [self checkForSkippedFrames:outputTime];
+    [self presentFrameForTime:outputTime];
 }
 
 
@@ -267,24 +211,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (CVTime)nominalRefreshPeriod
-{
-    return CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
-}
-
-
-- (NSTimeInterval)actualRefreshPeriod
-{
-    return CVDisplayLinkGetActualOutputVideoRefreshPeriod(displayLink);
-}
-
-
-- (CVTime)nominalLatency
-{
-    return CVDisplayLinkGetOutputVideoLatency(displayLink);
-}
-
-
 - (NSTimeInterval)elapsedTime
 {
     if (!self.presenting) {
@@ -292,12 +218,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     }
     
     return DLGLGetTimeInterval(startHostTime, currentHostTime);
-}
-
-
-- (void)dealloc
-{
-    CVDisplayLinkRelease(displayLink);
 }
 
 

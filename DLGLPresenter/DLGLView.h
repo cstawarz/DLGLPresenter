@@ -7,6 +7,7 @@
 //
 
 #import <AppKit/NSOpenGLView.h>
+#import <CoreVideo/CVBase.h>
 #import <OpenGL/gl3.h>
 
 
@@ -14,7 +15,8 @@
 
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
-- (BOOL)supportsExtension:(NSString *)name;
-- (void)drawFramebuffer:(GLuint)framebuffer fromView:(DLGLView *)sourceView inView:(DLGLView *)destView;
+@property(nonatomic, readonly) CVTime nominalRefreshPeriod;
+@property(nonatomic, readonly) NSTimeInterval actualRefreshPeriod;
+@property(nonatomic, readonly) CVTime nominalLatency;
 
 @end

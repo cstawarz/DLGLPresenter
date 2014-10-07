@@ -14,8 +14,6 @@
 
 @interface PresenterDelegateBase : NSObject <DLGLPresenterDelegate>
 
-@property(nonatomic, weak) DLGLMirrorView *mirrorView;
-
 - (GLuint)loadShader:(GLenum)shaderType fromResource:(NSString *)name withExtension:(NSString *)extension;
 
 @end

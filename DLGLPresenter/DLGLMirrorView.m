@@ -10,6 +10,10 @@
 
 #import <AppKit/NSOpenGL.h>
 
+#import "DLGLPresenterViewPrivate.h"
+#import "DLGLViewPrivate.h"
+#import "NSOpenGLView+DLGLPresenterAdditions.h"
+
 
 @implementation DLGLMirrorView
 
@@ -35,15 +39,37 @@
     [self setOpenGLContext:context];
     [context setView:self];
     
+    if (self.sourceView) {
+        [self.sourceView removeObserver:self forKeyPath:@"presenting"];
+    }
+    [newSourceView addObserver:self forKeyPath:@"presenting" options:0 context:NULL];
+    
     _sourceView = newSourceView;
 }
 
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if ((object == self.sourceView) && [keyPath isEqualToString:@"presenting"]) {
+        if (self.sourceView.presenting) {
+            [self startDisplayLink];
+        } else {
+            [self stopDisplayLink];
+        }
+    }
+}
+
+
+- (void)drawForTime:(const CVTimeStamp *)outputTime
 {
     [[self openGLContext] makeCurrentContext];
-    [self drawFramebuffer:self.sourceView.sceneFramebuffer fromView:self.sourceView inView:self];
-    glFlush();
+    [self DLGLPerformBlockWithContextLock:^{
+        [self drawFramebuffer:self.sourceView.sceneFramebuffer fromView:self.sourceView inView:self];
+        glFlush();
+    }];
 }
 
 

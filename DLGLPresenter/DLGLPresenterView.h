@@ -8,7 +8,6 @@
 
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSWindow.h>
-#import <CoreVideo/CVBase.h>
 
 #import <DLGLPresenter/DLGLView.h>
 
@@ -20,12 +19,6 @@
 
 @property(nonatomic, weak) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
-
-@property(nonatomic, readonly) GLuint sceneFramebuffer;
-
-@property(nonatomic, readonly) CVTime nominalRefreshPeriod;
-@property(nonatomic, readonly) NSTimeInterval actualRefreshPeriod;
-@property(nonatomic, readonly) CVTime nominalLatency;
 @property(nonatomic, readonly) NSTimeInterval elapsedTime;
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;

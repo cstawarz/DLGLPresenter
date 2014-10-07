@@ -23,7 +23,7 @@
 {
     NSWindow *fullScreenWindow;
     DLGLPresenterView *presenterView;
-    PresenterDelegateBase *presenterDelegate;
+    id <DLGLPresenterDelegate> presenterDelegate;
     DLGLMirrorView *mirrorView;
 }
 
@@ -45,7 +45,6 @@
     [fullScreenWindow makeKeyAndOrderFront:self];
     [self.window setContentView:mirrorView];
     mirrorView.sourceView = presenterView;
-    presenterDelegate.mirrorView = mirrorView;
     
     NSSize aspectRatio = presenterView.bounds.size;
     [self.window setContentAspectRatio:presenterView.bounds.size];
