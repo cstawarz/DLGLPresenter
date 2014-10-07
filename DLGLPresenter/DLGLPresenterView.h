@@ -21,7 +21,7 @@
 @property(nonatomic, weak) id <DLGLPresenterDelegate> delegate;
 @property(nonatomic, assign, getter=isPresenting) BOOL presenting;
 
-@property(nonatomic, readonly) GLuint sceneTexture;
+@property(nonatomic, readonly) GLuint sceneFramebuffer;
 
 @property(nonatomic, readonly) CVTime nominalRefreshPeriod;
 @property(nonatomic, readonly) NSTimeInterval actualRefreshPeriod;

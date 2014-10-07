@@ -25,7 +25,7 @@
     BOOL shouldDraw;
     
     GLuint framebuffer;
-    GLuint texture;
+    GLuint renderbuffer;
 }
 
 
@@ -87,26 +87,8 @@
         GLint swapInterval = 1;
         [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
         
-        //
-        // Prepare framebuffer
-        //
-        
         glGenFramebuffers(1, &framebuffer);
-        
-        //
-        // Prepare texture
-        //
-        
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        NSAssert([self supportsExtension:@"GL_EXT_texture_sRGB_decode"],
-                 @"Missing required extension GL_EXT_texture_sRGB_decode");
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SRGB_DECODE_EXT, GL_SKIP_DECODE_EXT);
-        
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glGenRenderbuffers(1, &renderbuffer);
     }];
 }
 
@@ -117,27 +99,19 @@
         [super reshape];
         
         //
-        // Resize the framebuffer texture
+        // Resize the renderbuffer
         //
         
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
         
-        glTexImage2D(GL_TEXTURE_2D,
-                     0,
-                     GL_SRGB8_ALPHA8,
-                     self.viewportWidth,
-                     self.viewportHeight,
-                     0,
-                     GL_BGRA,
-                     GL_UNSIGNED_INT_8_8_8_8,
-                     NULL);
-        glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, self.viewportWidth, self.viewportHeight);
+        glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
         
         GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
         NSAssert((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
         
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindRenderbuffer(GL_RENDERBUFFER, 0);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         
         //
@@ -269,16 +243,12 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
             GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
             glDrawBuffers(1, drawBuffers);
             
-            glEnable(GL_FRAMEBUFFER_SRGB);
-            
             [self.delegate presenterView:self willDrawForTime:outputTime];
-            
-            glDisable(GL_FRAMEBUFFER_SRGB);
             
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
         
-        [self drawTextureWithColorMatching:texture];
+        [self drawFramebuffer:framebuffer fromView:self inView:self];
         [[self openGLContext] flushBuffer];
         
         if (shouldDraw) {
@@ -292,8 +262,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (GLuint)sceneTexture {
-    return texture;
+- (GLuint)sceneFramebuffer {
+    return framebuffer;
 }
 
 

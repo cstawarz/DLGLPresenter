@@ -15,6 +15,6 @@
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
 - (BOOL)supportsExtension:(NSString *)name;
-- (void)drawTextureWithColorMatching:(GLuint)texture;
+- (void)drawFramebuffer:(GLuint)framebuffer fromView:(DLGLView *)sourceView inView:(DLGLView *)destView;
 
 @end
