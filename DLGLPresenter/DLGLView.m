@@ -18,13 +18,13 @@
 }
 
 
-- (id)initWithFrame:(NSRect)frameRect
+- (instancetype)initWithFrame:(NSRect)frameRect
 {
     return [self initWithFrame:frameRect pixelFormat:[[self class] defaultPixelFormat]];
 }
 
 
-- (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)format
+- (instancetype)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)format
 {
     if ((self = [super initWithFrame:frameRect pixelFormat:format])) {
         [self setWantsBestResolutionOpenGLSurface:YES];

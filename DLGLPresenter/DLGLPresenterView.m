@@ -63,7 +63,7 @@
 }
 
 
-- (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)pixelFormat
+- (instancetype)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)pixelFormat
 {
     if ((self = [super initWithFrame:frameRect pixelFormat:pixelFormat])) {
         CVReturn error;
