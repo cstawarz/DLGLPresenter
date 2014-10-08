@@ -9,8 +9,8 @@
 #import "DLGLPresenterViewPrivate.h"
 
 #import <AppKit/NSOpenGL.h>
+#import <CoreVideo/CVHostTime.h>
 
-#import "DLGLUtilities.h"
 #import "DLGLViewPrivate.h"
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
 
@@ -184,7 +184,7 @@
         return 0.0;
     }
     
-    return DLGLGetTimeInterval(startHostTime, currentHostTime);
+    return (double)(currentHostTime - startHostTime) / CVGetHostClockFrequency();
 }
 
 

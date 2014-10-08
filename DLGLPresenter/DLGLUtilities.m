@@ -8,8 +8,6 @@
 
 #import "DLGLUtilities.h"
 
-#import <CoreVideo/CVHostTime.h>
-
 
 void DLGLErrorBreak(GLenum error);
 
@@ -125,12 +123,6 @@ ColorSyncTransformRef DLGLCreateColorSyncTransform(NSColorSpace *srcColorSpace, 
     CFRelease(srcDict);
     
     return transform;
-}
-
-
-NSTimeInterval DLGLGetTimeInterval(uint64_t startHostTime, uint64_t endHostTime)
-{
-    return (double)(endHostTime - startHostTime) / CVGetHostClockFrequency();
 }
 
 

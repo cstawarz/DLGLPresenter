@@ -26,5 +26,3 @@ GLuint DLGLCreateShader(GLenum shaderType, const GLchar *shaderSource);
 GLuint DLGLCreateProgramWithShaders(GLuint shader, ...);
 
 ColorSyncTransformRef DLGLCreateColorSyncTransform(NSColorSpace *srcColorSpace, NSColorSpace *dstColorSpace);
-
-NSTimeInterval DLGLGetTimeInterval(uint64_t startHostTime, uint64_t endHostTime);
