@@ -88,7 +88,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    if (!CVDisplayLinkIsRunning(displayLink)) {
+    if (!(self.running)) {
         [self DLGLPerformBlockWithContextLock:^{
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -136,13 +136,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                                     CVOptionFlags *flagsOut,
                                     void *displayLinkContext)
 {
-    NSCAssert((outputTime->flags & kCVTimeStampVideoTimeValid),
-              @"Video time is invalid (%lld)", outputTime->videoTime);
-    NSCAssert((outputTime->flags & kCVTimeStampHostTimeValid),
-              @"Host time is invalid (%llu)", outputTime->hostTime);
-    NSCAssert((outputTime->flags & kCVTimeStampVideoRefreshPeriodValid),
-              @"Video refresh period is invalid (%lld)", outputTime->videoRefreshPeriod);
-    
     DLGLView *view = (__bridge DLGLView *)displayLinkContext;
     
     @autoreleasepool {
@@ -177,21 +170,9 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 }
 
 
-- (CVTime)nominalRefreshPeriod
-{
-    return CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
-}
-
-
-- (NSTimeInterval)actualRefreshPeriod
+- (NSTimeInterval)refreshPeriod
 {
     return CVDisplayLinkGetActualOutputVideoRefreshPeriod(displayLink);
-}
-
-
-- (CVTime)nominalLatency
-{
-    return CVDisplayLinkGetOutputVideoLatency(displayLink);
 }
 
 

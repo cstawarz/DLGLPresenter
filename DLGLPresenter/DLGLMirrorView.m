@@ -55,6 +55,12 @@
 }
 
 
+- (void)dealloc
+{
+    [self.sourceView removeObserver:self forKeyPath:@"running"];
+}
+
+
 @end
 
 
