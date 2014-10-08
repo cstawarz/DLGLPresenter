@@ -27,8 +27,8 @@
     [self setOpenGLContext:context];
     [context setView:self];
     
-    [self.sourceView removeObserver:self forKeyPath:@"presenting"];
-    [newSourceView addObserver:self forKeyPath:@"presenting" options:0 context:NULL];
+    [self.sourceView removeObserver:self forKeyPath:@"running"];
+    [newSourceView addObserver:self forKeyPath:@"running" options:0 context:NULL];
     
     _sourceView = newSourceView;
 }
@@ -39,12 +39,8 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ((object == self.sourceView) && [keyPath isEqualToString:@"presenting"]) {
-        if (self.sourceView.presenting) {
-            [self startDisplayLink];
-        } else {
-            [self stopDisplayLink];
-        }
+    if ((object == self.sourceView) && [keyPath isEqualToString:@"running"]) {
+        self.running = self.sourceView.running;
     }
 }
 

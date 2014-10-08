@@ -98,22 +98,34 @@
 }
 
 
-- (void)startDisplayLink
+- (void)setRunning:(BOOL)running
 {
-    CVReturn error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                                       [[self openGLContext] CGLContextObj],
-                                                                       [[self pixelFormat] CGLPixelFormatObj]);
-    NSAssert((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+    if (self.running == running) {
+        return;
+    }
     
-    error = CVDisplayLinkStart(displayLink);
-    NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
-}
-
-
-- (void)stopDisplayLink
-{
-    CVReturn error = CVDisplayLinkStop(displayLink);
-    NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+    CVReturn error;
+    
+    if (running) {
+        
+        _running = YES;
+        
+        error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
+                                                                  [[self openGLContext] CGLContextObj],
+                                                                  [[self pixelFormat] CGLPixelFormatObj]);
+        NSAssert((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+        
+        error = CVDisplayLinkStart(displayLink);
+        NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
+        
+    } else {
+        
+        error = CVDisplayLinkStop(displayLink);
+        NSAssert((kCVReturnSuccess == error), @"Unable to stop display link (error = %d)", error);
+        
+        _running = NO;
+        
+    }
 }
 
 

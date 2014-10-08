@@ -11,8 +11,6 @@
 
 @interface DLGLView ()
 
-- (void)startDisplayLink;
-- (void)stopDisplayLink;
 - (void)drawForTime:(const CVTimeStamp *)outputTime;
 - (void)drawFramebuffer:(GLuint)framebuffer fromView:(DLGLView *)sourceView inView:(DLGLView *)destView;
 

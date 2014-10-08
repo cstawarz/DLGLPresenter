@@ -15,6 +15,8 @@
 
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
 
+@property(nonatomic, assign, getter=isRunning) BOOL running;
+
 @property(nonatomic, readonly) CVTime nominalRefreshPeriod;
 @property(nonatomic, readonly) NSTimeInterval actualRefreshPeriod;
 @property(nonatomic, readonly) CVTime nominalLatency;

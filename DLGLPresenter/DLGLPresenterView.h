@@ -18,10 +18,10 @@
 @interface DLGLPresenterView : DLGLView
 
 @property(nonatomic, weak) id <DLGLPresenterDelegate> delegate;
-@property(nonatomic, assign, getter=isPresenting) BOOL presenting;
 @property(nonatomic, readonly) NSTimeInterval elapsedTime;
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen;
++ (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen pixelFormat:(NSOpenGLPixelFormat *)format;
 
 @end
 

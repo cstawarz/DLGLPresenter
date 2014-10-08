@@ -17,7 +17,7 @@
 
 @implementation DLGLPresenterView
 {
-    uint64_t startHostTime, currentHostTime, previousHostTime;
+    uint64_t startHostTime, currentHostTime;
     int64_t previousVideoTime;
     BOOL shouldDraw;
     
@@ -27,6 +27,12 @@
 
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen
+{
+    return [self presenterViewInFullScreenWindow:screen pixelFormat:[self defaultPixelFormat]];
+}
+
+
++ (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen pixelFormat:(NSOpenGLPixelFormat *)format
 {
     NSRect screenRect = [screen frame];
     NSRect windowRect = NSMakeRect(0.0, 0.0, screenRect.size.width, screenRect.size.height);
@@ -40,7 +46,7 @@
     [fullScreenWindow setOpaque:YES];
     [fullScreenWindow setHidesOnDeactivate:NO];
     
-    DLGLPresenterView *presenterView = [[self alloc] initWithFrame:windowRect];
+    DLGLPresenterView *presenterView = [[self alloc] initWithFrame:windowRect pixelFormat:format];
     [fullScreenWindow setContentView:presenterView];
     
     return fullScreenWindow;
@@ -83,35 +89,36 @@
         // Trigger redraw
         //
         
-        if (self.presenting) {
+        if (self.running) {
             shouldDraw = YES;
         }
     }];
 }
 
 
-- (void)setPresenting:(BOOL)shouldPresent
+- (void)setRunning:(BOOL)running
 {
+    if (self.running == running) {
+        return;
+    }
+    
     [[self openGLContext] makeCurrentContext];
     
-    if (shouldPresent && !self.presenting) {
+    if (running) {
         
         [self DLGLPerformBlockWithContextLock:^{
             [self.delegate presenterViewWillStartPresentation:self];
         }];
         
         shouldDraw = YES;
-        _presenting = YES;
-        startHostTime = currentHostTime = previousHostTime = 0ull;
+        startHostTime = currentHostTime = 0ull;
         previousVideoTime = 0ll;
         
-        [self startDisplayLink];
+        [super setRunning:YES];
         
-    } else if (!shouldPresent && self.presenting) {
+    } else {
         
-        [self stopDisplayLink];
-        
-        _presenting = NO;
+        [super setRunning:NO];
         
         [self DLGLPerformBlockWithContextLock:^{
             [self.delegate presenterViewDidStopPresentation:self];
@@ -123,36 +130,14 @@
 
 - (void)drawForTime:(const CVTimeStamp *)outputTime
 {
-    [self checkForSkippedFrames:outputTime];
-    [self presentFrameForTime:outputTime];
-}
-
-
-- (void)checkForSkippedFrames:(const CVTimeStamp *)outputTime
-{
-    double expectedInterval = 1.0;
-    
     if (previousVideoTime) {
         int64_t delta = (outputTime->videoTime - previousVideoTime) - outputTime->videoRefreshPeriod;
         if (delta) {
             double skippedFrameCount = (double)delta / (double)(outputTime->videoRefreshPeriod);
             [self.delegate presenterView:self skippedFrames:skippedFrameCount];
-            expectedInterval += skippedFrameCount;
         }
     }
     
-    if (previousHostTime) {
-        double interval = DLGLGetTimeInterval(previousHostTime, outputTime->hostTime) / self.actualRefreshPeriod;
-        // FIXME: The tolerance should be configurable, and the delegate should be notified when the test fails
-        if (fabs(interval - expectedInterval) / expectedInterval > 0.01) {
-            NSLog(@"interval = %g", interval);
-        }
-    }
-}
-
-
-- (void)presentFrameForTime:(const CVTimeStamp *)outputTime
-{
     currentHostTime = outputTime->hostTime;
     if (!startHostTime) {
         startHostTime = currentHostTime;
@@ -183,7 +168,6 @@
         }
     }];
     
-    previousHostTime = currentHostTime;
     previousVideoTime = outputTime->videoTime;
 }
 
@@ -196,7 +180,7 @@
 
 - (NSTimeInterval)elapsedTime
 {
-    if (!self.presenting) {
+    if (!self.running) {
         return 0.0;
     }
     

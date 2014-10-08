@@ -54,14 +54,14 @@
     [self.window setContentView:presenterView];
 #endif
     
-    presenterView.presenting = YES;
+    presenterView.running = YES;
     [self logDisplayInfo];
 }
 
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-    presenterView.presenting = NO;
+    presenterView.running = NO;
 #ifdef FULLSCREEN
     [fullScreenWindow orderOut:nil];
 #endif
