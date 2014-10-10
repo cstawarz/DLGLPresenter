@@ -53,46 +53,42 @@
 }
 
 
-- (void)prepareOpenGL
+- (void)prepareContext
 {
-    [self DLGLPerformBlockWithContextLock:^{
-        [super prepareOpenGL];
-        
-        glGenFramebuffers(1, &framebuffer);
-        glGenRenderbuffers(1, &renderbuffer);
-    }];
+    [super prepareContext];
+    
+    glGenFramebuffers(1, &framebuffer);
+    glGenRenderbuffers(1, &renderbuffer);
 }
 
 
-- (void)reshape
+- (void)resizeContext
 {
-    [self DLGLPerformBlockWithContextLock:^{
-        [super reshape];
-        
-        //
-        // Resize the renderbuffer
-        //
-        
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
-        
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, self.viewportWidth, self.viewportHeight);
-        glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
-        
-        GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
-        NSAssert((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
-        
-        glBindRenderbuffer(GL_RENDERBUFFER, 0);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        
-        //
-        // Trigger redraw
-        //
-        
-        if (self.running) {
-            shouldDraw = YES;
-        }
-    }];
+    [super resizeContext];
+    
+    //
+    // Resize the renderbuffer
+    //
+    
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, self.viewportWidth, self.viewportHeight);
+    glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer);
+    
+    GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+    NSAssert((GL_FRAMEBUFFER_COMPLETE == status), @"GL framebuffer is not complete (status = %d)", status);
+    
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    
+    //
+    // Trigger redraw
+    //
+    
+    if (self.running) {
+        shouldDraw = YES;
+    }
 }
 
 
@@ -150,30 +146,27 @@
         startHostTime = currentHostTime;
     }
     
-    [[self openGLContext] makeCurrentContext];
-    [self DLGLPerformBlockWithContextLock:^{
-        if (!shouldDraw && [self.delegate presenterView:self shouldDrawForTime:outputTime]) {
-            shouldDraw = YES;
-        }
+    if (!shouldDraw && [self.delegate presenterView:self shouldDrawForTime:outputTime]) {
+        shouldDraw = YES;
+    }
+    
+    if (shouldDraw) {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+        GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+        glDrawBuffers(1, drawBuffers);
         
-        if (shouldDraw) {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-            GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
-            glDrawBuffers(1, drawBuffers);
-            
-            [self.delegate presenterView:self willDrawForTime:outputTime];
-            
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        }
+        [self.delegate presenterView:self willDrawForTime:outputTime];
         
-        [self drawFramebuffer:framebuffer fromView:self inView:self];
-        [[self openGLContext] flushBuffer];
-        
-        if (shouldDraw) {
-            [self.delegate presenterView:self didDrawForTime:outputTime];
-            shouldDraw = NO;
-        }
-    }];
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    }
+    
+    [self drawFramebuffer:framebuffer fromView:self inView:self];
+    [[self openGLContext] flushBuffer];
+    
+    if (shouldDraw) {
+        [self.delegate presenterView:self didDrawForTime:outputTime];
+        shouldDraw = NO;
+    }
     
     previousVideoTime = outputTime->videoTime;
 }

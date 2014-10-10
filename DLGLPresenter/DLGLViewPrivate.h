@@ -11,6 +11,8 @@
 
 @interface DLGLView ()
 
+- (void)prepareContext;
+- (void)resizeContext;
 - (void)drawForTime:(const CVTimeStamp *)outputTime;
 - (void)drawFramebuffer:(GLuint)framebuffer fromView:(DLGLView *)sourceView inView:(DLGLView *)destView;
 

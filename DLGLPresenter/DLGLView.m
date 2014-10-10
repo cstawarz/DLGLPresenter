@@ -17,6 +17,8 @@
 @implementation DLGLView
 {
     CVDisplayLinkRef displayLink;
+    BOOL shouldUpdate;
+    BOOL shouldResize;
 }
 
 
@@ -58,22 +60,15 @@
 - (void)prepareOpenGL
 {
     [self DLGLPerformBlockWithContextLock:^{
-        GLint swapInterval = 1;
-        [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+        [self prepareContext];
     }];
 }
 
 
 - (void)reshape
 {
-    [[self openGLContext] makeCurrentContext];
     [self DLGLPerformBlockWithContextLock:^{
-        NSSize size = [self convertRectToBacking:[self bounds]].size;
-        
-        _viewportWidth = (GLsizei)(size.width);
-        _viewportHeight = (GLsizei)(size.height);
-        
-        glViewport(0, 0, self.viewportWidth, self.viewportHeight);
+        shouldResize = YES;
     }];
 }
 
@@ -81,7 +76,7 @@
 - (void)update
 {
     [self DLGLPerformBlockWithContextLock:^{
-        [super update];
+        shouldUpdate = YES;
     }];
 }
 
@@ -139,10 +134,42 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     DLGLView *view = (__bridge DLGLView *)displayLinkContext;
     
     @autoreleasepool {
-        [view drawForTime:outputTime];
+        [view DLGLPerformBlockWithContextLock:^{
+            if (view->shouldUpdate) {
+                [[view openGLContext] update];
+                view->shouldUpdate = NO;
+            }
+            
+            [[view openGLContext] makeCurrentContext];
+            
+            if (view->shouldResize) {
+                [view resizeContext];
+                view->shouldResize = NO;
+            }
+            
+            [view drawForTime:outputTime];
+        }];
     }
     
     return kCVReturnSuccess;
+}
+
+
+- (void)prepareContext
+{
+    GLint swapInterval = 1;
+    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+}
+
+
+- (void)resizeContext
+{
+    NSSize size = [self convertRectToBacking:[self bounds]].size;
+    
+    _viewportWidth = (GLsizei)(size.width);
+    _viewportHeight = (GLsizei)(size.height);
+    
+    glViewport(0, 0, self.viewportWidth, self.viewportHeight);
 }
 
 

@@ -47,11 +47,8 @@
 
 - (void)drawForTime:(const CVTimeStamp *)outputTime
 {
-    [[self openGLContext] makeCurrentContext];
-    [self DLGLPerformBlockWithContextLock:^{
-        [self drawFramebuffer:self.sourceView.sceneFramebuffer fromView:self.sourceView inView:self];
-        [[self openGLContext] flushBuffer];
-    }];
+    [self drawFramebuffer:self.sourceView.sceneFramebuffer fromView:self.sourceView inView:self];
+    [[self openGLContext] flushBuffer];
 }
 
 
