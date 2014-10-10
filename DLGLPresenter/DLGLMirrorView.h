@@ -9,7 +9,7 @@
 #import <DLGLPresenter/DLGLPresenterView.h>
 
 
-@interface DLGLMirrorView : DLGLView
+@interface DLGLMirrorView : NSView
 
 @property(nonatomic, weak) DLGLPresenterView *sourceView;
 
