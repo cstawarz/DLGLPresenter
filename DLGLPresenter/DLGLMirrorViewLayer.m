@@ -57,9 +57,7 @@
                forLayerTime:(CFTimeInterval)timeInterval
                 displayTime:(const CVTimeStamp *)timeStamp
 {
-    return (sourceView.running &&
-            sourceView.viewportWidth != 0 &&
-            sourceView.viewportHeight != 0);
+    return sourceView.running;
 }
 
 
@@ -71,10 +69,11 @@
     glBindFramebuffer(GL_READ_FRAMEBUFFER, sourceView.sceneFramebuffer);
     glReadBuffer(GL_COLOR_ATTACHMENT0);
     
+    NSRect sourceRect = [sourceView convertRectToBacking:[sourceView bounds]];
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
     
-    glBlitFramebuffer(0, 0, sourceView.viewportWidth, sourceView.viewportHeight,
+    glBlitFramebuffer(0, 0, NSWidth(sourceRect), NSHeight(sourceRect),
                       0, 0, viewport[2], viewport[3],
                       GL_COLOR_BUFFER_BIT,
                       GL_LINEAR);

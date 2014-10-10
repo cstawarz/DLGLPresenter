@@ -23,6 +23,7 @@
     if (self) {
         sourceView = presenterView;
         [self setWantsLayer:YES];
+        [self setWantsBestResolutionOpenGLSurface:YES];
     }
     
     return self;
