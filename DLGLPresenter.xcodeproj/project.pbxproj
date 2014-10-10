@@ -21,6 +21,8 @@
 		E183A0FB18CE251000012129 /* HelloImage.frag in Resources */ = {isa = PBXBuildFile; fileRef = E183A0FA18CE24FC00012129 /* HelloImage.frag */; };
 		E18D8CD218D0E46600CF7102 /* grayscale_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = E18D8CD118D0E44D00CF7102 /* grayscale_gradient.png */; };
 		E1AC79B719E828D5008F5F32 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1AC79B619E828D5008F5F32 /* QuartzCore.framework */; };
+		E1AC79BA19E84973008F5F32 /* DLGLMirrorViewLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E1AC79B819E84973008F5F32 /* DLGLMirrorViewLayer.h */; };
+		E1AC79BB19E84973008F5F32 /* DLGLMirrorViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E1AC79B919E84973008F5F32 /* DLGLMirrorViewLayer.m */; };
 		E1B5E9B8159235BD004271BA /* HelloCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B5E9B7159235BD004271BA /* HelloCircle.m */; };
 		E1DB140914E034FB007C0098 /* PresenterDelegateBase.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DB140814E034FB007C0098 /* PresenterDelegateBase.m */; };
 		E1E7AE1B140E730800B50A9F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1E7AE19140E730800B50A9F /* InfoPlist.strings */; };
@@ -66,6 +68,8 @@
 		E1A8721519E458C400BD4CD1 /* DLGLViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLGLViewPrivate.h; sourceTree = "<group>"; };
 		E1A8721619E4699500BD4CD1 /* DLGLPresenterViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DLGLPresenterViewPrivate.h; sourceTree = "<group>"; };
 		E1AC79B619E828D5008F5F32 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E1AC79B819E84973008F5F32 /* DLGLMirrorViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLMirrorViewLayer.h; sourceTree = "<group>"; };
+		E1AC79B919E84973008F5F32 /* DLGLMirrorViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLMirrorViewLayer.m; sourceTree = "<group>"; };
 		E1B5E9B6159235BD004271BA /* HelloCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloCircle.h; sourceTree = "<group>"; };
 		E1B5E9B7159235BD004271BA /* HelloCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloCircle.m; sourceTree = "<group>"; };
 		E1DB140714E034FB007C0098 /* PresenterDelegateBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresenterDelegateBase.h; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 				E1EEA71B140D3B150054C95A /* DLGLPresenterView.h */,
 				E1A8721619E4699500BD4CD1 /* DLGLPresenterViewPrivate.h */,
 				E1EEA71C140D3B150054C95A /* DLGLPresenterView.m */,
+				E1AC79B819E84973008F5F32 /* DLGLMirrorViewLayer.h */,
+				E1AC79B919E84973008F5F32 /* DLGLMirrorViewLayer.m */,
 				E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */,
 				E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */,
 				E1EEA709140D31AC0054C95A /* Supporting Files */,
@@ -271,6 +277,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1AC79BA19E84973008F5F32 /* DLGLMirrorViewLayer.h in Headers */,
 				E1F6490D1419409B005455C8 /* DLGLPresenter.h in Headers */,
 				E1EEA71D140D3B150054C95A /* DLGLPresenterView.h in Headers */,
 				E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */,
@@ -397,6 +404,7 @@
 			files = (
 				E1EEA71E140D3B150054C95A /* DLGLPresenterView.m in Sources */,
 				E1F64911141941ED005455C8 /* DLGLUtilities.m in Sources */,
+				E1AC79BB19E84973008F5F32 /* DLGLMirrorViewLayer.m in Sources */,
 				E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */,
 				E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */,
 				E136003F1551CA57003CE694 /* NSOpenGLView+DLGLPresenterAdditions.m in Sources */,

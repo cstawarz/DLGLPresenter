@@ -35,7 +35,7 @@
 #ifdef FULLSCREEN
     fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];
     presenterView = [fullScreenWindow contentView];
-    mirrorView = [[DLGLMirrorView alloc] initWithFrame:[self.window frame]];
+    mirrorView = [[DLGLMirrorView alloc] initWithFrame:[self.window frame] presenterView:presenterView];
 #else
     presenterView = [[DLGLPresenterView alloc] initWithFrame:[self.window frame]];
 #endif
@@ -44,7 +44,6 @@
 #ifdef FULLSCREEN
     [fullScreenWindow makeKeyAndOrderFront:self];
     [self.window setContentView:mirrorView];
-    mirrorView.sourceView = presenterView;
     
     NSSize aspectRatio = presenterView.bounds.size;
     [self.window setContentAspectRatio:presenterView.bounds.size];
@@ -55,8 +54,6 @@
 #endif
     
     presenterView.running = YES;
-    
-    NSLog(@"refreshPeriod: %g", [presenterView refreshPeriod]);
 }
 
 

@@ -11,6 +11,6 @@
 
 @interface DLGLMirrorView : NSView
 
-@property(nonatomic, weak) DLGLPresenterView *sourceView;
+- (instancetype)initWithFrame:(NSRect)frameRect presenterView:(DLGLPresenterView *)presenterView;
 
 @end
