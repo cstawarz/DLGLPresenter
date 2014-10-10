@@ -8,6 +8,7 @@
 
 #import "DLGLMirrorViewLayer.h"
 
+#import <AppKit/NSColor.h>
 #import <AppKit/NSOpenGL.h>
 
 #import "DLGLPresenterViewPrivate.h"
@@ -26,6 +27,7 @@
     if (self) {
         sourceView = presenterView;
         self.asynchronous = YES;
+        self.backgroundColor = [[NSColor lightGrayColor] CGColor];
         self.opaque = YES;
     }
     
@@ -35,26 +37,29 @@
 
 - (CGLPixelFormatObj)copyCGLPixelFormatForDisplayMask:(uint32_t)mask
 {
-    NSOpenGLPixelFormatAttribute attributes[] =
-    {
-        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        0
-    };
-    
-    NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
-    
-    return CGLRetainPixelFormat([pixelFormat CGLPixelFormatObj]);
+    return CGLRetainPixelFormat([[sourceView pixelFormat] CGLPixelFormatObj]);
 }
 
 
 - (CGLContextObj)copyCGLContextForPixelFormat:(CGLPixelFormatObj)pixelFormat
 {
-    NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:[[NSOpenGLPixelFormat alloc]
-                                                                        initWithCGLPixelFormatObj:pixelFormat]
-                                                          shareContext:[sourceView openGLContext]];
-    NSAssert(context, @"Could not create GL context for mirror view");
+    CGLContextObj ctx;
+    CGLError error = CGLCreateContext(pixelFormat, [[sourceView openGLContext] CGLContextObj] , &ctx);
     
-    return CGLRetainContext([context CGLContextObj]);
+    NSAssert((kCGLNoError == error), @"Could not create GL context for mirror view (error = %d)", error);
+    
+    return ctx;
+}
+
+
+- (BOOL)canDrawInCGLContext:(CGLContextObj)glContext
+                pixelFormat:(CGLPixelFormatObj)pixelFormat
+               forLayerTime:(CFTimeInterval)timeInterval
+                displayTime:(const CVTimeStamp *)timeStamp
+{
+    return (sourceView.running &&
+            sourceView.viewportWidth != 0 &&
+            sourceView.viewportHeight != 0);
 }
 
 
@@ -63,30 +68,18 @@
             forLayerTime:(CFTimeInterval)timeInterval
              displayTime:(const CVTimeStamp *)timeStamp
 {
-    if (!(sourceView.running) ||
-        sourceView.viewportWidth == 0 ||
-        sourceView.viewportHeight == 0)
-    {
-        
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-    } else {
-        
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, sourceView.sceneFramebuffer);
-        glReadBuffer(GL_COLOR_ATTACHMENT0);
-        
-        GLint viewport[4];
-        glGetIntegerv(GL_VIEWPORT, viewport);
-        
-        glBlitFramebuffer(0, 0, sourceView.viewportWidth, sourceView.viewportHeight,
-                          0, 0, viewport[2], viewport[3],
-                          GL_COLOR_BUFFER_BIT,
-                          GL_LINEAR);
-        
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-        
-    }
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, sourceView.sceneFramebuffer);
+    glReadBuffer(GL_COLOR_ATTACHMENT0);
+    
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    
+    glBlitFramebuffer(0, 0, sourceView.viewportWidth, sourceView.viewportHeight,
+                      0, 0, viewport[2], viewport[3],
+                      GL_COLOR_BUFFER_BIT,
+                      GL_LINEAR);
+    
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
     
     DLGLLogGLErrors();
     
