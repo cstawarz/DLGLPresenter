@@ -17,6 +17,7 @@
 		E1383C0619FEC7AD0087462D /* RefreshTally.frag in Resources */ = {isa = PBXBuildFile; fileRef = E1383C0519FEC7AD0087462D /* RefreshTally.frag */; };
 		E14DCD461430DAAD008904A4 /* DLGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E14DCD441430DAAD008904A4 /* DLGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E14DCD451430DAAD008904A4 /* DLGLView.m */; };
+		E15899391A002D2500E514E7 /* DLGLPresenter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */; };
 		E183A0F118CE127000012129 /* HelloImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E183A0F018CE127000012129 /* HelloImage.m */; };
@@ -49,6 +50,19 @@
 		E1F6491C14195BDD005455C8 /* MovingTriangle.vert in Resources */ = {isa = PBXBuildFile; fileRef = E1F6491414195441005455C8 /* MovingTriangle.vert */; };
 		E1F6491D14195BE0005455C8 /* MovingTriangle.frag in Resources */ = {isa = PBXBuildFile; fileRef = E1F6491314195441005455C8 /* MovingTriangle.frag */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E15899381A002D1D00E514E7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E15899391A002D2500E514E7 /* DLGLPresenter.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E10BE74E18CF8F3A0063EF35 /* car.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = car.jpg; sourceTree = "<group>"; };
@@ -305,6 +319,7 @@
 				E1E7AE0F140E730800B50A9F /* Sources */,
 				E1E7AE10140E730800B50A9F /* Frameworks */,
 				E1E7AE11140E730800B50A9F /* Resources */,
+				E15899381A002D1D00E514E7 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -557,6 +572,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLGLPresenter/DLGLPresenter-Prefix.pch";
 				INFOPLIST_FILE = "DLGLPresenter/DLGLPresenter-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -573,6 +589,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DLGLPresenter/DLGLPresenter-Prefix.pch";
 				INFOPLIST_FILE = "DLGLPresenter/DLGLPresenter-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
