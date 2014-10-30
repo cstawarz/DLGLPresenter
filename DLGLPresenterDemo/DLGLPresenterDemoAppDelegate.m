@@ -15,6 +15,7 @@
 #import "HelloCircle.h"
 #import "HelloImage.h"
 #import "MovingTriangle.h"
+#import "RefreshTally.h"
 
 #define FULLSCREEN
 
@@ -55,8 +56,6 @@
 #endif
     
     presenterView.running = YES;
-    
-    NSLog(@"refreshPeriod: %g", [presenterView refreshPeriod]);
 }
 
 

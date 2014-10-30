@@ -15,6 +15,5 @@
 
 @property(nonatomic, assign, getter=isRunning) BOOL running;
 @property(nonatomic, readonly) GLsizei viewportWidth, viewportHeight;
-@property(nonatomic, readonly) NSTimeInterval refreshPeriod;
 
 @end

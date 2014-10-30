@@ -9,6 +9,8 @@
 #import "DLGLViewPrivate.h"
 
 #import <AppKit/NSOpenGL.h>
+#import <AppKit/NSScreen.h>
+#import <AppKit/NSWindow.h>
 #import <CoreVideo/CVDisplayLink.h>
 
 #import "NSOpenGLView+DLGLPresenterAdditions.h"
@@ -57,6 +59,50 @@
 }
 
 
+- (void)viewWillMoveToWindow:(NSWindow *)newWindow
+{
+    if ([self window]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSWindowDidChangeScreenNotification
+                                                      object:[self window]];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:NSWindowDidChangeScreenProfileNotification
+                                                      object:[self window]];
+    }
+}
+
+
+- (void)viewDidMoveToWindow
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(windowDidChangeScreen:)
+                                                 name:NSWindowDidChangeScreenNotification
+                                               object:[self window]];
+    
+    [[self window] setDisplaysWhenScreenProfileChanges:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(windowDidChangeScreenProfile:)
+                                                 name:NSWindowDidChangeScreenProfileNotification
+                                               object:[self window]];
+}
+
+
+- (void)windowDidChangeScreen:(NSNotification *)notification
+{
+    if (self.running) {
+        self.running = NO;
+        self.running = YES;
+    }
+}
+
+
+- (void)windowDidChangeScreenProfile:(NSNotification *)notification
+{
+    NSLog(@"color space: %@", [[self window] colorSpace]);
+}
+
+
 - (void)prepareOpenGL
 {
     [self DLGLPerformBlockWithContextLock:^{
@@ -76,6 +122,7 @@
 - (void)update
 {
     [self DLGLPerformBlockWithContextLock:^{
+        NSLog(@"virtual screen: %d", [[self openGLContext] currentVirtualScreen]);
         shouldUpdate = YES;
     }];
 }
@@ -105,10 +152,14 @@
         
         _running = YES;
         
-        error = CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink,
-                                                                  [[self openGLContext] CGLContextObj],
-                                                                  [[self pixelFormat] CGLPixelFormatObj]);
+        NSScreen *screen = [[self window] screen];
+        NSNumber *screenNumber = screen.deviceDescription[@"NSScreenNumber"];
+        
+        error = CVDisplayLinkSetCurrentCGDisplay(displayLink, [screenNumber unsignedIntValue]);
         NSAssert((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
+        
+        CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
+        NSLog(@"nominal refresh rate: %g Hz", (double)period.timeScale / (double)period.timeValue);
         
         error = CVDisplayLinkStart(displayLink);
         NSAssert((kCVReturnSuccess == error), @"Unable to start display link (error = %d)", error);
@@ -157,6 +208,8 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)prepareContext
 {
+    CGLEnable([[self openGLContext] CGLContextObj], kCGLCECrashOnRemovedFunctions);
+    
     GLint swapInterval = 1;
     [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 }
@@ -194,12 +247,6 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
                       GL_LINEAR);
     
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-}
-
-
-- (NSTimeInterval)refreshPeriod
-{
-    return CVDisplayLinkGetActualOutputVideoRefreshPeriod(displayLink);
 }
 
 
