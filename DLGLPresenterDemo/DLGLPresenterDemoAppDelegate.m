@@ -17,6 +17,7 @@
 #import "MovingTriangle.h"
 #import "RefreshTally.h"
 #import "SceneKitAnimation.h"
+#import "SceneKitShapes.h"
 
 #define FULLSCREEN
 
@@ -32,7 +33,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    presenterDelegate = [[SceneKitAnimation alloc] init];
+    presenterDelegate = [[SceneKitShapes alloc] init];
     
 #ifdef FULLSCREEN
     fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];

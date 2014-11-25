@@ -18,6 +18,7 @@
 		E14DCD461430DAAD008904A4 /* DLGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E14DCD441430DAAD008904A4 /* DLGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E14DCD471430DAAD008904A4 /* DLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E14DCD451430DAAD008904A4 /* DLGLView.m */; };
 		E15899391A002D2500E514E7 /* DLGLPresenter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E1EEA6FF140D31AC0054C95A /* DLGLPresenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E15F31341A23B6C6003A7E6F /* SceneKitShapes.m in Sources */ = {isa = PBXBuildFile; fileRef = E15F31331A23B6C6003A7E6F /* SceneKitShapes.m */; };
 		E1816373142CE5DB0070AC3D /* DLGLMirrorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1816374142CE5DB0070AC3D /* DLGLMirrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */; };
 		E183A0F118CE127000012129 /* HelloImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E183A0F018CE127000012129 /* HelloImage.m */; };
@@ -79,6 +80,8 @@
 		E1383C0519FEC7AD0087462D /* RefreshTally.frag */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = RefreshTally.frag; sourceTree = "<group>"; };
 		E14DCD441430DAAD008904A4 /* DLGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLView.h; sourceTree = "<group>"; };
 		E14DCD451430DAAD008904A4 /* DLGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLView.m; sourceTree = "<group>"; };
+		E15F31321A23B6C6003A7E6F /* SceneKitShapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneKitShapes.h; sourceTree = "<group>"; };
+		E15F31331A23B6C6003A7E6F /* SceneKitShapes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneKitShapes.m; sourceTree = "<group>"; };
 		E1816371142CE5DB0070AC3D /* DLGLMirrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLGLMirrorView.h; sourceTree = "<group>"; };
 		E1816372142CE5DB0070AC3D /* DLGLMirrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLGLMirrorView.m; sourceTree = "<group>"; };
 		E183A0EF18CE127000012129 /* HelloImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloImage.h; sourceTree = "<group>"; };
@@ -165,6 +168,15 @@
 			path = RefreshTally;
 			sourceTree = "<group>";
 		};
+		E15F31311A23B67E003A7E6F /* SceneKitShapes */ = {
+			isa = PBXGroup;
+			children = (
+				E15F31321A23B6C6003A7E6F /* SceneKitShapes.h */,
+				E15F31331A23B6C6003A7E6F /* SceneKitShapes.m */,
+			);
+			path = SceneKitShapes;
+			sourceTree = "<group>";
+		};
 		E183A0EE18CE112D00012129 /* HelloImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +249,7 @@
 				E1F6491214195441005455C8 /* MovingTriangle */,
 				E1383BFF19FEC6500087462D /* RefreshTally */,
 				E1E440C71A1FB8CC00E51A9A /* SceneKitAnimation */,
+				E15F31311A23B67E003A7E6F /* SceneKitShapes */,
 			);
 			path = DLGLPresenterDelegates;
 			sourceTree = "<group>";
@@ -438,6 +451,7 @@
 				E1E7AE24140E730800B50A9F /* DLGLPresenterDemoAppDelegate.m in Sources */,
 				E1383C0219FEC6A90087462D /* RefreshTally.m in Sources */,
 				E1E7AE67140E7A7600B50A9F /* ScreenFlicker.m in Sources */,
+				E15F31341A23B6C6003A7E6F /* SceneKitShapes.m in Sources */,
 				E1E7AE6F140E9E9300B50A9F /* HelloTriangle.m in Sources */,
 				E1F64919141954B9005455C8 /* MovingTriangle.m in Sources */,
 				E1DB140914E034FB007C0098 /* PresenterDelegateBase.m in Sources */,
