@@ -89,7 +89,7 @@
         double scale = fmin(viewportSizeInPoints.width, viewportSizeInPoints.height);
         
         NSBezierPath *path = [NSBezierPath bezierPathWithOvalInRect:NSMakeRect(-SHAPE_SIZE / 2.0,
-                                                                               -SHAPE_SIZE / 2.0,
+                                                                               -SHAPE_SIZE / 4.0,
                                                                                SHAPE_SIZE,
                                                                                SHAPE_SIZE / 2.0)];
         
@@ -134,6 +134,7 @@
         
         SCNNode *node = shapes[index];
         node.position = SCNVector3Make(x, y, 0);
+        node.renderingOrder = index;
     }
 }
 
