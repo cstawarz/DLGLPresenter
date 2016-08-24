@@ -113,7 +113,7 @@ static const GLfloat texCoords[] = {
                  0,
                  GL_BGRA,
                  GL_UNSIGNED_INT_8_8_8_8,
-                 [imageData bytes]);
+                 imageData.bytes);
     
     glBindTexture(GL_TEXTURE_2D, 0);
     
@@ -166,11 +166,11 @@ static const GLfloat texCoords[] = {
     bool success = ColorSyncTransformConvert(transform,
                                              width,
                                              height,
-                                             [dstData mutableBytes],
+                                             dstData.mutableBytes,
                                              kColorSync8BitInteger,
                                              kColorSyncAlphaFirst,
                                              width * 4,
-                                             [srcData bytes],
+                                             srcData.bytes,
                                              srcDepth,
                                              (ColorSyncDataLayout)srcBitmapInfo,
                                              CGImageGetBytesPerRow(image),

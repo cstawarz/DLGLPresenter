@@ -20,12 +20,12 @@
 
 - (void)setSourceView:(DLGLPresenterView *)newSourceView
 {
-    NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:[self pixelFormat]
-                                                          shareContext:[newSourceView openGLContext]];
+    NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:self.pixelFormat
+                                                          shareContext:newSourceView.openGLContext];
     NSAssert(context, @"Could not create GL context for mirror view");
 
-    [self setOpenGLContext:context];
-    [context setView:self];
+    self.openGLContext = context;
+    context.view = self;
     
     [self.sourceView removeObserver:self forKeyPath:@"running"];
     [newSourceView addObserver:self forKeyPath:@"running" options:0 context:NULL];
@@ -48,7 +48,7 @@
 - (void)drawForTime:(const CVTimeStamp *)outputTime
 {
     [self drawFramebuffer:self.sourceView.sceneFramebuffer fromView:self.sourceView inView:self];
-    [[self openGLContext] flushBuffer];
+    [self.openGLContext flushBuffer];
 }
 
 

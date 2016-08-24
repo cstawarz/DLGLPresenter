@@ -19,7 +19,7 @@
 
 - (void)presenterViewWillStartPresentation:(DLGLPresenterView *)presenterView
 {
-    renderer = [SCNRenderer rendererWithContext:[[NSOpenGLContext currentContext] CGLContextObj] options:nil];
+    renderer = [SCNRenderer rendererWithContext:[NSOpenGLContext currentContext].CGLContextObj options:nil];
     renderer.delegate = self;
     
     scene = [SCNScene scene];

@@ -88,10 +88,10 @@ GLuint DLGLCreateProgramWithShaders(GLuint shader, ...)
 
 ColorSyncTransformRef DLGLCreateColorSyncTransform(NSColorSpace *srcColorSpace, NSColorSpace *dstColorSpace)
 {
-    ColorSyncProfileRef srcProfile = [srcColorSpace colorSyncProfile];
+    ColorSyncProfileRef srcProfile = srcColorSpace.colorSyncProfile;
     NSCAssert(srcProfile, @"Unable to obtain source ColorSync profile");
     
-    ColorSyncProfileRef dstProfile = [dstColorSpace colorSyncProfile];
+    ColorSyncProfileRef dstProfile = dstColorSpace.colorSyncProfile;
     NSCAssert(dstProfile, @"Unable to obtain destination ColorSync profile");
     
     const void *keys[] = { kColorSyncProfile, kColorSyncRenderingIntent, kColorSyncTransformTag };

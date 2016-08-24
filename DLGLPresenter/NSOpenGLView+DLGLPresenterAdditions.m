@@ -17,7 +17,7 @@
 
 - (void)DLGLPerformBlockWithContextLock:(dispatch_block_t)block
 {
-    CGLContextObj contextObj = [[self openGLContext] CGLContextObj];
+    CGLContextObj contextObj = self.openGLContext.CGLContextObj;
     CGLError error = CGLLockContext(contextObj);
     NSAssert((kCGLNoError == error), @"Unable to acquire GL context lock (error = %d)", error);
     

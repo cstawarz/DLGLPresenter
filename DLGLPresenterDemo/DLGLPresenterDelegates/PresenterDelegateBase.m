@@ -57,7 +57,7 @@
     NSString *shaderSource = [NSString stringWithContentsOfURL:url usedEncoding:&encoding error:nil];
     NSAssert(shaderSource, @"Cannot load shader source");
     
-    return DLGLCreateShader(shaderType, [shaderSource UTF8String]);
+    return DLGLCreateShader(shaderType, shaderSource.UTF8String);
 }
 
 

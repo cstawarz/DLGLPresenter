@@ -36,9 +36,9 @@
     presenterDelegate = [[SceneKitShapes alloc] init];
     
 #ifdef FULLSCREEN
-    fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[[NSScreen screens] lastObject]];
-    presenterView = [fullScreenWindow contentView];
-    mirrorView = [[DLGLMirrorView alloc] initWithFrame:[self.window frame]];
+    fullScreenWindow = [DLGLPresenterView presenterViewInFullScreenWindow:[NSScreen screens].lastObject];
+    presenterView = fullScreenWindow.contentView;
+    mirrorView = [[DLGLMirrorView alloc] initWithFrame:(self.window).frame];
 #else
     presenterView = [[DLGLPresenterView alloc] initWithFrame:[self.window frame]];
 #endif
@@ -46,12 +46,12 @@
     
 #ifdef FULLSCREEN
     [fullScreenWindow makeKeyAndOrderFront:self];
-    [self.window setContentView:mirrorView];
+    (self.window).contentView = mirrorView;
     mirrorView.sourceView = presenterView;
     
     NSSize aspectRatio = presenterView.bounds.size;
-    [self.window setContentAspectRatio:presenterView.bounds.size];
-    CGFloat windowHeight = [self.window frame].size.height;
+    (self.window).contentAspectRatio = presenterView.bounds.size;
+    CGFloat windowHeight = (self.window).frame.size.height;
     [self.window setContentSize:NSMakeSize(windowHeight * aspectRatio.width / aspectRatio.height, windowHeight)];
 #else
     [self.window setContentView:presenterView];

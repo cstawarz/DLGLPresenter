@@ -61,14 +61,14 @@
 
 - (void)viewWillMoveToWindow:(NSWindow *)newWindow
 {
-    if ([self window]) {
+    if (self.window) {
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:NSWindowDidChangeScreenNotification
-                                                      object:[self window]];
+                                                      object:self.window];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:NSWindowDidChangeScreenProfileNotification
-                                                      object:[self window]];
+                                                      object:self.window];
     }
 }
 
@@ -78,13 +78,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(windowDidChangeScreen:)
                                                  name:NSWindowDidChangeScreenNotification
-                                               object:[self window]];
+                                               object:self.window];
     
-    [[self window] setDisplaysWhenScreenProfileChanges:YES];
+    [self.window setDisplaysWhenScreenProfileChanges:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(windowDidChangeScreenProfile:)
                                                  name:NSWindowDidChangeScreenProfileNotification
-                                               object:[self window]];
+                                               object:self.window];
 }
 
 
@@ -99,7 +99,7 @@
 
 - (void)windowDidChangeScreenProfile:(NSNotification *)notification
 {
-    NSLog(@"color space: %@", [[self window] colorSpace]);
+    NSLog(@"color space: %@", self.window.colorSpace);
 }
 
 
@@ -122,7 +122,7 @@
 - (void)update
 {
     [self DLGLPerformBlockWithContextLock:^{
-        NSLog(@"virtual screen: %d", [[self openGLContext] currentVirtualScreen]);
+        NSLog(@"virtual screen: %d", self.openGLContext.currentVirtualScreen);
         shouldUpdate = YES;
     }];
 }
@@ -134,7 +134,7 @@
         [self DLGLPerformBlockWithContextLock:^{
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
-            [[self openGLContext] flushBuffer];
+            [self.openGLContext flushBuffer];
         }];
     }
 }
@@ -152,10 +152,10 @@
         
         _running = YES;
         
-        NSScreen *screen = [[self window] screen];
+        NSScreen *screen = self.window.screen;
         NSNumber *screenNumber = screen.deviceDescription[@"NSScreenNumber"];
         
-        error = CVDisplayLinkSetCurrentCGDisplay(displayLink, [screenNumber unsignedIntValue]);
+        error = CVDisplayLinkSetCurrentCGDisplay(displayLink, screenNumber.unsignedIntValue);
         NSAssert((kCVReturnSuccess == error), @"Unable to set display link current display (error = %d)", error);
         
         CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
@@ -187,11 +187,11 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     @autoreleasepool {
         [view DLGLPerformBlockWithContextLock:^{
             if (view->shouldUpdate) {
-                [[view openGLContext] update];
+                [view.openGLContext update];
                 view->shouldUpdate = NO;
             }
             
-            [[view openGLContext] makeCurrentContext];
+            [view.openGLContext makeCurrentContext];
             
             if (view->shouldResize) {
                 [view resizeContext];
@@ -208,16 +208,16 @@ static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)prepareContext
 {
-    CGLEnable([[self openGLContext] CGLContextObj], kCGLCECrashOnRemovedFunctions);
+    CGLEnable(self.openGLContext.CGLContextObj, kCGLCECrashOnRemovedFunctions);
     
     GLint swapInterval = 1;
-    [[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+    [self.openGLContext setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 }
 
 
 - (void)resizeContext
 {
-    NSSize size = [self convertRectToBacking:[self bounds]].size;
+    NSSize size = [self convertRectToBacking:self.bounds].size;
     
     _viewportWidth = (GLsizei)(size.width);
     _viewportHeight = (GLsizei)(size.height);

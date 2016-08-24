@@ -34,7 +34,7 @@
 
 + (NSWindow *)presenterViewInFullScreenWindow:(NSScreen *)screen pixelFormat:(NSOpenGLPixelFormat *)format
 {
-    NSRect screenRect = [screen frame];
+    NSRect screenRect = screen.frame;
     NSRect windowRect = NSMakeRect(0.0, 0.0, screenRect.size.width, screenRect.size.height);
     
     NSWindow *fullScreenWindow = [[NSWindow alloc] initWithContentRect:windowRect
@@ -47,7 +47,7 @@
     [fullScreenWindow setHidesOnDeactivate:NO];
     
     DLGLPresenterView *presenterView = [[self alloc] initWithFrame:windowRect pixelFormat:format];
-    [fullScreenWindow setContentView:presenterView];
+    fullScreenWindow.contentView = presenterView;
     
     return fullScreenWindow;
 }
@@ -98,7 +98,7 @@
         return;
     }
     
-    [[self openGLContext] makeCurrentContext];
+    [self.openGLContext makeCurrentContext];
     
     if (running) {
         
@@ -161,7 +161,7 @@
     }
     
     [self drawFramebuffer:framebuffer fromView:self inView:self];
-    [[self openGLContext] flushBuffer];
+    [self.openGLContext flushBuffer];
     
     if (shouldDraw) {
         [self.delegate presenterView:self didDrawForTime:outputTime];
